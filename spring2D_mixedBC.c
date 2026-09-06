@@ -2,7 +2,7 @@
 #include <R.h> 
  #include <math.h> 
 
-static double parms[66];
+static double parms[42];
 static double forc[0];
 static double cons[0];
 static double range[2];
@@ -53,36 +53,12 @@ static double range[2];
  #define y33_0 parms[39] 
  #define y34_0 parms[40] 
  #define y35_0 parms[41] 
- #define y36_0 parms[42] 
- #define y37_0 parms[43] 
- #define y38_0 parms[44] 
- #define y39_0 parms[45] 
- #define y40_0 parms[46] 
- #define y41_0 parms[47] 
- #define y42_0 parms[48] 
- #define y43_0 parms[49] 
- #define y44_0 parms[50] 
- #define y45_0 parms[51] 
- #define y46_0 parms[52] 
- #define y47_0 parms[53] 
- #define y48_0 parms[54] 
- #define y49_0 parms[55] 
- #define y50_0 parms[56] 
- #define y51_0 parms[57] 
- #define y52_0 parms[58] 
- #define y53_0 parms[59] 
- #define y54_0 parms[60] 
- #define y55_0 parms[61] 
- #define y56_0 parms[62] 
- #define y57_0 parms[63] 
- #define y58_0 parms[64] 
- #define y59_0 parms[65] 
 #define tmin range[0]
 #define tmax range[1]
 
 
 void spring2D_mixedBC_initmod(void (* odeparms)(int *, double *)) {
-	 int N=66;
+	 int N=42;
 	 odeparms(&N, parms);
 }
 
@@ -97,65 +73,41 @@ void spring2D_mixedBC_derivs (int *n, double *t, double *y, double *ydot, double
 	 double time = *t;
 
 	 ydot[0] = y[1];
- 	 ydot[1] = (E/(delta0*pow(a0,2.0)))*(y[12]+0.0+y[2]+y[0]-4.0*y[0])+(1.0/(delta0*a0))*(((eta*(1.0+(y[12]-y[0])/a0))-(eta*(1.0+(y[0]-0.0)/a0)))+((eta*(1.0+(y[2]-y[0])/a0))-(0.0)))-(c/delta0)*y[1]-(kappa/delta0)*y[0];
+ 	 ydot[1] = (E/(delta0*pow(a0,2.0)))*(y[6]+0.0+y[2]+y[0]-4.0*y[0])+(1.0/(delta0*a0))*(((eta*(1.0+(y[6]-y[0])/a0))-(eta*(1.0+(y[0]-0.0)/a0)))+((eta*(1.0+(y[2]-y[0])/a0))-(0.0)))-(c/delta0)*y[1]-(kappa/delta0)*y[0];
  	 ydot[2] = y[3];
- 	 ydot[3] = (E/(delta0*pow(a0,2.0)))*(y[14]+0.0+y[4]+y[0]-4.0*y[2])+(1.0/(delta0*a0))*(((eta*(1.0+(y[14]-y[2])/a0))-(eta*(1.0+(y[2]-0.0)/a0)))+((eta*(1.0+(y[4]-y[2])/a0))-(eta*(1.0+(y[2]-y[0])/a0))))-(c/delta0)*y[3]-(kappa/delta0)*y[2];
+ 	 ydot[3] = (E/(delta0*pow(a0,2.0)))*(y[8]+0.0+y[4]+y[0]-4.0*y[2])+(1.0/(delta0*a0))*(((eta*(1.0+(y[8]-y[2])/a0))-(eta*(1.0+(y[2]-0.0)/a0)))+((eta*(1.0+(y[4]-y[2])/a0))-(eta*(1.0+(y[2]-y[0])/a0))))-(c/delta0)*y[3]-(kappa/delta0)*y[2];
  	 ydot[4] = y[5];
- 	 ydot[5] = (E/(delta0*pow(a0,2.0)))*(y[16]+0.0+y[6]+y[2]-4.0*y[4])+(1.0/(delta0*a0))*(((eta*(1.0+(y[16]-y[4])/a0))-(eta*(1.0+(y[4]-0.0)/a0)))+((eta*(1.0+(y[6]-y[4])/a0))-(eta*(1.0+(y[4]-y[2])/a0))))-(c/delta0)*y[5]-(kappa/delta0)*y[4];
+ 	 ydot[5] = (E/(delta0*pow(a0,2.0)))*(y[10]+0.0+y[4]+y[2]-4.0*y[4])+(1.0/(delta0*a0))*(((eta*(1.0+(y[10]-y[4])/a0))-(eta*(1.0+(y[4]-0.0)/a0)))+((0.0)-(eta*(1.0+(y[4]-y[2])/a0))))-(c/delta0)*y[5]-(kappa/delta0)*y[4];
  	 ydot[6] = y[7];
- 	 ydot[7] = (E/(delta0*pow(a0,2.0)))*(y[18]+0.0+y[8]+y[4]-4.0*y[6])+(1.0/(delta0*a0))*(((eta*(1.0+(y[18]-y[6])/a0))-(eta*(1.0+(y[6]-0.0)/a0)))+((eta*(1.0+(y[8]-y[6])/a0))-(eta*(1.0+(y[6]-y[4])/a0))))-(c/delta0)*y[7]-(kappa/delta0)*y[6];
+ 	 ydot[7] = (E/(delta0*pow(a0,2.0)))*(y[12]+y[0]+y[8]+y[6]-4.0*y[6])+(1.0/(delta0*a0))*(((eta*(1.0+(y[12]-y[6])/a0))-(eta*(1.0+(y[6]-y[0])/a0)))+((eta*(1.0+(y[8]-y[6])/a0))-(0.0)))-(c/delta0)*y[7]-(kappa/delta0)*y[6];
  	 ydot[8] = y[9];
- 	 ydot[9] = (E/(delta0*pow(a0,2.0)))*(y[20]+0.0+y[10]+y[6]-4.0*y[8])+(1.0/(delta0*a0))*(((eta*(1.0+(y[20]-y[8])/a0))-(eta*(1.0+(y[8]-0.0)/a0)))+((eta*(1.0+(y[10]-y[8])/a0))-(eta*(1.0+(y[8]-y[6])/a0))))-(c/delta0)*y[9]-(kappa/delta0)*y[8];
+ 	 ydot[9] = (E/(delta0*pow(a0,2.0)))*(y[14]+y[2]+y[10]+y[6]-4.0*y[8])+(1.0/(delta0*a0))*(((eta*(1.0+(y[14]-y[8])/a0))-(eta*(1.0+(y[8]-y[2])/a0)))+((eta*(1.0+(y[10]-y[8])/a0))-(eta*(1.0+(y[8]-y[6])/a0))))-(c/delta0)*y[9]-(kappa/delta0)*y[8];
  	 ydot[10] = y[11];
- 	 ydot[11] = (E/(delta0*pow(a0,2.0)))*(y[22]+0.0+y[10]+y[8]-4.0*y[10])+(1.0/(delta0*a0))*(((eta*(1.0+(y[22]-y[10])/a0))-(eta*(1.0+(y[10]-0.0)/a0)))+((0.0)-(eta*(1.0+(y[10]-y[8])/a0))))-(c/delta0)*y[11]-(kappa/delta0)*y[10];
+ 	 ydot[11] = (E/(delta0*pow(a0,2.0)))*(y[16]+y[4]+y[10]+y[8]-4.0*y[10])+(1.0/(delta0*a0))*(((eta*(1.0+(y[16]-y[10])/a0))-(eta*(1.0+(y[10]-y[4])/a0)))+((0.0)-(eta*(1.0+(y[10]-y[8])/a0))))-(c/delta0)*y[11]-(kappa/delta0)*y[10];
  	 ydot[12] = y[13];
- 	 ydot[13] = (E/(delta0*pow(a0,2.0)))*(y[24]+y[0]+y[14]+y[12]-4.0*y[12])+(1.0/(delta0*a0))*(((eta*(1.0+(y[24]-y[12])/a0))-(eta*(1.0+(y[12]-y[0])/a0)))+((eta*(1.0+(y[14]-y[12])/a0))-(0.0)))-(c/delta0)*y[13]-(kappa/delta0)*y[12];
+ 	 ydot[13] = (E/(delta0*pow(a0,2.0)))*(y[18]+y[6]+y[14]+y[12]-4.0*y[12])+(1.0/(delta0*a0))*(((eta*(1.0+(y[18]-y[12])/a0))-(eta*(1.0+(y[12]-y[6])/a0)))+((eta*(1.0+(y[14]-y[12])/a0))-(0.0)))-(c/delta0)*y[13]-(kappa/delta0)*y[12];
  	 ydot[14] = y[15];
- 	 ydot[15] = (E/(delta0*pow(a0,2.0)))*(y[26]+y[2]+y[16]+y[12]-4.0*y[14])+(1.0/(delta0*a0))*(((eta*(1.0+(y[26]-y[14])/a0))-(eta*(1.0+(y[14]-y[2])/a0)))+((eta*(1.0+(y[16]-y[14])/a0))-(eta*(1.0+(y[14]-y[12])/a0))))-(c/delta0)*y[15]-(kappa/delta0)*y[14];
+ 	 ydot[15] = (E/(delta0*pow(a0,2.0)))*(y[20]+y[8]+y[16]+y[12]-4.0*y[14])+(1.0/(delta0*a0))*(((eta*(1.0+(y[20]-y[14])/a0))-(eta*(1.0+(y[14]-y[8])/a0)))+((eta*(1.0+(y[16]-y[14])/a0))-(eta*(1.0+(y[14]-y[12])/a0))))-(c/delta0)*y[15]-(kappa/delta0)*y[14];
  	 ydot[16] = y[17];
- 	 ydot[17] = (E/(delta0*pow(a0,2.0)))*(y[28]+y[4]+y[18]+y[14]-4.0*y[16])+(1.0/(delta0*a0))*(((eta*(1.0+(y[28]-y[16])/a0))-(eta*(1.0+(y[16]-y[4])/a0)))+((eta*(1.0+(y[18]-y[16])/a0))-(eta*(1.0+(y[16]-y[14])/a0))))-(c/delta0)*y[17]-(kappa/delta0)*y[16];
+ 	 ydot[17] = (E/(delta0*pow(a0,2.0)))*(y[22]+y[10]+y[16]+y[14]-4.0*y[16])+(1.0/(delta0*a0))*(((eta*(1.0+(y[22]-y[16])/a0))-(eta*(1.0+(y[16]-y[10])/a0)))+((0.0)-(eta*(1.0+(y[16]-y[14])/a0))))-(c/delta0)*y[17]-(kappa/delta0)*y[16];
  	 ydot[18] = y[19];
- 	 ydot[19] = (E/(delta0*pow(a0,2.0)))*(y[30]+y[6]+y[20]+y[16]-4.0*y[18])+(1.0/(delta0*a0))*(((eta*(1.0+(y[30]-y[18])/a0))-(eta*(1.0+(y[18]-y[6])/a0)))+((eta*(1.0+(y[20]-y[18])/a0))-(eta*(1.0+(y[18]-y[16])/a0))))-(c/delta0)*y[19]-(kappa/delta0)*y[18];
+ 	 ydot[19] = (E/(delta0*pow(a0,2.0)))*(y[24]+y[12]+y[20]+y[18]-4.0*y[18])+(1.0/(delta0*a0))*(((eta*(1.0+(y[24]-y[18])/a0))-(eta*(1.0+(y[18]-y[12])/a0)))+((eta*(1.0+(y[20]-y[18])/a0))-(0.0)))-(c/delta0)*y[19]-(kappa/delta0)*y[18];
  	 ydot[20] = y[21];
- 	 ydot[21] = (E/(delta0*pow(a0,2.0)))*(y[32]+y[8]+y[22]+y[18]-4.0*y[20])+(1.0/(delta0*a0))*(((eta*(1.0+(y[32]-y[20])/a0))-(eta*(1.0+(y[20]-y[8])/a0)))+((eta*(1.0+(y[22]-y[20])/a0))-(eta*(1.0+(y[20]-y[18])/a0))))-(c/delta0)*y[21]-(kappa/delta0)*y[20];
+ 	 ydot[21] = (E/(delta0*pow(a0,2.0)))*(y[26]+y[14]+y[22]+y[18]-4.0*y[20])+(1.0/(delta0*a0))*(((eta*(1.0+(y[26]-y[20])/a0))-(eta*(1.0+(y[20]-y[14])/a0)))+((eta*(1.0+(y[22]-y[20])/a0))-(eta*(1.0+(y[20]-y[18])/a0))))-(c/delta0)*y[21]-(kappa/delta0)*y[20];
  	 ydot[22] = y[23];
- 	 ydot[23] = (E/(delta0*pow(a0,2.0)))*(y[34]+y[10]+y[22]+y[20]-4.0*y[22])+(1.0/(delta0*a0))*(((eta*(1.0+(y[34]-y[22])/a0))-(eta*(1.0+(y[22]-y[10])/a0)))+((0.0)-(eta*(1.0+(y[22]-y[20])/a0))))-(c/delta0)*y[23]-(kappa/delta0)*y[22];
+ 	 ydot[23] = (E/(delta0*pow(a0,2.0)))*(y[28]+y[16]+y[22]+y[20]-4.0*y[22])+(1.0/(delta0*a0))*(((eta*(1.0+(y[28]-y[22])/a0))-(eta*(1.0+(y[22]-y[16])/a0)))+((0.0)-(eta*(1.0+(y[22]-y[20])/a0))))-(c/delta0)*y[23]-(kappa/delta0)*y[22];
  	 ydot[24] = y[25];
- 	 ydot[25] = (E/(delta0*pow(a0,2.0)))*(y[36]+y[12]+y[26]+y[24]-4.0*y[24])+(1.0/(delta0*a0))*(((eta*(1.0+(y[36]-y[24])/a0))-(eta*(1.0+(y[24]-y[12])/a0)))+((eta*(1.0+(y[26]-y[24])/a0))-(0.0)))-(c/delta0)*y[25]-(kappa/delta0)*y[24];
+ 	 ydot[25] = (E/(delta0*pow(a0,2.0)))*(y[30]+y[18]+y[26]+y[24]-4.0*y[24])+(1.0/(delta0*a0))*(((eta*(1.0+(y[30]-y[24])/a0))-(eta*(1.0+(y[24]-y[18])/a0)))+((eta*(1.0+(y[26]-y[24])/a0))-(0.0)))-(c/delta0)*y[25]-(kappa/delta0)*y[24];
  	 ydot[26] = y[27];
- 	 ydot[27] = (E/(delta0*pow(a0,2.0)))*(y[38]+y[14]+y[28]+y[24]-4.0*y[26])+(1.0/(delta0*a0))*(((eta*(1.0+(y[38]-y[26])/a0))-(eta*(1.0+(y[26]-y[14])/a0)))+((eta*(1.0+(y[28]-y[26])/a0))-(eta*(1.0+(y[26]-y[24])/a0))))-(c/delta0)*y[27]-(kappa/delta0)*y[26];
+ 	 ydot[27] = (E/(delta0*pow(a0,2.0)))*(y[32]+y[20]+y[28]+y[24]-4.0*y[26])+(1.0/(delta0*a0))*(((eta*(1.0+(y[32]-y[26])/a0))-(eta*(1.0+(y[26]-y[20])/a0)))+((eta*(1.0+(y[28]-y[26])/a0))-(eta*(1.0+(y[26]-y[24])/a0))))-(c/delta0)*y[27]-(kappa/delta0)*y[26];
  	 ydot[28] = y[29];
- 	 ydot[29] = (E/(delta0*pow(a0,2.0)))*(y[40]+y[16]+y[30]+y[26]-4.0*y[28])+(1.0/(delta0*a0))*(((eta*(1.0+(y[40]-y[28])/a0))-(eta*(1.0+(y[28]-y[16])/a0)))+((eta*(1.0+(y[30]-y[28])/a0))-(eta*(1.0+(y[28]-y[26])/a0))))-(c/delta0)*y[29]-(kappa/delta0)*y[28];
+ 	 ydot[29] = (E/(delta0*pow(a0,2.0)))*(y[34]+y[22]+y[28]+y[26]-4.0*y[28])+(1.0/(delta0*a0))*(((eta*(1.0+(y[34]-y[28])/a0))-(eta*(1.0+(y[28]-y[22])/a0)))+((0.0)-(eta*(1.0+(y[28]-y[26])/a0))))-(c/delta0)*y[29]-(kappa/delta0)*y[28];
  	 ydot[30] = y[31];
- 	 ydot[31] = (E/(delta0*pow(a0,2.0)))*(y[42]+y[18]+y[32]+y[28]-4.0*y[30])+(1.0/(delta0*a0))*(((eta*(1.0+(y[42]-y[30])/a0))-(eta*(1.0+(y[30]-y[18])/a0)))+((eta*(1.0+(y[32]-y[30])/a0))-(eta*(1.0+(y[30]-y[28])/a0))))-(c/delta0)*y[31]-(kappa/delta0)*y[30];
+ 	 ydot[31] = (E/(delta0*pow(a0,2.0)))*(y[30]+y[24]+y[32]+y[30]-4.0*y[30])+(1.0/(delta0*a0))*(((0.0)-(eta*(1.0+(y[30]-y[24])/a0)))+((eta*(1.0+(y[32]-y[30])/a0))-(0.0)))-(c/delta0)*y[31]-(kappa/delta0)*y[30];
  	 ydot[32] = y[33];
- 	 ydot[33] = (E/(delta0*pow(a0,2.0)))*(y[44]+y[20]+y[34]+y[30]-4.0*y[32])+(1.0/(delta0*a0))*(((eta*(1.0+(y[44]-y[32])/a0))-(eta*(1.0+(y[32]-y[20])/a0)))+((eta*(1.0+(y[34]-y[32])/a0))-(eta*(1.0+(y[32]-y[30])/a0))))-(c/delta0)*y[33]-(kappa/delta0)*y[32];
+ 	 ydot[33] = (E/(delta0*pow(a0,2.0)))*(y[32]+y[26]+y[34]+y[30]-4.0*y[32])+(1.0/(delta0*a0))*(((0.0)-(eta*(1.0+(y[32]-y[26])/a0)))+((eta*(1.0+(y[34]-y[32])/a0))-(eta*(1.0+(y[32]-y[30])/a0))))-(c/delta0)*y[33]-(kappa/delta0)*y[32];
  	 ydot[34] = y[35];
- 	 ydot[35] = (E/(delta0*pow(a0,2.0)))*(y[46]+y[22]+y[34]+y[32]-4.0*y[34])+(1.0/(delta0*a0))*(((eta*(1.0+(y[46]-y[34])/a0))-(eta*(1.0+(y[34]-y[22])/a0)))+((0.0)-(eta*(1.0+(y[34]-y[32])/a0))))-(c/delta0)*y[35]-(kappa/delta0)*y[34];
- 	 ydot[36] = y[37];
- 	 ydot[37] = (E/(delta0*pow(a0,2.0)))*(y[48]+y[24]+y[38]+y[36]-4.0*y[36])+(1.0/(delta0*a0))*(((eta*(1.0+(y[48]-y[36])/a0))-(eta*(1.0+(y[36]-y[24])/a0)))+((eta*(1.0+(y[38]-y[36])/a0))-(0.0)))-(c/delta0)*y[37]-(kappa/delta0)*y[36];
- 	 ydot[38] = y[39];
- 	 ydot[39] = (E/(delta0*pow(a0,2.0)))*(y[50]+y[26]+y[40]+y[36]-4.0*y[38])+(1.0/(delta0*a0))*(((eta*(1.0+(y[50]-y[38])/a0))-(eta*(1.0+(y[38]-y[26])/a0)))+((eta*(1.0+(y[40]-y[38])/a0))-(eta*(1.0+(y[38]-y[36])/a0))))-(c/delta0)*y[39]-(kappa/delta0)*y[38];
- 	 ydot[40] = y[41];
- 	 ydot[41] = (E/(delta0*pow(a0,2.0)))*(y[52]+y[28]+y[42]+y[38]-4.0*y[40])+(1.0/(delta0*a0))*(((eta*(1.0+(y[52]-y[40])/a0))-(eta*(1.0+(y[40]-y[28])/a0)))+((eta*(1.0+(y[42]-y[40])/a0))-(eta*(1.0+(y[40]-y[38])/a0))))-(c/delta0)*y[41]-(kappa/delta0)*y[40];
- 	 ydot[42] = y[43];
- 	 ydot[43] = (E/(delta0*pow(a0,2.0)))*(y[54]+y[30]+y[44]+y[40]-4.0*y[42])+(1.0/(delta0*a0))*(((eta*(1.0+(y[54]-y[42])/a0))-(eta*(1.0+(y[42]-y[30])/a0)))+((eta*(1.0+(y[44]-y[42])/a0))-(eta*(1.0+(y[42]-y[40])/a0))))-(c/delta0)*y[43]-(kappa/delta0)*y[42];
- 	 ydot[44] = y[45];
- 	 ydot[45] = (E/(delta0*pow(a0,2.0)))*(y[56]+y[32]+y[46]+y[42]-4.0*y[44])+(1.0/(delta0*a0))*(((eta*(1.0+(y[56]-y[44])/a0))-(eta*(1.0+(y[44]-y[32])/a0)))+((eta*(1.0+(y[46]-y[44])/a0))-(eta*(1.0+(y[44]-y[42])/a0))))-(c/delta0)*y[45]-(kappa/delta0)*y[44];
- 	 ydot[46] = y[47];
- 	 ydot[47] = (E/(delta0*pow(a0,2.0)))*(y[58]+y[34]+y[46]+y[44]-4.0*y[46])+(1.0/(delta0*a0))*(((eta*(1.0+(y[58]-y[46])/a0))-(eta*(1.0+(y[46]-y[34])/a0)))+((0.0)-(eta*(1.0+(y[46]-y[44])/a0))))-(c/delta0)*y[47]-(kappa/delta0)*y[46];
- 	 ydot[48] = y[49];
- 	 ydot[49] = (E/(delta0*pow(a0,2.0)))*(y[48]+y[36]+y[50]+y[48]-4.0*y[48])+(1.0/(delta0*a0))*(((0.0)-(eta*(1.0+(y[48]-y[36])/a0)))+((eta*(1.0+(y[50]-y[48])/a0))-(0.0)))-(c/delta0)*y[49]-(kappa/delta0)*y[48];
- 	 ydot[50] = y[51];
- 	 ydot[51] = (E/(delta0*pow(a0,2.0)))*(y[50]+y[38]+y[52]+y[48]-4.0*y[50])+(1.0/(delta0*a0))*(((0.0)-(eta*(1.0+(y[50]-y[38])/a0)))+((eta*(1.0+(y[52]-y[50])/a0))-(eta*(1.0+(y[50]-y[48])/a0))))-(c/delta0)*y[51]-(kappa/delta0)*y[50];
- 	 ydot[52] = y[53];
- 	 ydot[53] = (E/(delta0*pow(a0,2.0)))*(y[52]+y[40]+y[54]+y[50]-4.0*y[52])+(1.0/(delta0*a0))*(((0.0)-(eta*(1.0+(y[52]-y[40])/a0)))+((eta*(1.0+(y[54]-y[52])/a0))-(eta*(1.0+(y[52]-y[50])/a0))))-(c/delta0)*y[53]-(kappa/delta0)*y[52];
- 	 ydot[54] = y[55];
- 	 ydot[55] = (E/(delta0*pow(a0,2.0)))*(y[54]+y[42]+y[56]+y[52]-4.0*y[54])+(1.0/(delta0*a0))*(((0.0)-(eta*(1.0+(y[54]-y[42])/a0)))+((eta*(1.0+(y[56]-y[54])/a0))-(eta*(1.0+(y[54]-y[52])/a0))))-(c/delta0)*y[55]-(kappa/delta0)*y[54];
- 	 ydot[56] = y[57];
- 	 ydot[57] = (E/(delta0*pow(a0,2.0)))*(y[56]+y[44]+y[58]+y[54]-4.0*y[56])+(1.0/(delta0*a0))*(((0.0)-(eta*(1.0+(y[56]-y[44])/a0)))+((eta*(1.0+(y[58]-y[56])/a0))-(eta*(1.0+(y[56]-y[54])/a0))))-(c/delta0)*y[57]-(kappa/delta0)*y[56];
- 	 ydot[58] = y[59];
- 	 ydot[59] = (E/(delta0*pow(a0,2.0)))*(y[58]+y[46]+y[58]+y[56]-4.0*y[58])+(1.0/(delta0*a0))*(((0.0)-(eta*(1.0+(y[58]-y[46])/a0)))+((0.0)-(eta*(1.0+(y[58]-y[56])/a0))))-(c/delta0)*y[59]-(kappa/delta0)*y[58];
+ 	 ydot[35] = (E/(delta0*pow(a0,2.0)))*(y[34]+y[28]+y[34]+y[32]-4.0*y[34])+(1.0/(delta0*a0))*(((0.0)-(eta*(1.0+(y[34]-y[28])/a0)))+((0.0)-(eta*(1.0+(y[34]-y[32])/a0))))-(c/delta0)*y[35]-(kappa/delta0)*y[34];
 
 }
 

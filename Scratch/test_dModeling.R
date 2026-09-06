@@ -1,115 +1,325 @@
 library(dMod)
 
 # ============================================================
-# 2D spring / elastic grid
+# GRID SIZE
 # ============================================================
 
-Nx <- 10
-Ny <- 10
+Nx <- 7
+Ny <- 3
 
-# Helper function for state names
-u_name <- function(i, j) paste0("u_", i, "_", j)
-v_name <- function(i, j) paste0("v_", i, "_", j)
+
+# ============================================================
+# STATE NAMES
+# ============================================================
+
+u_name <- function(i, j) {
+  paste0("u_", i, "_", j)
+}
+
+v_name <- function(i, j) {
+  paste0("v_", i, "_", j)
+}
+
+
+# ============================================================
+# EQUATION CONTAINER
+# ============================================================
 
 eqns <- c()
 
+
 # ============================================================
-# Build ODE system
-# Only interior points are dynamic
-# Boundary: u = 0
+# BUILD THE ODE SYSTEM
+#
+# Boundary conditions:
+#
+# LEFT:
+#     u = 0  --> fixed
+#
+# RIGHT:
+#     free
+#
+# TOP:
+#     free
+#
+# BOTTOM:
+#     free
 # ============================================================
 
-for (i in 2:(Nx - 1)) {
+for (i in 2:Nx) {
   
-  for (j in 2:(Ny - 1)) {
+  for (j in 1:Ny) {
+    
+    # --------------------------------------------------------
+    # STATE NAMES
+    # --------------------------------------------------------
     
     uij <- u_name(i, j)
     vij <- v_name(i, j)
     
-    # Neighbours
-    uR <- u_name(i + 1, j)
-    uL <- u_name(i - 1, j)
-    uU <- u_name(i, j + 1)
-    uD <- u_name(i, j - 1)
-    
-    # Replace boundary states by 0
-    if (i + 1 == Nx) uR <- "0"
-    if (i - 1 == 1)  uL <- "0"
-    
-    if (j + 1 == Ny) uU <- "0"
-    if (j - 1 == 1)  uD <- "0"
-    
     
     # --------------------------------------------------------
-    # 1. du/dt = v
-    # --------------------------------------------------------
-    
-    eqns <- c(
-      eqns,
-      paste0("dot(", uij, ") = ", vij)
-    )
-    
-    
-    # --------------------------------------------------------
-    # 2. 2D discrete Laplacian
+    # LEFT NEIGHBOUR
     #
-    # u_R + u_L + u_U + u_D - 4*u_ij
+    # If i = 2, the neighbour i = 1 is the fixed boundary:
+    #
+    #     u_(1,j) = 0
     # --------------------------------------------------------
+    
+    if (i == 2) {
+      uL <- "0"
+    } else {
+      uL <- u_name(i - 1, j)
+    }
+    
+    
+    # --------------------------------------------------------
+    # RIGHT NEIGHBOUR
+    #
+    # Free boundary:
+    #
+    #     u_(Nx+1,j) = u_(Nx,j)
+    #
+    # corresponding to du/dx = 0.
+    # --------------------------------------------------------
+    
+    if (i == Nx) {
+      uR <- uij
+    } else {
+      uR <- u_name(i + 1, j)
+    }
+    
+    
+    # --------------------------------------------------------
+    # LOWER NEIGHBOUR
+    #
+    # Free boundary:
+    #
+    #     u_(i,0) = u_(i,1)
+    # --------------------------------------------------------
+    
+    if (j == 1) {
+      uD <- uij
+    } else {
+      uD <- u_name(i, j - 1)
+    }
+    
+    
+    # --------------------------------------------------------
+    # UPPER NEIGHBOUR
+    #
+    # Free boundary:
+    #
+    #     u_(i,Ny+1) = u_(i,Ny)
+    # --------------------------------------------------------
+    
+    if (j == Ny) {
+      uU <- uij
+    } else {
+      uU <- u_name(i, j + 1)
+    }
+    
+    
+    # ========================================================
+    # 2D DISCRETE LAPLACIAN
+    #
+    #     d²u/dx² + d²u/dy²
+    #
+    #     = uR + uL + uU + uD - 4*uij
+    # ========================================================
     
     laplace <- paste0(
-      "(", uR,
-      " + ", uL,
-      " + ", uU,
-      " + ", uD,
-      " - 4*", uij, ")"
-    )
-    
-    
-    # --------------------------------------------------------
-    # 3. Active/passive forces
-    #
-    # lambda_x = 1 + (u_R - u_ij)/a0
-    # lambda_y = 1 + (u_U - u_ij)/a0
-    #
-    # P_x = eta * lambda_x
-    # P_y = eta * lambda_y
-    #
-    # For simplicity:
-    # dP/dx + dP/dy
-    # --------------------------------------------------------
-    
-    force_x <- paste0(
-      "eta/a0 * (",
-      "(", uR, " - ", uij, ")",
-      " - (", uij, " - ", uL, ")",
-      ")"
-    )
-    
-    force_y <- paste0(
-      "eta/a0 * (",
-      "(", uU, " - ", uij, ")",
-      " - (", uij, " - ", uD, ")",
+      "(",
+      uR, " + ",
+      uL, " + ",
+      uU, " + ",
+      uD, " - 4*", uij,
       ")"
     )
     
     
+    # ========================================================
+    # X-DIRECTION FORCE
+    # ========================================================
+    
     # --------------------------------------------------------
-    # 4. dv/dt
+    # Outgoing force on right face
     # --------------------------------------------------------
+    
+    if (i == Nx) {
+      
+      # Free right boundary:
+      #
+      #     P_right = 0
+      
+      Px_right <- "0"
+      
+    } else {
+      
+      # Spring between (i,j) and (i+1,j):
+      #
+      # lambda = 1 + (uR - uij)/a0
+      #
+      # P = eta * lambda
+      
+      Px_right <- paste0(
+        "eta*(1 + (",
+        uR,
+        " - ",
+        uij,
+        ")/a0)"
+      )
+    }
+    
+    
+    # --------------------------------------------------------
+    # Incoming force from left face
+    # --------------------------------------------------------
+    
+    if (i == 2) {
+      
+      # Spring between fixed boundary and first dynamic point:
+      #
+      # left displacement = 0
+      
+      Px_left <- paste0(
+        "eta*(1 + (",
+        uij,
+        " - 0)/a0)"
+      )
+      
+    } else {
+      
+      # Spring between (i-1,j) and (i,j)
+      
+      Px_left <- paste0(
+        "eta*(1 + (",
+        uij,
+        " - ",
+        uL,
+        ")/a0)"
+      )
+    }
+    
+    
+    # ========================================================
+    # Y-DIRECTION FORCE
+    # ========================================================
+    
+    # --------------------------------------------------------
+    # Upper face
+    # --------------------------------------------------------
+    
+    if (j == Ny) {
+      
+      # Free upper boundary:
+      #
+      #     P_upper = 0
+      
+      Py_up <- "0"
+      
+    } else {
+      
+      # Spring between (i,j) and (i,j+1)
+      
+      Py_up <- paste0(
+        "eta*(1 + (",
+        uU,
+        " - ",
+        uij,
+        ")/a0)"
+      )
+    }
+    
+    
+    # --------------------------------------------------------
+    # Lower face
+    # --------------------------------------------------------
+    
+    if (j == 1) {
+      
+      # Free lower boundary:
+      #
+      #     P_lower = 0
+      
+      Py_down <- "0"
+      
+    } else {
+      
+      # Spring between (i,j-1) and (i,j)
+      
+      Py_down <- paste0(
+        "eta*(1 + (",
+        uij,
+        " - ",
+        uD,
+        ")/a0)"
+      )
+    }
+    
+    
+    # ========================================================
+    # FORCE DIVERGENCE
+    # ========================================================
+    
+    force_div <- paste0(
+      "((",
+      Px_right,
+      ") - (",
+      Px_left,
+      "))",
+      " + ",
+      "((",
+      Py_up,
+      ") - (",
+      Py_down,
+      "))"
+    )
+    
+    
+    # ========================================================
+    # ACCELERATION
+    #
+    #     dv/dt = acceleration
+    # ========================================================
     
     acceleration <- paste0(
-      "(E/(delta0*a0^2))*", laplace,
-      " + (1/delta0)*(", force_x,
-      " + ", force_y, ")",
-      " - (c/delta0)*", vij,
-      " - (kappa/delta0)*", uij
+      "(E/(delta0*a0^2))*",
+      laplace,
+      " + (1/(delta0*a0))*(",
+      force_div,
+      ")",
+      " - (c/delta0)*",
+      vij,
+      " - (kappa/delta0)*",
+      uij
     )
+    
+    
+    # ========================================================
+    # ADD EQUATIONS TO eqns
+    #
+    # dMod uses the names of the equations to identify the
+    # corresponding state variables.
+    #
+    #     du/dt = v
+    #     dv/dt = acceleration
+    #
+    # Therefore:
+    #
+    #     u_2_1 = "v_2_1"
+    #     v_2_1 = "acceleration expression"
+    # ========================================================
     
     eqns <- c(
       eqns,
-      paste0(
-        "dot(", vij, ") = ",
-        acceleration
+      setNames(
+        vij,
+        uij
+      ),
+      setNames(
+        acceleration,
+        vij
       )
     )
   }
@@ -117,17 +327,24 @@ for (i in 2:(Nx - 1)) {
 
 
 # ============================================================
-# Create dMod model
+# OPTIONAL: INSPECT GENERATED EQUATIONS
+# ============================================================
+
+print(eqns)
+
+
+# ============================================================
+# CREATE THE DMOD MODEL
 # ============================================================
 
 model <- odemodel(
   eqns,
-  modelname = "spring2D"
+  modelname = "spring2D_mixedBC"
 )
 
 
 # ============================================================
-# Parameters
+# PARAMETERS
 # ============================================================
 
 parms <- c(
@@ -141,46 +358,204 @@ parms <- c(
 
 
 # ============================================================
-# Initial conditions
+# INITIAL CONDITIONS
 # ============================================================
 
 x0 <- c()
 
-# Gaussian displacement in the middle of the grid
-for (i in 2:(Nx - 1)) {
+for (i in 2:Nx) {
   
-  for (j in 2:(Ny - 1)) {
+  for (j in 1:Ny) {
     
     uij <- u_name(i, j)
     vij <- v_name(i, j)
     
-    # Initial Gaussian bump
-    u0 <- exp(
+    # --------------------------------------------------------
+    # Initial Gaussian displacement
+    # --------------------------------------------------------
+    
+    x0[uij] <- exp(
       -(
-        (i - Nx/2)^2 +
+        (i - 4)^2 +
           (j - Ny/2)^2
       ) / 4
     )
     
-    x0[uij] <- u0
+    # --------------------------------------------------------
+    # Initially at rest
+    # --------------------------------------------------------
+    
     x0[vij] <- 0
   }
 }
 
 
 # ============================================================
-# Simulation
+# SIMULATION
 # ============================================================
+
+
 
 times <- seq(
   0,
-  20,
+  50,
   by = 0.1
 )
 
-sim <- simulate(
-  model,
-  times = times,
-  parms = parms,
-  x0 = x0
-)
+
+x <- Xs(model)
+
+pars <- c(x0, parms)
+
+sim <- x(times, pars)
+
+
+
+# ============================================================
+# Plot-Grid
+# ============================================================
+# 
+# 
+# 
+# 
+# plot_grid <- function(sim, time_index) {
+#   
+#   sim_data <- sim[[1]]
+#   
+#   U <- matrix(
+#     0,
+#     nrow = Nx,
+#     ncol = Ny
+#   )
+#   
+#   for (i in 2:Nx) {
+#     for (j in 1:Ny) {
+#       
+#       state <- u_name(i, j)
+#       
+#       U[i, j] <- sim_data[time_index, state]
+#     }
+#   }
+#   
+#   # Color scale
+#   cols <- heat.colors(100)
+#   
+#   image(
+#     x = 1:Nx,
+#     y = 1:Ny,
+#     z = U,
+#     col = cols,
+#     xlab = "x",
+#     ylab = "y",
+#     main = paste0(
+#       "Displacement, t = ",
+#       round(sim_data[time_index, "time"], 2)
+#     )
+#   )
+#   
+#   # Fixed boundary
+#   points(
+#     rep(1, Ny),
+#     1:Ny,
+#     pch = 19
+#   )
+#   
+#   # Color legend
+#   legend(
+#     "topright",
+#     legend = round(
+#       seq(min(U), max(U), length.out = 5),
+#       3
+#     ),
+#     fill = cols[
+#       round(
+#         seq(1, length(cols), length.out = 5)
+#       )
+#     ],
+#     title = "u",
+#     bty = "n"
+#   )
+# }
+
+
+###############       different plot    ############
+#
+#     Getting a 2D Plot of the Grid, but over time    ###
+#
+
+
+
+plot_grid <- function(sim, time_index) {
+  
+  sim_data <- sim[[1]]
+  
+  # Original grid
+  X <- matrix(rep(1:Nx, Ny), nrow = Ny, byrow = TRUE)
+  Y <- matrix(rep(1:Ny, each = Nx), nrow = Ny, byrow = TRUE)
+  
+  # Add displacement
+  X_def <- X
+  Y_def <- Y
+  
+  for (j in 1:Ny) {
+    for (i in 2:Nx) {
+      
+      X_def[j, i] <- X[j, i] +
+        sim_data[time_index, u_name(i, j)]
+      
+      # If you also have y-displacement:
+      # Y_def[j, i] <- Y[j, i] +
+      #   sim_data[time_index, v_name(i, j)]
+    }
+  }
+  
+  plot(
+    X_def,
+    Y_def,
+    type = "n",
+    asp = 1,
+    xlab = "x",
+    ylab = "y",
+    main = paste(
+      "t =",
+      sim_data[time_index, "time"]
+    )
+  )
+  
+  # Draw horizontal connections
+  for (j in 1:Ny) {
+    lines(X_def[j, ], Y_def[j, ])
+  }
+  
+  # Draw vertical connections
+  for (i in 1:Nx) {
+    lines(X_def[, i], Y_def[, i])
+  }
+  
+  # Draw mass points
+  points(
+    X_def,
+    Y_def,
+    pch = 19
+  )
+}
+
+# ============================================================
+# EXAMPLE PLOTS
+# ============================================================
+
+plot_grid(sim, 1)
+plot_grid(sim, 10)
+plot_grid(sim, 20)
+plot_grid(sim, 40)
+plot_grid(sim, 50)
+plot_grid(sim, 60)
+plot_grid(sim, 70)
+plot_grid(sim, 80)
+plot_grid(sim, 90)
+plot_grid(sim, 100)
+plot_grid(sim, 400)
+
+
+
+
