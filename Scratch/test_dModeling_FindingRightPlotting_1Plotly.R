@@ -1,4 +1,6 @@
 library(dMod)
+library(plotly)
+
 
 # ============================================================
 # GRID SIZE
@@ -413,89 +415,108 @@ sim <- x(times, pars)
 
 # ============================================================
 # Plot-Grid
-# ============================================================
-# 
-# 
-
-
-
-###############       different plot    ############
-#
 #     Getting a 2D Plot of the Grid, but over time    ###
-#
+# ============================================================
 
 
 
-plot_grid <- function(sim, time_index) {
+plot_grid_interactive <- function(sim) {
   
   sim_data <- sim[[1]]
   
-  # Original grid
-  X <- matrix(rep(1:Nx, Ny), nrow = Ny, byrow = TRUE)
-  Y <- matrix(rep(1:Ny, each = Nx), nrow = Ny, byrow = TRUE)
+  # Store all frames here
+  frames <- list()
   
-  # Add displacement
-  X_def <- X
-  Y_def <- Y
-  
-  for (j in 1:Ny) {
-    for (i in 2:Nx) {
-      
-      X_def[j, i] <- X[j, i] +
-        sim_data[time_index, u_name(i, j)]
-      
-      # If you also have y-displacement:
-       Y_def[j, i] <- Y[j, i] +
-         sim_data[time_index, v_name(i, j)]
+  for (t in seq_len(nrow(sim_data))) {
+    
+    X_def <- matrix(1:Nx, nrow = Ny, ncol = Nx, byrow = TRUE)
+    Y_def <- matrix(1:Ny, nrow = Ny, ncol = Nx, byrow = FALSE)
+    
+    # Apply x-displacement
+    for (j in 1:Ny) {
+      for (i in 2:Nx) {
+        
+        X_def[j, i] <- X_def[j, i] +
+          sim_data[t, u_name(i, j)]
+      }
     }
-  }
-  
-  plot(
-    X_def,
-    Y_def,
-    type = "n",
-    asp = 1,
-    xlab = "x",
-    ylab = "y",
-    main = paste(
-      "t =",
-      sim_data[time_index, "time"]
+    
+    # ---- points ----
+    points_df <- data.frame(
+      x = as.vector(X_def),
+      y = as.vector(Y_def)
     )
-  )
-  
-  # Draw horizontal connections
-  for (j in 1:Ny) {
-    lines(X_def[j, ], Y_def[j, ])
+    
+    # ---- horizontal lines ----
+    lines_df <- data.frame()
+    
+    for (j in 1:Ny) {
+      lines_df <- rbind(
+        lines_df,
+        data.frame(
+          x = X_def[j, ],
+          y = Y_def[j, ],
+          group = paste0("h", j)
+        )
+      )
+    }
+    
+    # ---- vertical lines ----
+    for (i in 1:Nx) {
+      lines_df <- rbind(
+        lines_df,
+        data.frame(
+          x = X_def[, i],
+          y = Y_def[, i],
+          group = paste0("v", i)
+        )
+      )
+    }
+    
+    frames[[t]] <- list(
+      points = points_df,
+      lines = lines_df,
+      time = sim_data[t, "time"]
+    )
   }
   
-  # Draw vertical connections
-  for (i in 1:Nx) {
-    lines(X_def[, i], Y_def[, i])
+  # Initial frame
+  p <- plot_ly()
+  
+  # Add grid lines
+  for (g in unique(frames[[1]]$lines$group)) {
+    
+    tmp <- frames[[1]]$lines[
+      frames[[1]]$lines$group == g, 
+    ]
+    
+    p <- add_trace(
+      p,
+      data = tmp,
+      x = ~x,
+      y = ~y,
+      type = "scatter",
+      mode = "lines",
+      line = list(width = 1),
+      showlegend = FALSE
+    )
   }
   
-  # Draw mass points
-  points(
-    X_def,
-    Y_def,
-    pch = 19
+  # Add mass points
+  p <- add_trace(
+    p,
+    data = frames[[1]]$points,
+    x = ~x,
+    y = ~y,
+    type = "scatter",
+    mode = "markers",
+    marker = list(size = 8),
+    showlegend = FALSE
   )
+  
+  p
 }
 
-# ============================================================
-# EXAMPLE PLOTS
-# ============================================================
-
-plot_grid(sim, 1)
-plot_grid(sim, 10)
-plot_grid(sim, 20)
-plot_grid(sim, 40)
-plot_grid(sim, 50)
-plot_grid(sim, 60)
-plot_grid(sim, 70)
-plot_grid(sim, 80)
-plot_grid(sim, 90)
-plot_grid(sim, 100)
-plot_grid(sim, 400)
 
 
 
