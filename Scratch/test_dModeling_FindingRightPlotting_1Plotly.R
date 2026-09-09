@@ -400,7 +400,7 @@ for (i in 2:Nx) {
 
 times <- seq(
   0,
-  50,
+  800,
   by = 0.1
 )
 
@@ -424,8 +424,12 @@ plot_grid_interactive <- function(sim) {
   
   sim_data <- sim[[1]]
   
-  # Store all frames here
-  frames <- list()
+  # ------------------------------------------------------------
+  # Build data for ALL time points
+  # ------------------------------------------------------------
+  
+  all_points <- data.frame()
+  all_lines  <- data.frame()
   
   for (t in seq_len(nrow(sim_data))) {
     
@@ -441,53 +445,69 @@ plot_grid_interactive <- function(sim) {
       }
     }
     
-    # ---- points ----
+    # ----------------------------------------------------------
+    # Points
+    # ----------------------------------------------------------
+    
     points_df <- data.frame(
       x = as.vector(X_def),
-      y = as.vector(Y_def)
+      y = as.vector(Y_def),
+      time = t
     )
     
-    # ---- horizontal lines ----
-    lines_df <- data.frame()
+    all_points <- rbind(all_points, points_df)
+    
+    
+    # ----------------------------------------------------------
+    # Horizontal lines
+    # ----------------------------------------------------------
     
     for (j in 1:Ny) {
-      lines_df <- rbind(
-        lines_df,
-        data.frame(
-          x = X_def[j, ],
-          y = Y_def[j, ],
-          group = paste0("h", j)
-        )
+      
+      lines_df <- data.frame(
+        x = X_def[j, ],
+        y = Y_def[j, ],
+        group = paste0("h", j),
+        time = t
       )
+      
+      all_lines <- rbind(all_lines, lines_df)
     }
     
-    # ---- vertical lines ----
+    
+    # ----------------------------------------------------------
+    # Vertical lines
+    # ----------------------------------------------------------
+    
     for (i in 1:Nx) {
-      lines_df <- rbind(
-        lines_df,
-        data.frame(
-          x = X_def[, i],
-          y = Y_def[, i],
-          group = paste0("v", i)
-        )
+      
+      lines_df <- data.frame(
+        x = X_def[, i],
+        y = Y_def[, i],
+        group = paste0("v", i),
+        time = t
       )
+      
+      all_lines <- rbind(all_lines, lines_df)
     }
-    
-    frames[[t]] <- list(
-      points = points_df,
-      lines = lines_df,
-      time = sim_data[t, "time"]
-    )
   }
   
-  # Initial frame
+  
+  # ------------------------------------------------------------
+  # Plot
+  # ------------------------------------------------------------
+  
   p <- plot_ly()
   
+  
+  # ------------------------------------------------------------
   # Add grid lines
-  for (g in unique(frames[[1]]$lines$group)) {
+  # ------------------------------------------------------------
+  
+  for (g in unique(all_lines$group)) {
     
-    tmp <- frames[[1]]$lines[
-      frames[[1]]$lines$group == g, 
+    tmp <- all_lines[
+      all_lines$group == g,
     ]
     
     p <- add_trace(
@@ -497,27 +517,77 @@ plot_grid_interactive <- function(sim) {
       y = ~y,
       type = "scatter",
       mode = "lines",
+      frame = ~time,
       line = list(width = 1),
       showlegend = FALSE
     )
   }
   
+  
+  # ------------------------------------------------------------
   # Add mass points
+  # ------------------------------------------------------------
+  
   p <- add_trace(
     p,
-    data = frames[[1]]$points,
+    data = all_points,
     x = ~x,
     y = ~y,
     type = "scatter",
     mode = "markers",
+    frame = ~time,
     marker = list(size = 8),
     showlegend = FALSE
   )
   
+  
+  # ------------------------------------------------------------
+  # Animation controls
+  # ------------------------------------------------------------
+  
+  p <- animation_opts(
+    p,
+    frame = 100,
+    transition = 0,
+    redraw = TRUE
+  )
+  
+  p <- animation_slider(
+    p,
+    currentvalue = list(
+      prefix = "Time: "
+    )
+  )
+  
+  p <- animation_button(
+    p,
+    x = 1,
+    xanchor = "right",
+    y = 0,
+    yanchor = "top"
+  )
+  
+  
+  # ------------------------------------------------------------
+  # Axis settings
+  # ------------------------------------------------------------
+  
+  p <- layout(
+    p,
+    xaxis = list(
+      title = "x",
+      range = c(0, Nx + 1)
+    ),
+    yaxis = list(
+      title = "y",
+      range = c(0, Ny + 1),
+      scaleanchor = "x",
+      scaleratio = 1
+    )
+  )
+  
   p
 }
-
-
 
 
 

@@ -400,7 +400,7 @@ for (i in 2:Nx) {
 
 times <- seq(
   0,
-  50,
+  500,
   by = 0.1
 )
 
