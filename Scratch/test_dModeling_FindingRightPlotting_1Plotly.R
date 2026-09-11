@@ -307,7 +307,7 @@ for (i in 2:Nx) {
     #     du/dt = v
     #     dv/dt = acceleration
     #
-    # Therefore:
+    # Also:
     #
     #     u_2_1 = "v_2_1"
     #     v_2_1 = "acceleration expression"
@@ -329,7 +329,7 @@ for (i in 2:Nx) {
 
 
 # ============================================================
-# OPTIONAL: INSPECT GENERATED EQUATIONS
+# Inspeecting the GENERATED EQUATIONS
 # ============================================================
 
 print(eqns)
@@ -354,7 +354,7 @@ parms <- c(
   delta0 = 1,
   a0     = 1,
   eta    = 0.2,
-  c      = 0.1,
+  c      = 0.8,
   kappa  = 0.05
 )
 
@@ -400,12 +400,13 @@ for (i in 2:Nx) {
 
 times <- seq(
   0,
-  800,
+  200,
   by = 0.1
 )
 
 
 x <- Xs(model)
+
 
 pars <- c(x0, parms)
 
@@ -547,7 +548,7 @@ plot_grid_interactive <- function(sim) {
   
   p <- animation_opts(
     p,
-    frame = 100,
+    frame = 80,
     transition = 0,
     redraw = TRUE
   )
