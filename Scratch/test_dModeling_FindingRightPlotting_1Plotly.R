@@ -3,7 +3,10 @@ library(plotly)
 
 
 # ============================================================
-# GRID SIZE
+# GRID SIZE:
+# u_1,1  ... u_1,Nx
+# ...        ...
+# u_Nx_1 ... u_Nx_Ny
 # ============================================================
 
 Nx <- 7
@@ -31,20 +34,20 @@ eqns <- c()
 
 
 # ============================================================
-# BUILD THE ODE SYSTEM
+# Buildung the coupled ODE System
 #
 # Boundary conditions:
 #
-# LEFT:
+# Left:
 #     u = 0  --> fixed
 #
-# RIGHT:
+# Right:
 #     free
 #
-# TOP:
+# Top:
 #     free
 #
-# BOTTOM:
+# Bottom:
 #     free
 # ============================================================
 
@@ -53,7 +56,7 @@ for (i in 2:Nx) {
   for (j in 1:Ny) {
     
     # --------------------------------------------------------
-    # STATE NAMES
+    # Naming Variables:
     # --------------------------------------------------------
     
     uij <- u_name(i, j)
@@ -82,7 +85,7 @@ for (i in 2:Nx) {
     #
     #     u_(Nx+1,j) = u_(Nx,j)
     #
-    # corresponding to du/dx = 0.
+    # This corresponds to du/dx = 0.
     # --------------------------------------------------------
     
     if (i == Nx) {
@@ -122,12 +125,15 @@ for (i in 2:Nx) {
     }
     
     
+    
+    
+    
     # ========================================================
-    # 2D DISCRETE LAPLACIAN
+    # 2D Discrete Laplacian - "Fünfpunktlaplace"
     #
     #     d²u/dx² + d²u/dy²
     #
-    #     = uR + uL + uU + uD - 4*uij
+    #     ~ uR + uL + uU + uD - 4*uij
     # ========================================================
     
     laplace <- paste0(
@@ -140,8 +146,12 @@ for (i in 2:Nx) {
     )
     
     
+    
+    
+    
+    # Here, the P-Term is implemented. In this Version, Q(t), that is, the interesting function is not implemented yet.
     # ========================================================
-    # X-DIRECTION FORCE
+    # X-Direction Force
     # ========================================================
     
     # --------------------------------------------------------
@@ -205,7 +215,7 @@ for (i in 2:Nx) {
     
     
     # ========================================================
-    # Y-DIRECTION FORCE
+    # Y-Direction Force
     # ========================================================
     
     # --------------------------------------------------------
@@ -261,7 +271,7 @@ for (i in 2:Nx) {
     
     
     # ========================================================
-    # FORCE DIVERGENCE
+    # Force Divergence
     # ========================================================
     
     force_div <- paste0(
@@ -280,9 +290,9 @@ for (i in 2:Nx) {
     
     
     # ========================================================
-    # ACCELERATION
+    # Acceleration
     #
-    #     dv/dt = acceleration
+    #     The whole equation is as follows
     # ========================================================
     
     acceleration <- paste0(
@@ -329,14 +339,14 @@ for (i in 2:Nx) {
 
 
 # ============================================================
-# Inspeecting the GENERATED EQUATIONS
+# Printing generated equations
 # ============================================================
 
 print(eqns)
 
 
 # ============================================================
-# CREATE THE DMOD MODEL
+# CCreating the dMod Model
 # ============================================================
 
 model <- odemodel(
@@ -346,7 +356,7 @@ model <- odemodel(
 
 
 # ============================================================
-# PARAMETERS
+# Choice of parameters
 # ============================================================
 
 parms <- c(
@@ -393,7 +403,7 @@ for (i in 2:Nx) {
 
 
 # ============================================================
-# SIMULATION
+# Simulation
 # ============================================================
 
 
@@ -406,7 +416,6 @@ times <- seq(
 
 
 x <- Xs(model)
-
 
 pars <- c(x0, parms)
 
@@ -548,7 +557,7 @@ plot_grid_interactive <- function(sim) {
   
   p <- animation_opts(
     p,
-    frame = 80,
+    frame = 2,
     transition = 0,
     redraw = TRUE
   )
@@ -590,5 +599,8 @@ plot_grid_interactive <- function(sim) {
   p
 }
 
+
+# Plotting the grid (may take some time)
+plot_grid_interactive(sim)
 
 
