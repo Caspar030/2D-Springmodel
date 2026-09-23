@@ -1,0 +1,469 @@
+% $ biblatex auxiliary file $
+% $ biblatex bbl format version 3.2 $
+% Do not modify the above lines!
+%
+% This is an auxiliary file used by the 'biblatex' package.
+% This file may safely be deleted. It will be recreated by
+% biber as required.
+%
+\begingroup
+\makeatletter
+\@ifundefined{ver@biblatex.sty}
+  {\@latex@error
+     {Missing 'biblatex' package}
+     {The bibliography requires the 'biblatex' package.}
+      \aftergroup\endinput}
+  {}
+\endgroup
+
+
+\refsection{0}
+  \datalist[entry]{anyt/global//global/global}
+    \entry{EckGarcke2017}{book}{}
+      \name{author}{3}{}{%
+        {{hash=b130ab26e11a9f9d85614e05fd95cb57}{%
+           family={Eck},
+           familyi={E\bibinitperiod},
+           given={Christof},
+           giveni={C\bibinitperiod}}}%
+        {{hash=b9b34210c7c9dcf1f38c73b29798f0e3}{%
+           family={Garcke},
+           familyi={G\bibinitperiod},
+           given={Harald},
+           giveni={H\bibinitperiod}}}%
+        {{hash=1ce792562e7f5d3364ab2be0070af3bd}{%
+           family={Knabner},
+           familyi={K\bibinitperiod},
+           given={Peter},
+           giveni={P\bibinitperiod}}}%
+      }
+      \list{location}{1}{%
+        {Cham}%
+      }
+      \list{publisher}{1}{%
+        {Springer}%
+      }
+      \strng{namehash}{5141cfb3dc6a70a9ddb9c03741b2d696}
+      \strng{fullhash}{5141cfb3dc6a70a9ddb9c03741b2d696}
+      \strng{bibnamehash}{5141cfb3dc6a70a9ddb9c03741b2d696}
+      \strng{authorbibnamehash}{5141cfb3dc6a70a9ddb9c03741b2d696}
+      \strng{authornamehash}{5141cfb3dc6a70a9ddb9c03741b2d696}
+      \strng{authorfullhash}{5141cfb3dc6a70a9ddb9c03741b2d696}
+      \field{labelalpha}{EGK17}
+      \field{sortinit}{E}
+      \field{sortinithash}{8da8a182d344d5b9047633dfc0cc9131}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{isbn}{978-3-319-55160-9}
+      \field{series}{Springer Undergraduate Mathematics Series}
+      \field{title}{Mathematical Modeling}
+      \field{year}{2017}
+      \verb{doi}
+      \verb 10.1007/978-3-319-55161-6
+      \endverb
+    \endentry
+    \entry{Holtzhausen2024}{article}{}
+      \name{author}{15}{}{%
+        {{hash=b2d4e4ffc0570924aa3895aeb90d59b0}{%
+           family={Holtzhausen},
+           familyi={H\bibinitperiod},
+           given={Christian},
+           giveni={C\bibinitperiod}}}%
+        {{hash=a360a9d0e8a2fe891c3da5866e1d8109}{%
+           family={Heil},
+           familyi={H\bibinitperiod},
+           given={Lorena},
+           giveni={L\bibinitperiod}}}%
+        {{hash=c3f4a144a339ac374bd2c872292434fb}{%
+           family={Klingel},
+           familyi={K\bibinitperiod},
+           given={Karin},
+           giveni={K\bibinitperiod}}}%
+        {{hash=7634d22ff5f2031c956058652cccb83f}{%
+           family={Fox},
+           familyi={F\bibinitperiod},
+           given={Henrik},
+           giveni={H\bibinitperiod}}}%
+        {{hash=4d8e3f1822c10074716206db7d866978}{%
+           family={Gummert},
+           familyi={G\bibinitperiod},
+           given={Jan},
+           giveni={J\bibinitperiod}}}%
+        {{hash=64fb1c0c8ae436ac7fa1f36c9aa6216a}{%
+           family={Gärtner},
+           familyi={G\bibinitperiod},
+           given={Anna},
+           giveni={A\bibinitperiod}}}%
+        {{hash=c79ac2fea7b2697962789a4eddf14ba1}{%
+           family={Schmidt},
+           familyi={S\bibinitperiod},
+           given={Andreas},
+           giveni={A\bibinitperiod}}}%
+        {{hash=85ef0a69916d367f21e9ccb180c0c229}{%
+           family={Krüger},
+           familyi={K\bibinitperiod},
+           given={Marcus},
+           giveni={M\bibinitperiod}}}%
+        {{hash=102d96dfb80d68a491ef680905219b19}{%
+           family={Kirfel},
+           familyi={K\bibinitperiod},
+           given={Gregor},
+           giveni={G\bibinitperiod}}}%
+        {{hash=a717e82aeaeabc79afbf1d281752fae8}{%
+           family={Ven},
+           familyi={V\bibinitperiod},
+           given={Peter\bibnamedelimb F.\bibnamedelimi M.},
+           giveni={P\bibinitperiod\bibinitdelim F\bibinitperiod\bibinitdelim M\bibinitperiod},
+           prefix={van\bibnamedelima der},
+           prefixi={v\bibinitperiod\bibinitdelim d\bibinitperiod}}}%
+        {{hash=4220359db620824fe893deeddfc47e2a}{%
+           family={Milting},
+           familyi={M\bibinitperiod},
+           given={Hendrik},
+           giveni={H\bibinitperiod}}}%
+        {{hash=3c090b996ccf982b327be95340a8e88e}{%
+           family={Clemen},
+           familyi={C\bibinitperiod},
+           given={Christoph\bibnamedelima S.},
+           giveni={C\bibinitperiod\bibinitdelim S\bibinitperiod}}}%
+        {{hash=4ef685a3e8b864b46f0bbdd4277c0a2d}{%
+           family={Schröder},
+           familyi={S\bibinitperiod},
+           given={Rolf},
+           giveni={R\bibinitperiod}}}%
+        {{hash=17666821c525c0f91617fbf8a2cd9f40}{%
+           family={Fürst},
+           familyi={F\bibinitperiod},
+           given={Dieter\bibnamedelima O.},
+           giveni={D\bibinitperiod\bibinitdelim O\bibinitperiod}}}%
+        {{hash=99daf5afbe3c5b4efb7bf7517cb4bb5e}{%
+           family={Tiesmeier},
+           familyi={T\bibinitperiod},
+           given={Jens},
+           giveni={J\bibinitperiod}}}%
+      }
+      \strng{namehash}{3c258b9c07f3187b0fd9e4755999a8b0}
+      \strng{fullhash}{6c6422f7d77c6a5b970d4b10bd48379c}
+      \strng{bibnamehash}{3c258b9c07f3187b0fd9e4755999a8b0}
+      \strng{authorbibnamehash}{3c258b9c07f3187b0fd9e4755999a8b0}
+      \strng{authornamehash}{3c258b9c07f3187b0fd9e4755999a8b0}
+      \strng{authorfullhash}{6c6422f7d77c6a5b970d4b10bd48379c}
+      \field{labelalpha}{Hol+24}
+      \field{sortinit}{H}
+      \field{sortinithash}{23a3aa7c24e56cfa16945d55545109b5}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Human Molecular Genetics}
+      \field{number}{18}
+      \field{title}{Sudden cardiac death, arrhythmogenic cardiomyopathy and intercalated disc pathology due to reduced filamin C protein levels: a matter of life and death}
+      \field{volume}{33}
+      \field{year}{2024}
+      \field{pages}{1559\bibrangedash 1572}
+      \range{pages}{14}
+      \verb{doi}
+      \verb 10.1093/hmg/ddae087
+      \endverb
+    \endentry
+    \entry{Kley2021}{article}{}
+      \name{author}{17}{}{%
+        {{hash=1601c0098e2c1b6db0c70eed0c20a5e1}{%
+           family={Kley},
+           familyi={K\bibinitperiod},
+           given={Rudolf\bibnamedelima Andre},
+           giveni={R\bibinitperiod\bibinitdelim A\bibinitperiod}}}%
+        {{hash=e6c431a273a3328c0efb07ab3ab9909c}{%
+           family={Leber},
+           familyi={L\bibinitperiod},
+           given={Yvonne},
+           giveni={Y\bibinitperiod}}}%
+        {{hash=4b430f359935cd7bbb83c5a2d1a0e7c1}{%
+           family={Schrank},
+           familyi={S\bibinitperiod},
+           given={Bertold},
+           giveni={B\bibinitperiod}}}%
+        {{hash=9fb586aa464c523e178fda424e44d0b1}{%
+           family={Zhuge},
+           familyi={Z\bibinitperiod},
+           given={Heidi},
+           giveni={H\bibinitperiod}}}%
+        {{hash=c6d85ddba03dff215551b473021a4723}{%
+           family={Orfanos},
+           familyi={O\bibinitperiod},
+           given={Zacharias},
+           giveni={Z\bibinitperiod}}}%
+        {{hash=aa3fa7d3fb25ac89331dd769d65e690a}{%
+           family={Kostan},
+           familyi={K\bibinitperiod},
+           given={Julius},
+           giveni={J\bibinitperiod}}}%
+        {{hash=39f0de0c3ab82c1a4e16e7550391874b}{%
+           family={Onipe},
+           familyi={O\bibinitperiod},
+           given={Adekunle},
+           giveni={A\bibinitperiod}}}%
+        {{hash=a114eef86f4d5a92897fe4fee9a2d8a4}{%
+           family={Sellung},
+           familyi={S\bibinitperiod},
+           given={Dominik},
+           giveni={D\bibinitperiod}}}%
+        {{hash=614bfbc279d49e05e0ec8f53e6dfa8f5}{%
+           family={Güttsches},
+           familyi={G\bibinitperiod},
+           given={Anne\bibnamedelima Katrin},
+           giveni={A\bibinitperiod\bibinitdelim K\bibinitperiod}}}%
+        {{hash=83e864b8687883d1356976ac33079604}{%
+           family={Eggers},
+           familyi={E\bibinitperiod},
+           given={Britta},
+           giveni={B\bibinitperiod}}}%
+        {{hash=1431632f643290b759c4a6a9f1a6b96e}{%
+           family={Jacobsen},
+           familyi={J\bibinitperiod},
+           given={Frank},
+           giveni={F\bibinitperiod}}}%
+        {{hash=27c09caa47ac13d67fe78d3e8465479f}{%
+           family={Kress},
+           familyi={K\bibinitperiod},
+           given={Wolfram},
+           giveni={W\bibinitperiod}}}%
+        {{hash=2c87d0b742d9e39e8833cfb49ae39cb9}{%
+           family={Marcus},
+           familyi={M\bibinitperiod},
+           given={Katrin},
+           giveni={K\bibinitperiod}}}%
+        {{hash=d656fae79fff701afaf99255de0b62cd}{%
+           family={Djinovic-Carugo},
+           familyi={D\bibinithyphendelim C\bibinitperiod},
+           given={Kristina},
+           giveni={K\bibinitperiod}}}%
+        {{hash=a717e82aeaeabc79afbf1d281752fae8}{%
+           family={Ven},
+           familyi={V\bibinitperiod},
+           given={Peter\bibnamedelimb F.\bibnamedelimi M.},
+           giveni={P\bibinitperiod\bibinitdelim F\bibinitperiod\bibinitdelim M\bibinitperiod},
+           prefix={van\bibnamedelima der},
+           prefixi={v\bibinitperiod\bibinitdelim d\bibinitperiod}}}%
+        {{hash=17666821c525c0f91617fbf8a2cd9f40}{%
+           family={Fürst},
+           familyi={F\bibinitperiod},
+           given={Dieter\bibnamedelima O.},
+           giveni={D\bibinitperiod\bibinitdelim O\bibinitperiod}}}%
+        {{hash=87df14d95e0bcf07419f4e058b783364}{%
+           family={Vorgerd},
+           familyi={V\bibinitperiod},
+           given={Matthias},
+           giveni={M\bibinitperiod}}}%
+      }
+      \strng{namehash}{a9247822618048be2e223c4948427bd8}
+      \strng{fullhash}{fa9c00413c27c8717c0c6b8394c8936e}
+      \strng{bibnamehash}{a9247822618048be2e223c4948427bd8}
+      \strng{authorbibnamehash}{a9247822618048be2e223c4948427bd8}
+      \strng{authornamehash}{a9247822618048be2e223c4948427bd8}
+      \strng{authorfullhash}{fa9c00413c27c8717c0c6b8394c8936e}
+      \field{labelalpha}{Kle+21}
+      \field{sortinit}{K}
+      \field{sortinithash}{c02bf6bff1c488450c352b40f5d853ab}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Neurology: Genetics}
+      \field{number}{3}
+      \field{title}{FLNC-Associated Myofibrillar Myopathy: New Clinical, Functional, and Proteomic Data}
+      \field{volume}{7}
+      \field{year}{2021}
+      \field{pages}{e590}
+      \range{pages}{-1}
+      \verb{doi}
+      \verb 10.1212/NXG.0000000000000590
+      \endverb
+    \endentry
+    \entry{orfanos2025}{article}{}
+      \name{author}{8}{}{%
+        {{hash=c6d85ddba03dff215551b473021a4723}{%
+           family={Orfanos},
+           familyi={O\bibinitperiod},
+           given={Zacharias},
+           giveni={Z\bibinitperiod}}}%
+        {{hash=1fcfa586e09bdb97ceb2322bf612516c}{%
+           family={Gödderz},
+           familyi={G\bibinitperiod},
+           given={Markus\bibnamedelimb P.\bibnamedelimi O.},
+           giveni={M\bibinitperiod\bibinitdelim P\bibinitperiod\bibinitdelim O\bibinitperiod}}}%
+        {{hash=abae390dba9e423a705c362419b2d57d}{%
+           family={Soroka},
+           familyi={S\bibinitperiod},
+           given={Ekaterina},
+           giveni={E\bibinitperiod}}}%
+        {{hash=9b6d9e37305ad50f7477e044ef5efd9b}{%
+           family={Gödderz},
+           familyi={G\bibinitperiod},
+           given={Tobias},
+           giveni={T\bibinitperiod}}}%
+        {{hash=9302cf2d6f31d74fd8d473c188b71a0c}{%
+           family={Rumyantseva},
+           familyi={R\bibinitperiod},
+           given={Anastasia},
+           giveni={A\bibinitperiod}}}%
+        {{hash=a717e82aeaeabc79afbf1d281752fae8}{%
+           family={Ven},
+           familyi={V\bibinitperiod},
+           given={Peter\bibnamedelimb F.\bibnamedelimi M.},
+           giveni={P\bibinitperiod\bibinitdelim F\bibinitperiod\bibinitdelim M\bibinitperiod},
+           prefix={van\bibnamedelima der},
+           prefixi={v\bibinitperiod\bibinitdelim d\bibinitperiod}}}%
+        {{hash=7bffd49be331592c170ea03a34b084bb}{%
+           family={Hawke},
+           familyi={H\bibinitperiod},
+           given={Thomas\bibnamedelima J.},
+           giveni={T\bibinitperiod\bibinitdelim J\bibinitperiod}}}%
+        {{hash=17666821c525c0f91617fbf8a2cd9f40}{%
+           family={Fürst},
+           familyi={F\bibinitperiod},
+           given={Dieter\bibnamedelima O.},
+           giveni={D\bibinitperiod\bibinitdelim O\bibinitperiod}}}%
+      }
+      \list{publisher}{1}{%
+        {Nature Publishing Group}%
+      }
+      \strng{namehash}{80efde7f0785cb3d860d748dfe9d9150}
+      \strng{fullhash}{802e82fbea6a3988ff070dc85759ab1b}
+      \strng{bibnamehash}{80efde7f0785cb3d860d748dfe9d9150}
+      \strng{authorbibnamehash}{80efde7f0785cb3d860d748dfe9d9150}
+      \strng{authornamehash}{80efde7f0785cb3d860d748dfe9d9150}
+      \strng{authorfullhash}{802e82fbea6a3988ff070dc85759ab1b}
+      \field{labelalpha}{Orf+25}
+      \field{sortinit}{O}
+      \field{sortinithash}{2cd7140a07aea5341f9e2771efe90aae}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Scientific Reports}
+      \field{number}{1}
+      \field{title}{Breaking sarcomeres by in vitro exercise}
+      \field{volume}{15}
+      \field{year}{2025}
+      \field{pages}{1\bibrangedash 16}
+      \range{pages}{16}
+      \verb{doi}
+      \verb 10.1038/s41598-025-88209-6
+      \endverb
+    \endentry
+    \entry{Unterbusch2017}{bachelorsthesis}{}
+      \name{author}{1}{}{%
+        {{hash=8e60fe10c72d7bdd90b0be04b71ba5a3}{%
+           family={Unterbusch},
+           familyi={U\bibinitperiod},
+           given={Rebecca},
+           giveni={R\bibinitperiod}}}%
+      }
+      \list{institution}{1}{%
+        {Institut für Zellbiologie, Abteilung Molekulare Zellbiologie}%
+      }
+      \list{location}{1}{%
+        {Bonn, Germany}%
+      }
+      \strng{namehash}{8e60fe10c72d7bdd90b0be04b71ba5a3}
+      \strng{fullhash}{8e60fe10c72d7bdd90b0be04b71ba5a3}
+      \strng{bibnamehash}{8e60fe10c72d7bdd90b0be04b71ba5a3}
+      \strng{authorbibnamehash}{8e60fe10c72d7bdd90b0be04b71ba5a3}
+      \strng{authornamehash}{8e60fe10c72d7bdd90b0be04b71ba5a3}
+      \strng{authorfullhash}{8e60fe10c72d7bdd90b0be04b71ba5a3}
+      \field{labelalpha}{Unt17}
+      \field{sortinit}{U}
+      \field{sortinithash}{6901a00e45705986ee5e7ca9fd39adca}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{month}{9}
+      \field{note}{Bachelorarbeit}
+      \field{title}{Charakterisierung immortalisierter Maus Myoblasten mit einer homozygoten Mutation im Filamin C Gen}
+      \field{year}{2017}
+    \endentry
+    \entry{vanderVen2000gFilamin}{article}{}
+      \name{author}{12}{}{%
+        {{hash=a717e82aeaeabc79afbf1d281752fae8}{%
+           family={Ven},
+           familyi={V\bibinitperiod},
+           given={Peter\bibnamedelimb F.\bibnamedelimi M.},
+           giveni={P\bibinitperiod\bibinitdelim F\bibinitperiod\bibinitdelim M\bibinitperiod},
+           prefix={van\bibnamedelima der},
+           prefixi={v\bibinitperiod\bibinitdelim d\bibinitperiod}}}%
+        {{hash=f44e44489b8819ea3f1b04ea162a31ed}{%
+           family={Wiesner},
+           familyi={W\bibinitperiod},
+           given={Sebastian},
+           giveni={S\bibinitperiod}}}%
+        {{hash=9d35f1c1d8a62eb9b45149452255eb76}{%
+           family={Salmikangas},
+           familyi={S\bibinitperiod},
+           given={Paula},
+           giveni={P\bibinitperiod}}}%
+        {{hash=b207f474e6c196d5821645c29fbb82de}{%
+           family={Auerbach},
+           familyi={A\bibinitperiod},
+           given={Daniel},
+           giveni={D\bibinitperiod}}}%
+        {{hash=66a307502988edc82226ec3d38890f58}{%
+           family={Himmel},
+           familyi={H\bibinitperiod},
+           given={Mirko},
+           giveni={M\bibinitperiod}}}%
+        {{hash=e10140b36c441d0c5862ee53120b86e2}{%
+           family={Kempa},
+           familyi={K\bibinitperiod},
+           given={Stefan},
+           giveni={S\bibinitperiod}}}%
+        {{hash=f79d7e7790d6bc5e7be8f09a7075b314}{%
+           family={Hayeß},
+           familyi={H\bibinitperiod},
+           given={Katrin},
+           giveni={K\bibinitperiod}}}%
+        {{hash=da25c368ece8c083f7029b06beca7f11}{%
+           family={Pacholsky},
+           familyi={P\bibinitperiod},
+           given={Dirk},
+           giveni={D\bibinitperiod}}}%
+        {{hash=8272fa9a566487daa2d56142235e3e39}{%
+           family={Taivainen},
+           familyi={T\bibinitperiod},
+           given={Anu},
+           giveni={A\bibinitperiod}}}%
+        {{hash=4ef685a3e8b864b46f0bbdd4277c0a2d}{%
+           family={Schröder},
+           familyi={S\bibinitperiod},
+           given={Rolf},
+           giveni={R\bibinitperiod}}}%
+        {{hash=d47abbfe8414abca7659aa9b9583cb94}{%
+           family={Carpén},
+           familyi={C\bibinitperiod},
+           given={Olli},
+           giveni={O\bibinitperiod}}}%
+        {{hash=17666821c525c0f91617fbf8a2cd9f40}{%
+           family={Fürst},
+           familyi={F\bibinitperiod},
+           given={Dieter\bibnamedelima O.},
+           giveni={D\bibinitperiod\bibinitdelim O\bibinitperiod}}}%
+      }
+      \strng{namehash}{3ef37254e963724734564dabde1818bd}
+      \strng{fullhash}{0e7740e46e64d4266ce5073a3b7a9a61}
+      \strng{bibnamehash}{3ef37254e963724734564dabde1818bd}
+      \strng{authorbibnamehash}{3ef37254e963724734564dabde1818bd}
+      \strng{authornamehash}{3ef37254e963724734564dabde1818bd}
+      \strng{authorfullhash}{0e7740e46e64d4266ce5073a3b7a9a61}
+      \field{labelalpha}{Ven+00}
+      \field{sortinit}{V}
+      \field{sortinithash}{afb52128e5b4dc4b843768c0113d673b}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Journal of Cell Biology}
+      \field{number}{1}
+      \field{title}{Indications for a Novel Muscular Dystrophy Pathway: g-Filamin, the Muscle-specific Filamin Isoform, Interacts with Myotilin}
+      \field{volume}{151}
+      \field{year}{2000}
+      \field{pages}{215\bibrangedash 226}
+      \range{pages}{12}
+      \verb{doi}
+      \verb 10.1083/jcb.151.1.215
+      \endverb
+    \endentry
+  \enddatalist
+\endrefsection
+\endinput
+

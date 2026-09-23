@@ -1,0 +1,468 @@
+## Note: with s +tab kannst du ein neues Snippet hier schnell einfügen.
+## space + tex zum öffnen der snippets. Swichten mit gt
+priority 10 #gibt die Priorität des Snippets über die anderen hier 1-10
+
+#########----------Formatting------------##########
+snippet abs "Abstract" w
+\begin{abstract}
+$1
+\end{abstract}
+$0
+endsnippet
+
+snippet s  "section" w
+\section*{$1}
+$0
+endsnippet
+
+snippet ss "subsection" w
+\subsection*{$1}
+$0
+endsnippet
+
+snippet sss "subsubsection" w
+\subsubsection*{$1}
+$0
+endsnippet
+
+snippet spacing "Spacing" w
+\begin{spacing}{$2}
+$1
+\end{spacing}
+$0
+endsnippet
+
+snippet ind "indent" w
+\indent
+$1
+endsnippet
+
+snippet par "Paragraph" w
+\parskip=\baselineskip
+$0
+endsnippet
+
+
+snippet epi "Epigraph" w
+\epigraph{$1}{Snowball}
+$0
+endsnippet
+
+snippet quote "Zitat" w	
+\begin{quote}
+$1
+\end{quote}
+$0
+endsnippet
+
+
+
+snippet sum "Summe" w
+\sum_{$1=$2}^{$3}$4
+endsnippet
+
+snippet prod "Produkt" w
+\prod_{$1=$2}^{$3}
+$0
+endsnippet
+
+snippet mit  "mit der Eigenschaft"
+\mid
+endsnippet
+### Environments
+snippet eq "neue Gleichung Ohne Nummerierung" w
+\begin{equation*}
+	$1
+\end{equation*}
+$0
+endsnippet
+
+snippet sec "neue section" w
+\section{$1}
+$0
+endsnippet
+
+snippet ssec "neue subsection" w
+\subsection*
+$0
+endsnippet
+
+snippet en "neue aufzählung" w
+\begin{enumerate}
+$0
+\end{enumerate}
+endsnippet
+
+snippet it1 "enumerate with numbers" wA
+\begin{enumerate}[label=\arabic*)]
+	$1
+\end{enumerate}
+$0
+endsnippet
+
+snippet iti "enumerate with roman numerals" wA
+\begin{enumerate}[label=\roman*)]
+	$1
+\end{enumerate}
+$0
+endsnippet
+
+snippet ita "enumerate with letters" wA
+\begin{enumerate}[label=\alph*)]
+	$1
+\end{enumerate}
+$0
+endsnippet
+
+snippet ite "item" wA
+\item$0
+endsnippet
+snippet item "neues Item für enumerate" w
+\item
+endsnippet
+
+snippet des "Description Environment" w
+\begin{description}
+$0
+\end{description
+endsnippet
+
+snippet gat "gather environment" w
+\begin{gather*}
+$1
+\end{gather*}
+$0
+endsnippet
+
+
+snippet al "align environment" w
+\begin{align*}
+$1
+\end{align*}
+$0
+endsnippet
+
+
+snippet cs "cases" w
+\begin{cases}
+$1
+\end{cases}
+$0
+endsnippet
+snippet text "text umgebung" w
+\text{$1 }$0
+endsnippet
+snippet it "neues item mit Index" w
+\item[$1]$0
+endsnippet
+
+snippet mm "Dollar Environment" w 
+$$1$$0
+endsnippet
+
+snippet newl "newline" w
+\newline $0
+endsnippet
+
+snippet newp "newpage" w
+\newpage
+endsnippet
+
+snippet in "in" w
+\in
+endsnippet
+
+#Zeichen und Symbole
+snippet set "set" w
+\set{$1}$2
+endsnippet
+
+snippet lr "Äquivalenzpfeil" w
+\Leftrightarrow$0
+endsnippet
+
+snippet inft "unendlich" w
+\infty $0
+endsnippet
+snippet frac "frac" w
+\frac{$1}{$2}$0
+endsnippet
+
+snippet til "Tilde" w
+\Tilde{$1}$0
+endsnippet
+
+snippet hat "Hat" w
+\Hat{$1}$0
+endsnippet
+
+
+snippet es "emptyset" w
+\emptyset$0
+endsnippet
+
+snippet nn "für alle n in N" w
+für alle $n \in \mathbb{N}$$0
+endsnippet
+## Pfeile
+snippet ra "rightarrow" w
+\rightarrow$0
+endsnippet
+
+snippet sr "stackrel" w
+\stackrel{$1}{=}$0
+endsnippet
+
+snippet la "leftarrow" w
+\leftarrow$0
+endsnippet
+
+snippet da "downarrow" w
+\downarrow$0
+endsnippet
+
+snippet ua "uparrow" w
+\uparrow$0
+endsnippet
+## Griechisches Alphabet
+snippet alp "alpha" w
+\alpha$0
+endsnippet
+
+snippet bet "beta" w
+\beta$0
+endsnippet
+
+snippet gam "gamma" w
+\gamma
+endsnippet
+
+snippet Gam "Gamma" w
+\Gamma
+endsnippet
+
+snippet del "delta" w
+\delta$0
+endsnippet
+
+snippet Del "Delta" w
+\Delta$0
+endsnippet
+
+snippet eps "epsilon" w
+\epsilon$0
+endsnippet
+	
+snippet veps "Epsilon" w
+\varepsilon$0
+endsnippet
+
+snippet zet "zeta" w
+\zeta$0
+endsnippet
+
+snippet eta "eta" w
+\eta
+endsnippet
+
+snippet theta "theta" w
+\theta
+endsnippet
+
+snippet vtheta "vartheta" w
+\vartheta$0
+endsnippet
+
+snippet Theta "Theta" w
+\Theta
+endsnippet
+
+snippet iota "iota" w
+\iota
+endsnippet
+
+snippet kappa "kappa" w
+\kappa
+endsnippet
+
+snippet Lambda "Lambda" w
+\Lambda$0
+endsnippet
+
+snippet mu "mu" w
+\mu$0
+endsnippet
+
+snippet nu "nu" w
+\nu$0
+endsnippet
+
+snippet xi "xi" w
+\xi$0
+endsnippet
+
+snippet Xi "Xi" w
+\Xi$0
+endsnippet
+
+snippet pi "pi" i
+\pi
+endsnippet
+
+snippet Pi "Pi" w
+\Pi
+endsnippet
+
+snippet rho "rho" w
+\rho$0
+endsnippet
+
+snippet vrho "varrho" w
+\varrho$0
+endsnippet
+
+snippet sig "sigma" w
+\sigma$0
+endsnippet
+
+snippet Sig "Sigma" w
+\Sigma
+endsnippet
+
+snippet tau "tau" w
+\tau$0
+endsnippet
+
+snippet ups "upsilon" w
+\upsilon
+endsnippet
+
+snippet Ups "Upsilon" w
+\Upsilon$0
+endsnippet
+
+snippet phi "phi" w
+\phi$0
+endsnippet
+
+snippet vphi "varphi" w
+\varphi$0
+endsnippet
+
+snippet Phi "Phi" w
+\Phi$0
+endsnippet
+
+snippet psi "psi" w
+\psi$0
+endsnippet
+
+snippet Psi "psi" w
+\Psi$0
+endsnippet
+
+snippet om "omega" w
+\omega$0
+endsnippet
+
+snippet Om "Omega" w
+\Omega$0
+endsnippet
+
+
+
+## Potenz und Indizes
+snippet sq "Wurzel" w
+\sqrt{$1}$0
+endsnippet
+
+snippet ° " Hoch irgendwas" i
+^{$1}$0
+endsnippet
+
+snippet br "smart brackets" w
+\left( $1 \right)$0
+endsnippet
+
+snippet sb "smart brackets" w
+\left{$1\right}$0
+endsnippet
+
+snippet sl "smart list" w
+\left[$1\right]$0
+endsnippet
+
+
+snippet setm "setminus" w
+\setminus$0
+endsnippet
+
+snippet bn "Binomialkoeffizient" w
+\binom{$1}{$2}$0
+endsnippet
+
+
+##Limes Summen und Integrale
+snippet cup "cup" w
+\cup$0
+endsnippet
+
+snippet cap "cap" w
+\cap$0
+endsnippet
+
+snippet bcup "Große Vereinigung" w
+\bigcup_{$1 = $2}^{$3} $0
+endsnippet
+
+snippet bcupn "Vereinigung über alle n" w
+\bigcup_{n \in \mathbb{N}} $0
+endsnippet
+
+snippet lint "integral" wA
+\int$1 \ d$0
+endsnippet
+
+snippet lim "limes x gegen y" w
+\lim \limits_{$1 \to $2}$0
+endsnippet
+
+snippet limn "Limes n gegen unendlich" w
+\lim \limits_{n \to \infty}$0
+endsnippet
+#Alphabete
+
+snippet dot "cdot" w
+\cdot$0
+endsnippet
+
+snippet ci "chi gr." w
+\chi$0
+endsnippet
+
+snippet lam "lambda" w
+\lambda$0
+endsnippet
+##zahlen Caligraphisch etc.
+snippet mb "mathbb" w
+\mathbb{$1}$0
+endsnippet
+
+snippet mc "mathcal" w
+\mathcal{$1}$0
+endsnippet
+
+snippet sup "supremum" w
+\sup\limits_{$1}$0
+endsnippet
+
+snippet inf  "inf" w
+\inf\limits_{$1}$0
+endsnippet
+
+##fonts
+snippet curs "cursive schrift in der Klammer" w
+\textit{$1 }$0
+endsnippet
+
+#w nur wenn davor ein leerzeichen ist ,i funktioniert immer zb geq kann auch.., wA, iA zweimal undo zum r ckgängig machen von a"

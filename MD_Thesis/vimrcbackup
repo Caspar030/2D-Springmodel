@@ -1,0 +1,36 @@
+call plug#begin()    
+Plug 'morhetz/gruvbox'    
+Plug 'sirver/UltiSnips'    
+    let g:UltiSnipsSnippetDirectories=["UltiSnips", "my_snippets"]    
+    let g:UltiSnipsExpandTrigger="<tab>"    
+    let g:UltiSnipsJumpForwardTrigger="<tab>"    
+    let g:UltiSnipsJumpBackwardTrigger="<c-tab>"    
+Plug 'lervag/vimtex'    
+    let g:tex_flavor='latex'    
+    let g:vimtex_view_general_viewer='zathura'    
+    let g:vimtex_quickfix_autoclose_after_keystrokes=1    
+call plug#end()
+
+syntax enable     
+colorscheme gruvbox    
+set wrap    
+set tabstop=4 softtabstop=4    
+set shiftwidth=4    
+set smartindent    
+set nu    
+set incsearch    
+set nohlsearch
+
+
+nnoremap <SPACE> <Nop>    
+nnoremap <Q> <Nop>    
+let mapleader = " "    
+    
+nnoremap <leader>q :q!<cr>    
+nnoremap <leader>w :w!<cr>    
+    
+nnoremap <leader>rl :source ~/.vimrc<cr>    
+nnoremap <leader>rc :tabe ~/.vimrc<cr>
+nmap <leader>tex :tabe ~/.vim/UltiSnips/tex.snippets<cr>
+nmap <leader>co \ll
+set background=dark

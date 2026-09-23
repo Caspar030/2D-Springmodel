@@ -1,0 +1,49 @@
+% !TeX spellcheck = en_GB
+
+\chapter{image analysis}
+\subsection*{Meeting Viv 20. 08. 2026 - tools zur Bildverarbeitung}
+\textcolor{red}{dem hier würde ich nachgehen.}
+1. Im aha journal gibt es ein Paper von William E. Louch "Stretch Harmonizes Sarcomere Strain across the Cardiomyocyte". Dort wird für Bilverarbeitung ein Algorithmus verwendet, den wir hier verwenden können. (https://www.ahajournals.org/doi/10.1161/CIRCRESAHA.123.322588)
+
+
+2. Weiterhin - ein Paper von Joachim Greiner (A deep learning-enabled toolkit for the 3D segmentation
+of ventricular cardiomyocytes)
+
+3. Weiterhin. Sonaks Masterarbeit
+
+
+\chapter{Foundations}\label{SF}
+\section{Where is this headed?}
+The work done in this thesis will be modeling. More specifically, we will model force and/or length of a human cardiomyocyte on the small scale of \textit{sarcomeres}. We include these parameters: FLNc WT and KO, Angle in Z-disks, Z-disk spacing and $Ca^{2+}$ \dots \newline 
+
+
+
+Why are we interested in such a model? FLNc mutations are a cause of suffering for their patients. FLNc mutations are seen largely together with dilative cardiomyopathie. Whereas the reduced ejection fraction for these patients is a burden, it can be helped and this is not a major cause of DCM induced death. However, most of these patients die because of arrythmia. With mutations in other structural proteins such as Titan, FLNa, FLNb \dots these patients do not obtain arrythmia, the question is why FLNc mutations cause arrythmias. \newline 
+
+
+We hypothesize, that under FLNc Knockout, the force and or length of sarcomeres is changed. We think that through a different angle in the Z-disks, force is lost. Maybe some sarcomeres are subject to an extreme amount of stress through altered cell architecture. Maybe $Ca^{2+}$ distribution in the cells is highly inhomogenous and induces \textit{intracellular} $Ca^{2+}$ waves. This, we do not know. In particular, we want to \textit{quantify} the loss of force or length in the sarcomeres due to the, if it turns out true, altered angles in Z-disks. \newline 
+
+What is the benefit of this quantification? If we establish such a model, it is possible to build on this an electromechanical coupling. Depending on the force/length of the sarcomeres, together with the Calcium transient, we might extend this model to see if the cardiomyocyte generates an abnormal action potential resp. Calcium-transient. This builds ground work in helping these patients. If we understand how Arrythmia is generated and what the mechanical cause is
+
+
+
+
+\textbf{Main question}: We adapt the assumption that \textit{the overall Energy resp. the overall Force} transformed resp. generated in the heart through a FLNc KO equals that of the wildtype. \newline 
+If this is true, the loss of cardiac output for patients with this mutation must be explained by less efficacy in the heart muscle contraction. That is to say, force is applied more inneffectively in the heart muscle. Thus the \textbf{main question} is what abnormal angle in the Z-disk alignment and what inhomogenity in Z-disk spacing is required, to reproduce the lost force.
+
+
+
+\begin{theorem}\cite[thm. 4.2, p.170]{Karatzas}
+This is how you would cite. Suppose that $M$ is a $d$-dimensional continuous local martingale on $(\Omega, \mathcal{F}, (\mathcal{F}_t)_{t \geq 0}, P)$ where the quadratic covariation $\langle M^i, M^j \rangle_t, 1 \leq i,j \leq d$ is an absolutely continuous function of $t$, $P$-almost everywhere.
+\end{theorem}
+And this is what the normal font looks like.
+
+\begin{definition}\cite[p. 135]{EckGarcke2017} [Differentialoperator] A mapping, on a function space that is mapping functions to such including their derivatives is called a \textit{differential operator}:
+\begin{equation*}
+	\mathcal{L}: C \rightarrow D, \mathcal{L}x(t) = sum_{i=0}^{n-1} \alpha_i x^i (t)
+\end{equation*}
+The order of $\mathcal{L}$ is its highest appearing derivation order. It is called linear if $\mathcal{L}$ is linear $\mathcal{L}(ax + by) = a \mathcal{L}(x) + b \mathcal{L}(y)$.
+\end{definition}
+
+
+\huge{Wie} geht es weiter? Dondl sendet am ~25. Juli eine Formulierung zur finiten Differenzen Methode bei der Approximierung der linearen elastischen Wellengleichung. Wellengleichung sind nämlich hyperbolisch ;)

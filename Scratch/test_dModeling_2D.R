@@ -557,7 +557,7 @@ plot_grid_interactive <- function(sim) {
   
   p <- animation_opts(
     p,
-    frame = 2,
+    frame = 1,
     transition = 0,
     redraw = TRUE
   )

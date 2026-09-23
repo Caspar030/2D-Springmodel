@@ -1,0 +1,243 @@
+% !TeX spellcheck = en_GB
+\documentclass[
+	a4paper,
+	twoside, % to have one (two) sided mode
+	%  headlines=2.1, % number of lines in the heading, increase if you want more
+	fontsize=11pt,
+	paper=a4,
+	DIV=11,
+	bibliography=totoc,
+	chapterprefix=true, % Adds the desctription "chapter" n
+	numbers=noenddot, % removes the point after chapter n"."
+	parskip=half
+%	draft
+%	headings=small,
+]{scrreprt}
+
+%%% Page layout
+\usepackage[
+	inner=3cm,
+	outer=2.5cm,
+	top=2.5cm,
+	bottom=2.5cm,
+	marginparwidth=2cm,
+	marginparsep=.25cm,
+%	showframe,
+	% includefoot,
+	%footskip=1cm,
+	%	includeheadfoot,
+	% headsep=0cm,
+]{geometry}
+\usepackage[headsepline, automark, draft=false]{scrlayer-scrpage}
+
+%%% Page heading definitions
+\setkomafont{pagehead}{\upshape}
+\pagestyle{scrheadings}
+
+%%% Encoding
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+
+%%% Language support
+\usepackage[ngerman,british]{babel}  % The main one is called last.
+\usepackage[autostyle=true,english=british,german=quotes]{csquotes}
+
+\usepackage{comment}
+
+%%% Fonts
+%\usepackage{lmodern, eucal}
+\addtokomafont{disposition}{\rmfamily}
+%\usepackage{libertine, libertinust1math}
+
+%\addtokomafont{sectioning}{\usefont{T1}{pplx}{b}{n}}
+
+%%% Microtype
+\usepackage[protrusion=true,expansion=true,kerning]{microtype} % just looks much nicer with this
+
+%%% Colors
+\usepackage[dvipsnames]{xcolor}
+\definecolor{color1}{HTML}{FF2600} % red
+\definecolor{color2}{HTML}{008F00} % green
+\definecolor{color3}{HTML}{0096FF} % blue
+\definecolor{color4}{HTML}{9437FF} % violet
+\definecolor{DarkBlueCustom}{RGB}{0,0,120}   % darker than NavyBlue
+
+
+%%% Lists
+\usepackage{enumitem}
+% Unnumbered
+\setlist[itemize]{topsep=0.5\topsep, itemsep=0.5\itemsep} %, parsep=0.5\parsep, partopsep=0.5\partopsep}
+\newlist{itemizeProof}{itemize}{3}
+\setlist[itemizeProof, 1]{leftmargin=*, label={\textbullet}} %,parsep=0.5\parsep, partopsep=0.5\partopsep}
+\setlist[itemizeProof, 2]{leftmargin=*, label={--}} %,parsep=0.5\parsep, partopsep=0.5\partopsep}
+\setlist[itemizeProof, 3]{leftmargin=*, label={*}} %,parsep=0.5\parsep, partopsep=0.5\partopsep}
+
+% Numbered
+\setlist[enumerate,1]{label=\textbf{(\alph*)}}
+\newlist{enumerateRoman}{enumerate}{1}
+\setlist[enumerateRoman, 1]{label=\textbf{(\roman*)}}
+
+\newlist{enumerateProof}{enumerate}{1}	
+\setlist[enumerateProof,1]{wide, label=\textbf{(\alph*)}} %, parsep=0.5\parsep, partopsep=0.5\partopsep}
+\newlist{enumerateRomanProof}{enumerate}{1}
+\setlist[enumerateRomanProof,1]{leftmargin=*, label=\textbf{(\roman*)}} % partopsep=0.5\partopsep
+
+% TFAE
+\newcommand{\RNum}[1]{\uppercase\expandafter{\romannumeral #1\relax}}
+%\newcommand{\direction}[2]{\item[\rmfamily{\textbf{\enquote{(#1)$ \mathbf{\implies} $(#2)}}}]}
+%\newlist{tfae}{enumerate}{1}
+%\setlist[tfae,1]{wide}
+
+% Cases
+%\newlist{mycases}{enumerate}{2}
+%\setlist[mycases, 1]{label=\textbf{Case~\arabic*.}, labelwidth=!, labelindent=0pt, wide}
+%\setlist[mycases, 2]{label=\textbf{Case~\arabic{mycasesi}.\alph*.}, labelwidth=!, labelindent=0pt, wide}
+
+% Links and references
+\usepackage[
+	colorlinks=true, % Make links colorful
+	pdfpagelabels, % Page numbers in PDF and on page correspond
+	pdfstartview = Fit, % fit the page to the window after opening
+	bookmarksopen = true,  % open the bookmarks after opening
+	bookmarksnumbered = true, % enumerate the bookmarks
+	plainpages = false, 
+	hypertexnames = false,
+	linkcolor= DarkBlueCustom,
+	urlcolor=DarkBlueCustom,
+	citecolor=DarkBlueCustom
+]{hyperref}
+\urlstyle{same}
+
+\usepackage[style=alphabetic,urldate=comp]{biblatex} %Imports biblatex package
+\addbibresource{bibliography.bib}
+
+
+% Miscellaneous -- we only want to include these if needed
+% \usepackage{float}
+\usepackage{tabularx} %angepasste Tabellen
+\usepackage{blindtext}
+%\usepackage{multicol}
+\usepackage{mdframed}
+\usepackage{calc}
+\usepackage{makecell}
+
+% Graphics
+\usepackage{graphicx}
+%\graphicspath{{/Users/moritz/Documents/Grafiken},{./figs}}
+\usepackage{tikz}
+\usetikzlibrary{calc}
+\usetikzlibrary{decorations.pathmorphing} 
+\usepackage{pgfplots}
+\pgfplotsset{compat=1.18}
+\usetikzlibrary{through}
+\usetikzlibrary{cd}
+\usetikzlibrary{babel}
+\usepackage{float}
+\usepackage{caption} %Zentrierte Boldunterschriften 
+\usepackage[color=color1!30, textcolor=black]{todonotes}
+
+% The best package out there.
+\usepackage{casparpackage}
+
+% Math support
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage{mathtools}
+\usepackage{amsthm}
+\usepackage{aligned-overset}
+
+% Additional definitons:
+%\usepackage{parskip}
+% Reduce space before and after equations
+\AtBeginDocument{
+	\setlength{\abovedisplayskip}{0.75\abovedisplayskip}
+	\setlength{\belowdisplayskip}{0.75\belowdisplayskip}
+	\setlength{\abovedisplayshortskip}{0.75\abovedisplayshortskip}
+	\setlength{\belowdisplayshortskip}{0.75\belowdisplayshortskip}
+}
+
+\renewcommand{\epsilon}{\varepsilon}
+
+
+% Theorem etc. structure
+\newtheoremstyle{newStyle}
+{}                % Space above
+{}                % Space below
+{\itshape}        % Theorem body font % (default is "\upshape")
+{}                % Indent amount
+{\bfseries}       % Theorem head font % (default is \mdseries)
+{}                % Punctuation after theorem head % default: no punctuation
+{2ex}           	  % Space after theorem head
+{}                % Theorem head spec
+\theoremstyle{newStyle}
+\newtheorem{definition}{Definition}[chapter]
+\newtheorem{corollary}[definition]{Corollary}
+\newtheorem{lemma}[definition]{Lemma}
+\newtheorem{condition}[definition]{Condition}
+\newtheorem{theorem}[definition]{Theorem}
+\newtheorem{remark}[definition]{Remark}
+\newtheorem{proposition}[definition]{Proposition}
+\newtheorem{notation}[definition]{Notation}
+\newtheorem{fact}[definition]{Fact}
+\newtheorem{example}[definition]{Example}
+%\newtheorem{myExample}[definition]{Example}
+
+%
+%% Define a custom environment for "Example" without a border and with adjusted margins
+%\newmdenv[
+%  backgroundcolor=gray!20,
+%  linewidth=0pt,
+%%  linecolor=gray!20\textbf{}
+%  innertopmargin=2pt,
+%  innerbottommargin=2pt,
+%  innerrightmargin=2pt,
+%  innerleftmargin=2pt,
+%%  skipabove=10pt,
+%%  skipbelow=10pt
+%]{examplebox}
+%
+%\newenvironment{example}
+%	{\begin{examplebox}\begin{myExample}}
+%	{\end{myExample}\end{examplebox}}
+
+
+\newcommand{\mytitle}{Simulating the mechanics of a cardiomyocyte based on a damped wave equation}
+
+\begin{document}
+	%\listoftodos
+	%% Vorspann %%%
+	\pagenumbering{gobble} % surpresses page numbering (also in output pdf)
+	\include{intro/titlepage}
+	\cleardoublepage % goes to the next odd page
+	
+	\cleardoublepage % goes to the next odd page
+	\tableofcontents
+	\cleardoublepage % goes to the next odd page
+	\linespread{1.15}\selectfont
+	\pagenumbering{roman}
+	\include{intro/introduction}
+	
+	%%% Hauptteil %%%
+	\setcounter{page}{1}
+	\pagenumbering{arabic}
+	%\include{0/0}
+	%\include{1/1}	
+	\include{2/2}
+	%\include{3/3}
+%	\include{4/4}
+%	\include{5/5}
+%	\include{6/6}
+%	\include{7/7}
+
+	%%% Anhang %%%
+%	\appendix
+%	\include{appendix/appendix}
+	
+	%\nocite{*}
+	\printbibliography
+	\vfill
+
+\newpage
+\thispagestyle{empty}
+\include{end/erklaerungen}
+\end{document}

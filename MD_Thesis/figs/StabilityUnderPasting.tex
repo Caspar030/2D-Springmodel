@@ -1,0 +1,56 @@
+\documentclass[parskip]{scrartcl}
+\usepackage[margin=15mm]{geometry}
+\usepackage{tikz}
+\usetikzlibrary{calc}
+
+\begin{document}
+
+% Black path (history) with starting height
+\newcommand{\LathropStop}[7]{% points, dx, rand_factor, options, name, truncate, y0
+  \draw[#4] (0,#7)
+    \foreach \i in {1,...,#6}
+      { -- ++(#2,{rand*#3}) }
+    coordinate (#5);
+}
+
+% Future fan
+\newcommand{\Emmett}[5]{% points, dx, rand_factor, options, end label
+  \draw[#4] (0,0)
+    \foreach \i in {1,...,#1}
+      { -- ++(#2,{rand*#3}) }
+  node[right] {#5};
+}
+
+\begin{tikzpicture}[scale=1]
+
+% axes
+\draw[->] (-0.2,0) -- (15.5,0) node[right] {$t$};
+\draw[->] (0,-0.2) -- (0,5) node[above] {$X$};
+
+% stopping time tau
+\def\tau{6}
+\draw[dashed] (\tau,0) -- (\tau,4.5);
+\node[below] at (\tau,0) {$\tau$};
+
+% FIRST PATH (history)
+\def\y0{1.0} % starting height
+\LathropStop{300}{0.02}{0.2}{black,thick}{X_tau}{300}{\y0}
+
+% FUTURE FAN
+\begin{scope}[shift={(X_tau)}]
+  \Emmett{200}{0.02}{0.15}{blue!70}{}
+  \Emmett{200}{0.02}{0.12}{blue!50}{}
+  \Emmett{200}{0.02}{0.18}{blue!40}{}
+
+  \Emmett{200}{0.02}{-0.12}{red!60}{}
+  \Emmett{200}{0.02}{-0.15}{red!40}{}
+\end{scope}
+
+% Labels
+\node at (3, -0.5) {$P$};
+\node at (10, -0.5) {$Q$};
+
+\end{tikzpicture}
+
+\end{document}
+

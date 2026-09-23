@@ -1,0 +1,181 @@
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{casparpackage}[2025/11/14 The best package out there]
+
+% We need some packages or do we?
+\RequirePackage{amsthm}
+\RequirePackage{amsmath}
+\RequirePackage{tabularx}
+\RequirePackage{array}
+\RequirePackage{bbm}  % For \eins.
+\RequirePackage{multirow}
+\RequirePackage{mathrsfs}
+\RequirePackage{centernot}
+\RequirePackage{enumitem}
+
+% Faster way to write some Mengen and Abbildungen.
+\providecommand{\R}{\mathbb{R}}
+\providecommand{\Rnn}{\R^{n\times n}}
+\providecommand{\Z}{\mathbb{Z}}
+\providecommand{\N}{\mathbb{N}}
+\providecommand{\C}{\mathbb{C}}
+\providecommand{\Q}{\mathbb{Q}}
+
+
+\providecommand{\dom}[1]{\operatorname{dom}\braces{#1}}
+\providecommand{\im}[1]{\operatorname{im}\braces{#1}}
+
+% For all mathematics.
+\providecommand{\id}{\operatorname{id}}
+\providecommand{\End}[2][]{\operatorname{End}_{#1}\braces{#2}}
+\providecommand{\coss}[1]{\cos\braces{#1}}
+\providecommand{\sinn}[1]{\sin\braces{#1}}
+\providecommand{\tann}[1]{\tan\braces{#1}}
+\providecommand{\arccoss}[1]{\arccos\braces{#1}}
+\providecommand{\arcsinn}[1]{\arcsin\braces{#1}}
+\providecommand{\arctann}[1]{\arctan\braces{#1}}
+\providecommand{\notiff}{\centernot\iff}
+\providecommand{\lnn}[1]{\operatorname{ln}\braces{#1}}
+\providecommand{\mymat}[2][c]{\braces{\begin{array}{#1} #2 \end{array}}}
+\providecommand{\sign}[1]{\operatorname{sign}\braces{#1}}
+\providecommand{\cl}[1]{\overline{#1}}
+\providecommand{\powerset}[1]{\mathcal P\braces{#1}}
+\providecommand{\discup}{\sqcup}
+\providecommand{\bigdiscup}{\bigsqcup}
+\providecommand{\restr}[2]{#1{\upharpoonright_{#2}}}
+\providecommand{\comp}[1]{#1^{\mathsf{c}}}
+\providecommand{\optComp}[1]{#1^{(\mathsf{c})}}
+\providecommand{\seq}[2][n]{(#2_{#1})_{#1\in\N}}
+\providecommand{\kgv}[1]{\operatorname{kgV}\braces{#1}}
+\providecommand{\ggt}[1]{\operatorname{ggT}\braces{#1}}
+
+% Definitions of theorems and special equal signs.
+\newtheoremstyle{myStyle}
+{}                % Space above
+{}                % Space below
+{\upshape}        % Theorem body font % (default is "\upshape")
+{}                % Indent amount
+{\bfseries}       % Theorem head font % (default is \mdseries)
+{}               % Punctuation after theorem head % default: no punctuation
+{.25cm}               % Space after theorem head
+{}                % Theorem head spec
+\theoremstyle{myStyle}
+\newtheorem*{zuzeigen2}{Zu Zeigen:}
+\newtheorem*{claimm2}{Claim:}
+
+% Hand made theorem
+\def\claimgerman{\noindent{\textbf{Zu zeigen:}}\ }
+\def\endclaimgerman{\par}
+\newenvironment{zuzeigen}{\claimgerman}{\endclaimgerman}
+
+\def\claimenglish{\noindent{\textbf{Claim:}}\ }
+\def\endclaimenglish{\par}
+\newenvironment{claimm}{\claimenglish}{\endclaimenglish}
+
+\newenvironment{claimproof}[2][\unskip]{%
+	\par
+	\noindent\textbf{Claim #1:} #2 \\
+	\noindent\textit{Proof of claim.}%
+}{%
+	\unskip\nobreak\hfill\mbox{\qedsymbol\ {\scriptsize Claim.}}\par}
+
+
+% Braces and co.
+\providecommand{\norm}[1]{\left\| #1 \right\|}
+\providecommand{\abs}[1]{\left| #1 \right|}
+\providecommand{\set}[1]{\left\{#1\right\}}
+\providecommand{\braces}[1]{\left(#1\right)}
+\providecommand{\eckig}[1]{\left[#1\right]}
+\providecommand{\leftopen}[1]{\left(#1\right]}
+\providecommand{\rightopen}[1]{\left[#1\right)}
+\providecommand{\floor}[1]{\left\lfloor #1 \right\rfloor}
+\providecommand{\ceil}[1]{\left\lceil #1 \right\rceil}
+
+% Operators from Algebra.
+\providecommand{\ord}[1]{\operatorname{ord}\left( #1 \right)}
+\providecommand{\charr}[1]{\operatorname{char}\left( #1 \right)}
+\providecommand{\stab}[2][]{\operatorname{Stab}_{#1}\left( #2 \right)}
+\providecommand{\orb}[1]{\operatorname{orb}\left( #1 \right)}
+\providecommand{\indx}[2]{\left(#1 \colon #2\right)}
+\providecommand{\spann}[1]{\left\langle #1 \right\rangle}
+\providecommand{\U}[1]{\mathcal{U}\braces{#1}}
+
+%\newcommand{\degree}[2]{\left[#1 \colon #2\right]}
+\providecommand{\legendre}[2]{\ensuremath{\left(\frac{#1}{#2}\right)}}
+\providecommand{\Ef}{\mathbb{F}}
+\providecommand{\inverse}[1]{{#1}^{-1}}
+\providecommand{\normSubgrp}{\trianglelefteq}
+
+% Group theory
+\providecommand{\zenter}[2][]{\operatorname{Z}_{#1}\braces{#2}}
+\providecommand{\subgrp}{\leq}
+\providecommand{\prprsubgrp}{\lneq}
+\providecommand{\cent}[2]{\operatorname{C}_{#1}\braces{{#2}}}
+\providecommand{\nor}[2]{\operatorname{N}_{#1}\braces{{#2}}}
+\providecommand{\fix}[1]{\operatorname{Fix}\braces{{#1}}}
+\providecommand{\sgn}[1]{\operatorname{sgn}\braces{{#1}}}
+\providecommand{\con}[2]{#1^{#2}}
+\providecommand{\Tor}[2]{\operatorname{Tor}_{#1}\braces{#2}}
+
+% Topology
+\providecommand{\T}[1]{\operatorname{T}_{#1}}
+
+% Big-O-Notation
+\providecommand{\bigO}[1]{\mathcal{O}\braces{#1}}
+
+% Some abbreviations.
+\providecommand{\obda}{o.\,B.\,d.\,A. }
+\providecommand{\Obda}{O.\,B.\,d.\,A. }
+\providecommand{\zb}{z.\,B. }
+\providecommand{\deha}{d.\,h. }
+\providecommand{\idest}{i.\,e. }
+\providecommand{\welog}{w.\,al.\,o.\,g. }
+\providecommand{\Welog}{W.\,l.\,o.\,g. }
+\providecommand{\ie}{i.\,e. }
+
+
+% Analysis.
+\providecommand{\dx}[1]{\,\mathrm{d}#1}
+\providecommand{\ddx}[2][x]{\frac{\mathrm{d} #2}{\mathrm{d}#1}}
+\providecommand{\dndx}[3][x]{\frac{\mathrm{d}^2 #2}{\mathrm{d}#1^{#3}}}
+
+% Stochastiiiiiiiik.
+\providecommand{\F}{\mathcal{F}}
+\providecommand{\Pe}[1]{\mathcal{P}\braces{#1}}
+\providecommand{\Wraum}{\braces{\Omega, \F, P}}
+\providecommand\llambda{{\mathchoice
+		{\lambda\mkern-4.5mu{\raisebox{.4ex}{\scriptsize$\backslash$}}}
+		{\lambda\mkern-4.83mu{\raisebox{.4ex}{\scriptsize$\backslash$}}}
+		{\lambda\mkern-4.5mu{\raisebox{.2ex}{\footnotesize$\scriptscriptstyle\backslash$}}}
+		{\lambda\mkern-5.0mu{\raisebox{.2ex}{\tiny$\scriptscriptstyle\backslash$}}}}}
+\providecommand{\eins}{\mathbbm{1}}
+\providecommand{\E}[2][]{E_{#1}\eckig{#2}}
+\providecommand{\Var}[2][]{\operatorname{Var}_{#1}\braces{#2}}
+\providecommand{\Exp}[1]{\operatorname{exp}\braces{#1}}
+\providecommand{\cnvrgsP}{\xrightarrow{P}}
+\providecommand{\Pee}{\mathbb{P}}
+\providecommand{\Bin}[2]{\operatorname{Bin}_{#1,#2}}
+\providecommand{\El}{\mathcal{L}}
+\providecommand{\Cov}[2]{\operatorname{Cov}\braces{#1,#2}}
+\providecommand{\uni}[2]{\operatorname{uni}_{\eckig{#1,#2}}}
+\providecommand{\geo}[1][p]{\operatorname{Geo}\braces{#1}}
+\providecommand{\Ix}{\mathcal{X}}
+\providecommand{\borel}[1]{\mathcal{B}(#1)}
+\providecommand{\prob}[1]{\mathbb{P}\braces{#1}}
+\providecommand{\filtr}[1]{(\mathcal{#1}_n)_{n\in\N}}
+
+% Linear Algebra.
+\providecommand{\Gl}[2]{\operatorname{GL}_{#1}\braces{#2}}
+\providecommand{\Sl}[2]{\operatorname{SL}_{#1}\braces{#2}}
+
+
+% Lists
+
+% TFAE
+\providecommand{\direction}[2]{\item[\rmfamily{\textbf{\enquote{(#1)$ \mathbf{\implies} $(#2)}}}]}
+\newlist{tfae}{enumerate}{1}
+\setlist[tfae,1]{wide}
+
+% Cases
+\newlist{mycases}{enumerate}{2}
+\setlist[mycases, 1]{label=\textbf{Case~\arabic*.}, labelwidth=!, labelindent=0pt, wide}
+\setlist[mycases, 2]{label=\textbf{Case~\arabic{mycasesi}.\alph*.}, labelwidth=!, labelindent=0pt, wide}

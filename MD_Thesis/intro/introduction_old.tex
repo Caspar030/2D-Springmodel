@@ -1,0 +1,173 @@
+ %!TeX spellcheck = en_GB
+\chapter*{Introduction}
+	\addcontentsline{toc}{chapter}{Introduction}
+	\markboth{Introduction}{}
+	Many problems in stochastic optimal control lead to partial differential equations for which classical solutions fail to exist, as requiring global differentiability is in many settings too restrictive. \citeauthor{CrandallLions1983} introduced the notion of a viscosity solution which somewhat imitates a classic solution but may not be differentiable everywhere. This framework has since been the basis for a substantial body of work.
+
+In the paper \cite{MSFPND}, \citeauthor{MSFPND} introduce a sublinear operator on the class of bounded continuous functions that can be thought of as a generalized expectation. They prove that this operator is a viscosity solution to an associated partial differential equation. To prove this, they rely on an optimality property that the operator satisfies. We call this property \emph{dynamic programming principle} (DPP). The DPP formalizes the idea that for a value function to be optimal in a dynamic system, it is necessary and sufficient, if we
+\begin{itemize}
+	\item consider it starting from a future point in time $t > 0$ in an arbitrary state and find an optimal control starting there;
+	\item optimize over the whole time horizon for the reduced problem, which, starting at time $t$, uses the above optimal controls.
+\end{itemize}
+For papers in a similar framework, the dynamic programming principle is often the backbone of such work \cite[p.64]{Pham}, \cite[p. 6]{CriensJEE}, \cite[thm. 2.3]{Nutz}.	
+
+This thesis happens in a similar setting. We take the same approach as \citeauthor{MSFPND} for a slightly different operator which will be convex and not sublinear. Our main focus will be to retrace their proof of the viscosity solution in our case. A key property that we aim to establish in this way is domain invariance. Thus we work towards showing that continuous bounded functions are mapped to such. Establishing this so called $\mathcal{C}_b$-\emph{Feller}-property enables us to look at the convex expectation as a semigroup on the time interval. 
+
+Aside from studying these regularity properties, we address the question of wether our solution is unique. We investigate if under certain conditions, uniqueness at the level of viscosity solutions carries over to the level of semigroups. \newpage
+
+
+	\subsection*{Acknowledgements}
+I acknowledge the use of OpenAI’s ChatGPT (version 5.2) for assistance with phrasing suggestions, improving the readability of the text, and generating LaTeX code for the figures included in this thesis.
+
+All analyses, interpretations, and conclusions presented in this report are entirely my own.
+
+
+
+	\subsection*{Notation}
+		\vspace*{-.5cm}
+		We will use the following notation: \par
+		\begin{table}[H]
+			\flushleft
+			\begin{tabularx}{\textwidth}{@{}cX@{}}		
+				$\Omega$ & Continuous functions from $ \mathbb{R}_{\geq 0}$ to $\mathbb{R}^d $. \\
+				$ \omega( \cdot ) $ & An element of $\Omega $. \\
+				$ \lambda $ & The Lebesgue measure.\\
+				$ (\mathcal{M}_{loc})$, $\mathcal{M} $ & (Local) martingales on $ \Omega $. \\
+				$ \mathcal{V}$ & Finite variation processes on $ \Omega $.\\
+				$ \mathcal{V}_+$ & Increasing processes on $ \Omega $.\\
+				$ \mathcal{C}^{\infty}_b(\mathbb{R}^d)$ & The class of bounded continuous functions from $\mathbb{R}_+$ to $\mathbb{R}^d$, infinetly differentiable where all derivatives are bounded. \\
+				$\| \cdot \| $ & The supreme norm, if not specified else. \\
+				$ A^* $ & The transpose of a matrix $ A $. \\
+				$\operatorname{tr}[ A ] $ & The trace of a matrix $ A $. \\
+				$\| A \|_{F} $ & The Frobenius norm of a matrix $ A $. $\| A \|_{F} := \sqrt{\operatorname{tr}[A^* A]}$. \\
+				$ \mathcal{F} $ & The natural filtration of the canonical process. \\
+				$ \mathcal{P} $ & The progressive $\sigma$-field. \\
+				$ H \cdot M $ & The stochastic Integral of $H$ with respect to $ M $. \\
+				$ dH_s $, $H_s \ d M_s$ & $H_s - H_0$ and the stochastic intragral of $ (H \cdot M)_s $.\\
+				$ \langle M, N \rangle $ & The quadratic covariation process of $ M $ and $ N $. \\
+				$ W $ & A $d$-dimensional Brownian Motion. \\
+				$ A \twoheadrightarrow B$ & A correspondence, i.e. a mapping from a set $ A $ to the powerset of $ B $.
+			\end{tabularx}
+		\end{table}
+			
+		\subsubsection*{The stochastic integral}
+		The following is a heuristic introduction to the construction of the stochastic integral. Since this undertaking may take the volume of a lecture, it is evident that this is a brief account. 
+
+		The method to define a stochastic integral with respect to a continuous martingale builds upon canonical measurement theory. In the following, we follow the approach of the supervisor of this thesis, \citeauthor{PTSA} in the first chapter of \cite{PTSA}. To begin with, we introduce the space of finite variation processes $\mathcal{V}$. These are processes whose paths are of locally finite variation and start at zero. To be more specific with the former;
+		\begin{definition}[{\cite[p.15]{PTSA}}]  We call a function $f: \mathbb{R}_+ \rightarrow \mathbb{R} $ of locally finite variation if 
+			\begin{equation*}
+				\operatorname{TV}_t(f) := \sup \set{ \sum_{k=1}^n | f(t_k) - f(t_{k-1}) | \mid 0 = t_0 < \cdots < t_n = t, n \in \mathbb{N} } < \infty, \text{ for all } t \geq 0
+			\end{equation*}
+		\end{definition}	
+
+		Functions or paths of stochastic processes from $\mathbb{R}_+$ to $\mathbb{R}$ that are of locally finite variation are significant in our context, in the way that they are in bijection to the set of signed locally finite measures on $\mathbb{R}_+$ \cite[thm. 2.14]{Kallenberg}. The latter are measures that assign finite value to bounded Borel sets of $\mathbb{R}_+$ (locally finite) and take values in $\mathbb{R}$ (signed). Thus
+\begin{equation*}
+	\mu^f((a,b]) := f(b) - f(a), \quad a < b \quad a,b \in \mathbb{R}_+
+\end{equation*}
+uniquely defines a signed measure on $\mathbb{R}_+$. For processes with state space $\mathbb{R}^d$ this notion yields $d$-many signed measures.
+If we further use the Hahn decomposition of a signed measure \cite[p. 181]{Klenke}, we can represent $\mu^f$ as the sum of two measures where one carries the positive mass $A^+ \in \mathcal{B}(\mathbb{R}_+)$ and the other the negative mass $A^- := \mathbb{R}_+ \setminus A^+$ of $\mu^f$. This allows the representation
+\begin{equation*}
+	\mu^f (\cdot) = \mu^f(\cdot \cap A^+) + \mu^f(\cdot \cap A^-) =: \mu^{f+} - \mu^{f-}
+\end{equation*}
+by two non-negative measures.
+
+Building on this, we may integrate a function $g$  with respect to a function of locally finite variation $f$ by the intuitive formula
+\begin{equation*}
+	\int g \ df := \int g \ d \mu^+_f - \int g \ d \mu^-_f
+\end{equation*}
+Likewise, for $V$ a finite variation process, we define the integral of a progressive process $H$ w.r.t. $V$ under usual integrability conditions as the \emph{finite variation process} \cite[lemma 1.37]{PTSA}
+\begin{equation*}
+	\Omega \rightarrow \mathbb{R}, \quad \omega \mapsto \int H_s(\omega) \ d V(\omega)(s)
+\end{equation*}
+\par
+
+Having characterized the class of finite variation processes as the functional pendant of signed locally finite measures, we are curious if this notion is useful for \emph{martingales}. These make up an important class of stochastic processes.
+In the following, let $(\Omega, \mathcal{F}, (\mathcal{F}_t)_{t \geq 0}, P)$ be a filtered probability space. 
+\begin{definition}[{\cite[p. 191]{Kallenberg}}] We call a stochastic process $(X_t)_{t \geq 0}$ thereon a \emph{martingale} with respect to the filtration $(\mathcal{F}_t)_{t \geq 0}$ if 
+		\begin{itemize}
+			\item $X$ is adapted to the filtration $(\mathcal{F}_t)_{t \geq 0}$
+			\item $X_t$ is integrable for all $t \geq 0$
+			\item $X$ has the martingale property: $\mathbb{E}[X_t \mid \mathcal{F}_s] = X_s$ for all $s \leq t$.
+		\end{itemize}
+	\end{definition}
+	We denote by $\mathcal{M}$ the class of continuous martingales and by $\mathcal{M}_{loc}$ the class of continuous local martingales. \par
+	As the following proposition shows, martingales have the remarkable property that they \emph{are not}, except in the trivial case, of \emph{finite variation}.
+		\begin{proposition}\cite[Prop. 18.2]{Kallenberg}
+			Let $M$ be a continuous local martingale. Then 
+			\begin{itemize}
+				\item $M \in \mathcal{V}$
+				\item $M$ is $P$-a.s. zero
+			\end{itemize}
+			are equivalent.
+		\end{proposition}
+
+		Thus we see that the upper approach to define integrals with respect to finite variation processes fails in the case of martingales. A key element in working around this lies in the existence of the \emph{quadratic covariation process} of a continuous local martingale \cite[thm. 18.5]{Kallenberg}. The quadratic covariation is a map
+	\begin{equation*}
+		\langle M, N \rangle : \mathcal{M}_{loc} \rightarrow \mathcal{V}
+	\end{equation*}
+with the defining property 
+\begin{equation*}
+	M N  - \langle M, N \rangle \in \mathcal{M}_{loc}
+\end{equation*}
+
+This map serves as a bridge that allows us to translate the notion of an integral with respect to a martingale, into a language, i.e. integrals with respect to finite variation processes, where we have promising vocabulary. Let us first consider some basic processes.
+
+\begin{definition}[elementary process {\cite[p. 402]{Kallenberg}}] We denote $\mathcal{E}$ the class of bounded, predictable step processes with jumps at finetly many times. Thus $V \in \mathcal{E}$ is called \emph{elementary}, if it is predictable and of the form
+	\begin{equation*}
+		V_t = \sum_{k=1}^m V_{k-1} \mathbbm{1}_{(t_{i-1}, t_i]}
+	\end{equation*}
+	for $0 = t_0 < \dots < t_m < \infty$ and $V_k$, $k \leq m$, bounded random variables.
+\end{definition} 
+For elementary processes $H$ as above, we canonically define an \emph{elementary integral process} $H \cdot X$ with respect to a process $X$ as
+\begin{align}\label{elementaryintegral}
+	(V \cdot X)_t := \sum_{k=1}^m V_{k-1} (X_{t_{i} \wedge t} - X_{t_{i-1} \wedge t}), \quad t \geq 0
+\end{align}
+
+It can be shown that for any elementary processes $V \in \mathcal{E}$, the elementary integral process satisfies a \emph{covariation identity} \cite[lemma 18.10]{Kallenberg}; it holds
+\begin{equation}\label{covariationidentity}
+	\langle V \cdot M, N \rangle = V \cdot \langle M, N \rangle
+\end{equation}
+for all continuous local martingales $M, N \in \mathcal{M}_{loc}$, up to indistinguishability. This is an important observation. 
+
+We denote $\mathcal{M}^2$ the space of $L^2$-bounded continuous martingales that start in zero, identifying indistinguishable processes. On this space we consider the scalar product
+\begin{equation*}
+	(M, N)_{\mathcal{M}^2} := \mathbb{E}^P[ \langle M, N \rangle_{\infty}], \quad M, N \in \mathcal{M}^2
+\end{equation*}
+One may show that the pair $(\mathcal{M}^2, ( \cdot , \cdot )_{\mathcal{M}^2})$ inherits the completeness of $L^2(P)$, hence is a Hilbert space \cite[Lemma 18.4]{Kallenberg}.
+
+We now fix $M \in \mathcal{M}^2$, and consider progressive processes $V$, such that $V^2$ is  integrable with respect to the quadratic variation of $M$. Thus, we ask that $\mathbb{E}^P[(V^2 \cdot \langle M, M \rangle)_t] < \infty$ for all $t \geq 0$. Recall that this is something we can express in terms of induced measures since the quadratic (co)variation is a finite variation process. We now consider the map
+\begin{equation*}
+	\varphi: \mathcal{M}^2 \rightarrow \mathbb{R}, \quad N \mapsto \mathbb{E}^P[ (V \cdot \langle M, N \rangle )_{\infty}]
+\end{equation*}
+Using Kunita-Watanabe's inequality one can show that $| \varphi(N) | \leq C \|N\|_{\mathcal{M}^2}$, for a constant $C \geq 0$ thus $\varphi$ defines a bounded and therefore continuous, linear operator on the Hilbert space $(\mathcal{M}^2, (\cdot, \cdot)_{\mathcal{M}^2})$ \cite[thm. 1.59]{PTSA}. Invoking Riesz representation theorem \cite[Lemma A3.6]{Kallenberg}, there exists a unique element in $\mathcal{M}^2$ which we denote by $V \cdot M$ satisfying
+\begin{equation*}
+	\varphi(N) = (V \cdot M, N)_{\mathcal{M}^2}
+\end{equation*}
+for all $N \in \mathcal{M}^2$. This object is unique in having the property,
+\begin{equation}\label{definingpropertystochasticintegral}
+	\langle V \cdot M, N \rangle = V \cdot \langle M, N \rangle, \quad \text{for all } N \in \mathcal{M}^2
+\end{equation}
+
+Aside from this approach using Riesz representation theorem, one can define the stochastic integral by approximation through elementary processes, somewhat similar to the construction of the Lebesgue integral. Using that these are dense in $L^2(M)$, the space of square integrable processes with respect to the quadratic variation of $M$, it can be shown that the two notions coincide \cite[p.35, 36]{PTSA}, \cite[thm. 18.22, 18.23]{Kallenberg}. For a rigorous introduction of the stochastic integral with respect to martingales, we direct the reader to chapter $18$ of \cite{Kallenberg}.
+
+\subsection*{Semimartingales}
+
+Having defined a proper notion of a stochastic integral with respect to martingales, we are now interested in what class of processes are captured by it. In particular, at this point we cannot assess wether we can define a stochastic integral based on \eqref{elementaryintegral} for an even larger class of processes. In light of this, we turn towards \emph{semimartingales}. A semimartingale is a stochastic process that is the sum of a random variable, a finite variation process and a local martingale.
+
+Why are semimartingales of interest in our study of the stochastic integral? We recall the above observation of the covariation identity \eqref{covariationidentity} for the integral of an elementary process \eqref{elementaryintegral}. By this, we note that \emph{any notion} of an integral which extends the elementary process integral, must suffice \eqref{covariationidentity} (at least on $\mathcal{E}$). Thus for $V^n_t \in \mathcal{E}$ a sequence of elementary processes converging uniform to zero
+\begin{equation*}
+	\sup_{t \geq 0, \Omega} | V_s^n (\omega)| \rightarrow 0
+\end{equation*}
+and a continuous martingale $M \in \mathcal{M}^2$, we obtain for $\epsilon > 0$,
+\begin{equation*}
+	P[ \langle V^n \cdot M, M \rangle_t > \epsilon] = P[(V^n \cdot \langle M, M \rangle)_t > \epsilon] \rightarrow 0, \quad n \rightarrow \infty
+\end{equation*}
+Thus $\langle V^n \cdot M, M \rangle_t$ converges in probability to zero. Therefore, for all $M \in \mathcal{M}^2$, the map
+\begin{equation}\label{minimalcondition}
+	\mathcal{E} \ni V \mapsto V \cdot M 
+\end{equation}
+is continuous with respect to convergence in probability.
+
+Let us summarize the above. \emph{Any} extension of the elementary process integral \eqref{elementaryintegral} on $\mathcal{E}$ to a larger class of processes must, restricted on $\mathcal{E}$, account the continuity \eqref{minimalcondition}. \citeauthor{Bichteler} and \citeauthor{Dellacherie} characterized a process $M$ to be a semimartingales \emph{if and only if} \eqref{minimalcondition} holds. \cite{Bichteler}, \cite{Dellacherie} \cite[thm. 20.22]{Kallenberg}. Hence, this is in fact the largest class to which one can extend the notion of integrals for elementary processes.
+
+\selectlanguage{british}

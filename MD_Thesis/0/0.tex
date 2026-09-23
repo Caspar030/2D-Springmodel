@@ -1,0 +1,52 @@
+% !TeX spellcheck = en_GB
+\chapter*{Introduction}
+	\addcontentsline{toc}{chapter}{Introduction}
+	\markboth{Introduction}{}
+
+In the paper \cite{MSFPND}, \citeauthor{MSFPND} introduce a sublinear operator on the class of bounded continuous functions that can be thought of as a generalized expectation. They prove that this operator is a viscosity solution to an associated partial differential equation. To prove this, they rely on an optimality property that the operator satisfies. We call this property \emph{dynamic programming principle} (DPP). The DPP formalizes the idea that for a value function to be optimal in a dynamic system, it is necessary and sufficient, if we
+\begin{itemize}
+	\item consider it starting from a future point in time $t > 0$ in an arbitrary state and find an optimal control starting there;
+	\item optimize over the whole time horizon for the reduced problem, which, starting at time $t$, uses the above optimal controls.
+\end{itemize}
+For papers in a similar framework, the dynamic programming principle is often the backbone of such work \cite[p.64]{Pham}, \cite[p. 6]{CriensJEE}, \cite[thm. 2.3]{Nutz}.
+
+This thesis happens in a similar setting. We take the same approach as \citeauthor{MSFPND} for a slightly different operator which will be convex and not sublinear. Our main focus will be to retrace their proof of the viscosity solution in our case. A key property that we aim to establish in this way is domain invariance. Thus we work towards showing that continuous bounded functions are mapped to such. Establishing this so called $\mathcal{C}_b$-\emph{Feller}-property enables us to look at the convex expectation as a semigroup on the time interval.
+
+Aside from studying these regularity properties, we address the question of wether our solution is unique. We investigate if under certain conditions, uniqueness at the level of viscosity solutions carries over to the level of semigroups. \newpage
+
+
+	\subsection*{Acknowledgements}
+I acknowledge the use of OpenAI’s ChatGPT (version 5.2) for assistance with phrasing suggestions, improving the readability of the text, and generating LaTeX code for the figures included in this thesis.
+
+All analyses, interpretations, and conclusions presented in this report are entirely my own.
+
+Lastly, it remains my pleasant duty to thank Prof. Dondl for insightful talks within the field of elasticity theory.
+
+\subsection*{Notation}
+		\vspace*{-.5cm}
+		Let $F=(F^1, \dots, F^d): D \rightarrow Im \subset \mathbb{R}^d$ be a continuously differentiable vector field. We will use the following notation: \par
+		\begin{table}[H]
+			\flushleft
+			\begin{tabularx}{\textwidth}{@{}cX@{}}
+				$ \nable F = 
+				$ \operatorname{Div} [F] = \nabla \cdot F = \sum_{i=1}^{d} \partial_i F^i $, The Divergence of $F$. \\
+				$ \Omega$ & Continuous functions from $ \mathbb{R}_{\geq 0}$ to $\mathbb{R}^d $. \\
+				$ \omega( \cdot ) $ & An element of $\Omega $. \\
+				$ \lambda $ & The Lebesgue measure.\\
+				$ (\mathcal{M}_{loc})$, $\mathcal{M} $ & (Local) martingales on $ \Omega $. \\
+				$ \mathcal{V}$ & Finite variation processes on $ \Omega $.\\
+				$ \mathcal{V}_+$ & Increasing processes on $ \Omega $.\\
+				$ \mathcal{C}^{\infty}_b(\mathbb{R}^d)$ & The class of bounded continuous functions from $\mathbb{R}_+$ to $\mathbb{R}^d$, infinetly differentiable where all derivatives are bounded. \\
+				$\| \cdot \| $ & The supreme norm, if not specified else. \\
+				$ A^* $ & The transpose of a matrix $ A $. \\
+				$\operatorname{tr}[ A ] $ & The trace of a matrix $ A $. \\
+				$\| A \|_{F} $ & The Frobenius norm of a matrix $ A $. $\| A \|_{F} := \sqrt{\operatorname{tr}[A^* A]}$. \\
+				$ \mathcal{F} $ & The natural filtration of the canonical process. \\
+				$ \mathcal{P} $ & The progressive $\sigma$-field. \\
+				$ H \cdot M $ & The stochastic Integral of $H$ with respect to $ M $. \\
+				$ dH_s $, $H_s \ d M_s$ & $H_s - H_0$ and the stochastic intragral of $ (H \cdot M)_s $.\\
+				$ \langle M, N \rangle $ & The quadratic covariation process of $ M $ and $ N $. \\
+				$ W $ & A $d$-dimensional Brownian Motion. \\
+				$ A \twoheadrightarrow B$ & A correspondence, i.e. a mapping from a set $ A $ to the powerset of $ B $.
+			\end{tabularx}
+		\end{table}
