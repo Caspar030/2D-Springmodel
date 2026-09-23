@@ -712,6 +712,7 @@ Since in this model, we restrict on mechanic behavior of the cell, we leave conc
 
 \end{axis}
 \end{tikzpicture}
+\end{center}
 
 
 
@@ -721,6 +722,14 @@ Note that odemodel within the \textit{dMod} only works with a first order ODE sy
 \newpage
 
 \subsection*{The Elasticity Module E}
+\textcolor{red}{How are we going to implement the elasticity module?}
+
+{\Large Approaches}
+\begin{itemize}
+	\item Define spring constants $l_{ij}, k_{ij}$ as in the introduction. Derive elasticity module from there.
+	\item Define a proper elasticity module carrying the information of the springs. Derive the equation by discretizization of $E$. \{textcolor{blue}{my favorite}.
+\end{itemize}
+
 Nonlinear, non-constant. How do we implement E?
 
 

@@ -1,5 +1,18 @@
+# ToDo:
+# implement parameters, especially E as functions E(t, u)
+# Properly define E
+
+
+# Layout: 1. Implement Nodes -> 2. implement all interactions of nodes (E, P, c, kappa) as distributions. 3. Define the interactions for each term 4. Model.
+
+
 library(dMod)
 library(plotly)
+
+
+
+
+                                          # 1. - Defining States/Nodes ---
 
 
 # ============================================================
@@ -11,6 +24,21 @@ library(plotly)
 
 Nx <- 7
 Ny <- 3
+
+
+# ============================================================
+# Choice of parameters
+# ============================================================
+
+parms <- c(
+  E      = 1,
+  delta0 = 1,
+  a0     = 1,
+  eta    = 0.2,
+  c      = 0.8,
+  kappa  = 0.05
+)
+
 
 
 # ============================================================
@@ -31,6 +59,20 @@ v_name <- function(i, j) {
 # ============================================================
 
 eqns <- c()
+
+
+
+
+
+
+
+
+
+                                          # 2. - a) Wave/Elasticity Term E
+                                          # 2. - b) Damping Term c
+                                          # 2. - c) P-Term (eta*lambda + Q_Active-Contraction)
+                                          # 2. - d) Retraction Force Term kappa
+
 
 
 # ============================================================
@@ -149,10 +191,16 @@ for (i in 2:Nx) {
     
     
     
-    # Here, the P-Term is implemented. In this Version, Q(t), that is, the interesting function is not implemented yet.
+    # Here, the P-Term is established. 
     # ========================================================
     # X-Direction Force
     # ========================================================
+    
+    
+    # P = eta*lambda + Q(t).
+    #     Implementing Q(t)
+Q_active <- "(0.5*(1 + tanh(8*sin(2*pi*time))))"
+    
     
     # --------------------------------------------------------
     # Outgoing force on right face
@@ -271,7 +319,7 @@ for (i in 2:Nx) {
     
     
     # ========================================================
-    # Force Divergence
+    # Force Divergence: P
     # ========================================================
     
     force_div <- paste0(
@@ -287,6 +335,23 @@ for (i in 2:Nx) {
       Py_down,
       "))"
     )
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
     
     
     # ========================================================
@@ -355,18 +420,6 @@ model <- odemodel(
 )
 
 
-# ============================================================
-# Choice of parameters
-# ============================================================
-
-parms <- c(
-  E      = 1,
-  delta0 = 1,
-  a0     = 1,
-  eta    = 0.2,
-  c      = 0.8,
-  kappa  = 0.05
-)
 
 
 # ============================================================
@@ -402,6 +455,13 @@ for (i in 2:Nx) {
 }
 
 
+
+
+
+
+
+
+
 # ============================================================
 # Simulation
 # ============================================================
@@ -411,7 +471,7 @@ for (i in 2:Nx) {
 times <- seq(
   0,
   200,
-  by = 0.1
+  by = 0.2
 )
 
 
@@ -557,7 +617,7 @@ plot_grid_interactive <- function(sim) {
   
   p <- animation_opts(
     p,
-    frame = 1,
+    frame = 50,
     transition = 0,
     redraw = TRUE
   )
