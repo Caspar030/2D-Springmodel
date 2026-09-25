@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.22 (TeX Live 2022/dev/Debian) (preloaded format=pdflatex 2026.1.30)  23 SEP 2026 08:35
+This is pdfTeX, Version 3.141592653-2.6-1.40.22 (TeX Live 2022/dev/Debian) (preloaded format=pdflatex 2026.1.30)  25 SEP 2026 12:01
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -1186,7 +1186,7 @@ Package: aligned-overset 2018/04/04 v0.1.0 aligned overset and underset
 \c@definition=\count502
 Package csquotes Info: Checking for multilingual support...
 Package csquotes Info: ... found 'babel' package.
- (./main.aux (./intro/titlepage.aux) (./intro/introduction.aux) (./2/2.aux) (./end/erklaerungen.aux))
+ (./main.aux (./intro/titlepage.aux) (./intro/acknowledgements.aux) (./intro/introduction.aux) (./2/2.aux) (./end/erklaerungen.aux))
 \openout1 = `main.aux'.
 
 LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 206.
@@ -1405,7 +1405,28 @@ Package pdftex.def Info: logo.png  used on input line 5.
 
 
 ]
-LaTeX Font Info:    Trying to load font information for T1+cmss on input line 214.
+\openout2 = `intro/acknowledgements.aux'.
+
+ (./intro/acknowledgements.tex
+<Music/Martha_My_Dear_Piano_Sheet.png, id=23, 1764.5925pt x 898.35625pt>
+File: Music/Martha_My_Dear_Piano_Sheet.png Graphic file (type png)
+<use Music/Martha_My_Dear_Piano_Sheet.png>
+Package pdftex.def Info: Music/Martha_My_Dear_Piano_Sheet.png  used on input line 11.
+(pdftex.def)             Requested size: 352.81552pt x 179.61324pt.
+<Music/Martha_on_a_field.jpeg, id=24, 430.60875pt x 467.7475pt>
+File: Music/Martha_on_a_field.jpeg Graphic file (type jpg)
+<use Music/Martha_on_a_field.jpeg>
+Package pdftex.def Info: Music/Martha_on_a_field.jpeg  used on input line 19.
+(pdftex.def)             Requested size: 220.50887pt x 239.53299pt.
+) [3
+
+ <./Music/Martha_My_Dear_Piano_Sheet.png (PNG copy)> <./Music/Martha_on_a_field.jpeg>] [4
+
+
+
+
+]
+LaTeX Font Info:    Trying to load font information for T1+cmss on input line 215.
  (/usr/share/texlive/texmf-dist/tex/latex/base/t1cmss.fd
 File: t1cmss.fd 2019/12/16 v2.5j Standard LaTeX font definitions
 )
@@ -1413,7 +1434,7 @@ Package microtype Info: Loading generic protrusion settings for font family
 (microtype)             `cmss' (encoding: T1).
 (microtype)             For optimal results, create family-specific settings.
 (microtype)             See the microtype manual for details.
-Package tocbasic Info: character protrusion at toc deactivated on input line 214.
+Package tocbasic Info: character protrusion at toc deactivated on input line 215.
  (./main.toc
 LaTeX Font Info:    Trying to load font information for U+rsfs on input line 4.
  (/usr/share/texlive/texmf-dist/tex/latex/jknapltx/ursfs.fd
@@ -1444,11 +1465,9 @@ Overfull \hbox (0.66826pt too wide) detected at line 11
 \tf@toc=\write7
 \openout7 = `main.toc'.
 
- [3
+ [5
 
-
-
-] [4
+] [6
 
 
 ]
@@ -1626,7 +1645,7 @@ LaTeX Warning: Marginpar on page 3 moved.
 chapter without number
 
 Package biblatex Warning: No driver for entry type 'bachelorsthesis'.
-(biblatex)                Using fallback driver on input line 237.
+(biblatex)                Using fallback driver on input line 238.
 
 [6
 
@@ -1652,7 +1671,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 18--19
 
 ) [7
 
-] (./main.aux (./intro/titlepage.aux) (./intro/introduction.aux) (./2/2.aux) (./end/erklaerungen.aux))
+] (./main.aux (./intro/titlepage.aux) (./intro/acknowledgements.aux) (./intro/introduction.aux) (./2/2.aux) (./end/erklaerungen.aux))
 Package rerunfilecheck Info: File `main.out' has not changed.
 (rerunfilecheck)             Checksum: D41D8CD98F00B204E9800998ECF8427E;0.
 Package logreq Info: Writing requests to 'main.run.xml'.
@@ -1660,18 +1679,18 @@ Package logreq Info: Writing requests to 'main.run.xml'.
 
  ) 
 Here is how much of TeX's memory you used:
- 53246 strings out of 478287
- 1211720 string characters out of 5849289
- 2449659 words of memory out of 5000000
- 70278 multiletter control sequences out of 15000+600000
+ 53295 strings out of 478287
+ 1213403 string characters out of 5849289
+ 2451932 words of memory out of 5000000
+ 70312 multiletter control sequences out of 15000+600000
  497336 words of font info for 179 fonts, out of 8000000 for 9000
  1143 hyphenation exceptions out of 8191
  108i,23n,106p,10599b,2455s stack positions out of 5000i,500n,10000p,200000b,80000s
 {/usr/share/texmf/fonts/enc/dvips/cm-super/cm-super-t1.enc}{/usr/share/texmf/fonts/enc/dvips/cm-super/cm-super-ts1.enc}</usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi6.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi8.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr6.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr8.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy6.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy8.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/symbols/msbm10.pfb></usr/share/texmf/fonts/type1/public/cm-super/sfbx1095.pfb></usr/share/texmf/fonts/type1/public/cm-super/sfbx1200.pfb></usr/share/texmf/fonts/type1/public/cm-super/sfbx1440.pfb></usr/share/texmf/fonts/type1/public/cm-super/sfbx1728.pfb></usr/share/texmf/fonts/type1/public/cm-super/sfbx2074.pfb></usr/share/texmf/fonts/type1/public/cm-super/sfbx2488.pfb></usr/share/texmf/fonts/type1/public/cm-super/sfcc1095.pfb></usr/share/texmf/fonts/type1/public/cm-super/sfrm0800.pfb></usr/share/texmf/fonts/type1/public/cm-super/sfrm1095.pfb></usr/share/texmf/fonts/type1/public/cm-super/sfrm1440.pfb></usr/share/texmf/fonts/type1/public/cm-super/sfrm1728.pfb></usr/share/texmf/fonts/type1/public/cm-super/sfti1095.pfb></usr/share/texmf/fonts/type1/public/cm-super/sfti1728.pfb>
-Output written on main.pdf (29 pages, 604336 bytes).
+Output written on main.pdf (31 pages, 1763413 bytes).
 PDF statistics:
- 452 PDF objects out of 1000 (max. 8388607)
- 364 compressed objects within 4 object streams
- 110 named destinations out of 1000 (max. 500000)
- 51290 words of extra memory for PDF output out of 51595 (max. 10000000)
+ 465 PDF objects out of 1000 (max. 8388607)
+ 373 compressed objects within 4 object streams
+ 114 named destinations out of 1000 (max. 500000)
+ 51300 words of extra memory for PDF output out of 51595 (max. 10000000)
 

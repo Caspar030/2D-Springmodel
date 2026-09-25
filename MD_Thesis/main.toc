@@ -1,15 +1,15 @@
 \babel@toc {ngerman}{}\relax 
 \babel@toc {british}{}\relax 
-\contentsline {chapter}{Introduction}{i}{chapter*.2}%
-\contentsline {section}{\numberline {0.1}2 D Federmodell}{iii}{section.5}%
-\contentsline {section}{\numberline {0.2}Herleitung der Differentialgleichung zur linearen Elastizitätstheorie}{vii}{section.9}%
-\contentsline {subsection}{\numberline {0.2.1}Grundgleichungen der linearen Elastizitätstheorie - Cauchy-Navier}{x}{subsection.24}%
-\contentsline {subsubsection}{\nonumberline Cauchy-Eulersche Bewegungsgleichung}{x}{subsubsection*.27}%
-\contentsline {chapter}{\numberline {1}The spring model: a finite difference approach for linear elastic material}{xiii}{chapter.31}%
-\contentsline {chapter}{\numberline {2}Mathematische Modellierung - Eck, Garcke, Knabner}{xvi}{chapter.33}%
-\contentsline {subsubsection}{\nonumberline Populationsmodell}{xvi}{subsubsection*.36}%
-\contentsline {subsection}{\numberline {2.0.1}Stabwerke}{xvii}{subsection.40}%
-\contentsline {section}{\numberline {2.1}Literature}{1}{section.45}%
-\contentsline {chapter}{\nonumberline Bibliography}{6}{chapter*.74}%
+\contentsline {chapter}{Introduction}{i}{chapter*.4}%
+\contentsline {section}{\numberline {0.1}2 D Federmodell}{iii}{section.7}%
+\contentsline {section}{\numberline {0.2}Herleitung der Differentialgleichung zur linearen Elastizitätstheorie}{vii}{section.11}%
+\contentsline {subsection}{\numberline {0.2.1}Grundgleichungen der linearen Elastizitätstheorie - Cauchy-Navier}{x}{subsection.26}%
+\contentsline {subsubsection}{\nonumberline Cauchy-Eulersche Bewegungsgleichung}{x}{subsubsection*.29}%
+\contentsline {chapter}{\numberline {1}The spring model: a finite difference approach for linear elastic material}{xiii}{chapter.33}%
+\contentsline {chapter}{\numberline {2}Mathematische Modellierung - Eck, Garcke, Knabner}{xvi}{chapter.35}%
+\contentsline {subsubsection}{\nonumberline Populationsmodell}{xvi}{subsubsection*.38}%
+\contentsline {subsection}{\numberline {2.0.1}Stabwerke}{xvii}{subsection.42}%
+\contentsline {section}{\numberline {2.1}Literature}{1}{section.47}%
+\contentsline {chapter}{\nonumberline Bibliography}{6}{chapter*.76}%
 \babel@toc {ngerman}{}\relax 
 \providecommand \tocbasic@end@toc@file {}\tocbasic@end@toc@file 
