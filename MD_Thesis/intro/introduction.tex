@@ -4,6 +4,8 @@
 	\markboth{Introduction}{}
 	\textcolor{red}{Das ist wohl etwas zu dick aufgetragen.}
 
+
+
 	In this thesis, we introduce a damped wave equation to model the mechanistic behavior of a cardiomyocyte on the level of its sarcomeres. 
 
 
@@ -662,12 +664,7 @@ $a_0$ & \textit{normal}-length difference of the measure points [m] \\
 $P$ & outer force [N] \\
 $c$ & friction constant [kg/s] \\
 $\kappa$ & pull-back constant due to distortion [kg/s$^2$] \\
-$\lambda_i$ & Stretch Ratio in the i-th segment
 \end{tabular}
-
-\begin{equation*}
-	\lambda_i = \frac{u_{i+1} - u_i}{a_0} + 1
-\end{equation*}
 
 
 
@@ -682,7 +679,7 @@ What \textbf{boundary conditions} are interesting to us?
 
 What can we say about $P^{i,j}$, that is the force between $u_{i,j}$ and its four neighbours?
 \begin{equation*}
-	P^{i,j} = \eta \lambda_i + Q_{active}(t)
+	P^{i,j} = Q_{active}(t)
 \end{equation*}
 
 \textcolor{red}{Frage an Sie Herr Dondl: Haben wir hier nicht zweimal das Element einer Feder implementiert, einmal über E und den Laplace operator, und einmal über P und die Stretch Ratio $\eta \lambda$?}
@@ -716,13 +713,31 @@ Since in this model, we restrict on mechanic behavior of the cell, we leave conc
 
 
 
-Note
 
 
 \newpage
 
 \subsection*{The Elasticity Module E}
-\textcolor{red}{How are we going to implement the elasticity module?}
+\operatorname{div}
+We consider an elasticity module $E$ as a function of $\mathbb{R}^2$ on the reference configuration. We imagine $E$ living on the springs attaching the Z-disks.
+\begin{equation*}
+	E: \mathbb{R}^2 \rightarrow \mathbb{R}^{2 \times 2}, (x,y) \mapsto E(x,y)
+\end{equation*}
+
+
+Recall that the Laplace is defined as
+\begin{equation*}
+	\Delta u = div (\nabla u)
+\end{equation*}
+Thus we obtain for a general (non-constant) $E$, \textcolor{red}{right?}
+\begin{equation*}
+	\Delta E u = div E (\nabla u)
+\end{equation*}
+
+Discretization of this term yields:
+
+
+
 
 {\Large Approaches}
 \begin{itemize}

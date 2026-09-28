@@ -1,5 +1,6 @@
 # ToDo:
-# implement parameters, especially E as functions E(t, u)
+# The 1D-Solution comes for free as a side dish by implementing the 2D Version (correct) and setting i=1 
+
 # Properly define E
 
 
@@ -68,10 +69,15 @@ eqns <- c()
 
 
 
-                                          # 2. - a) Wave/Elasticity Term E
+                                          # 2. - a) Wave/Elasticity Term E: 
+                                              # as a function of i,j. Building the operator with the divergence.
                                           # 2. - b) Damping Term c
-                                          # 2. - c) P-Term (eta*lambda + Q_Active-Contraction)
+                                              # as a function of i,j 
+                                          # 2. - c) P-Term Q_Active-Contraction
+                                              # as a function of i,j 
                                           # 2. - d) Retraction Force Term kappa
+
+
 
 
 
