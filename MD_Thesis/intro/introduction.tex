@@ -634,36 +634,30 @@ Die aktive Kontraktion $f$ ist eine Funktion in der Calciumkonzentration. Sie va
 The damped wave equation we implement is the following:
 
 \begin{equation*}
-	\delta_0 \ddot{u_i} = \frac{E}{a_0^{2}} \frac{\partial u}{\partial^2 x} - c \dot{u}   - \kappa u + \frac{1}{a_0} \frac{\partial P}{\partial x}
+	\delta_0 \ddot{u_i} = \frac{1}{a_0^{2}} \operatorname{div} E \  \nabla u  - c \dot{u}   - \kappa u + \frac{1}{a_0} \frac{\partial P}{\partial x}
 \end{equation*}
 Here,
 \begin{itemize}
-	\item The term $\frac{E}{a_0^{2}} \frac{\partial u}{\partial^2 x}$ is the ordinary wave equation added by a damping term linear in its velocity $- c \dot{u}$.
+	\item The term $\frac{1}{a_0^{2}} \operatorname{div} E \  \nabla u$ is the ordinary wave equation in a, not necessarily linear elasticity module $E$, added by a damping term linear in its velocity $- c \dot{u}$.
 	\item The term $\kappa u$ serves as a retraction force. It is linear in the materials distortion. We think of it originating by interaction with cellular components, minimizing intracellular tension.
 	\item The vector field $P$ will model an active force acting on, respectively in the cell, mainly contraction.
 \end{itemize}
-
-Discretization done in 2 dimensions, yields the form we will implement:
-
-\begin{align*}
-	\delta_0 \ddot{u}_{i,j} = \underbrace{\frac{E}{{a_0}^2} (u_{i+1,j} +  u_{i-1,j } + u_{i,j+1} + u_{i,j-1} - 4 u_{i,j} )}_{\sim \frac{\partial u_{i,j}}{\partial^2 x}} - c \dot{u_{i,j}}\\
-	+ \underbrace{\frac{1}{a_0} (P^{i+1,j} - P^{i-1,j} + P^{i,j+1} - P^{i,j-1})}_{ \sim \frac{\partial P^{i,j}}{\partial x}} - \kappa u_{i,j}
-\end{align*}
 
 \newpage
 Legende \newline
 
 \noindent
 \begin{tabular}{ll}
-$u$ & displacement [m] \\
-$\dot{u}$ & velocity [m/s] \\
-$\ddot{u}$ & acceleration [m/s$^2$] \\
-$\delta_0$ & massdensity [kg/m] \\
-$E$ & Elasticity module [Pa] \\
-$a_0$ & \textit{normal}-length difference of the measure points [m] \\
-$P$ & outer force [N] \\
-$c$ & friction constant [kg/s] \\
-$\kappa$ & pull-back constant due to distortion [kg/s$^2$] \\
+	$u$ & displacement [m] \\
+	$\dot{u}$ & velocity [m/s] \\
+	$\ddot{u}$ & acceleration [m/s$^2$] \\
+	$\delta_0(x,y)$ & massdensity [kg/m] \\
+	$E(x,y)$ & Elasticity module [Pa] \\
+	$a_x(x,y)$ & \textit{normal}-length difference \textit{on the x-axis} of the mass points [m] \\
+	$a_y(x,y)$ & \textit{normal}-length difference \textit{on the y-axis} of the mass points [m] \\
+	$P(t,x,y)$ & outer force [N] \\
+	$c(x,y)$ & friction distribution [kg/s] \\
+	$\kappa(x,y)$ & distribution of pull-back constant due to distortion [kg/s$^2$] \\
 \end{tabular}
 
 
@@ -675,6 +669,7 @@ What \textbf{boundary conditions} are interesting to us?
 	$-P(0) = P(L) = 0$ & "Loose Ends" \\
 	$-u(0) = u(L) = 0$ & "fixed Ends"
 \end{tabular}
+\newline 
 \textcolor{blue}{currently we implement the left hand side fixed, whereas upper, lower and right hand side have loose conditions.}
 
 What can we say about $P^{i,j}$, that is the force between $u_{i,j}$ and its four neighbours?
@@ -682,7 +677,6 @@ What can we say about $P^{i,j}$, that is the force between $u_{i,j}$ and its fou
 	P^{i,j} = Q_{active}(t)
 \end{equation*}
 
-\textcolor{red}{Frage an Sie Herr Dondl: Haben wir hier nicht zweimal das Element einer Feder implementiert, einmal über E und den Laplace operator, und einmal über P und die Stretch Ratio $\eta \lambda$?}
 
 Since in this model, we restrict on mechanic behavior of the cell, we leave conceptions about electrophysiology and calcium transients aside and implement active contraction as a \textit{given, time-dependant function}. Thus it will resemble the pacing of the cell.
 
@@ -713,43 +707,52 @@ Since in this model, we restrict on mechanic behavior of the cell, we leave conc
 
 
 
-
-
-\newpage
-
 \subsection*{The Elasticity Module E}
 We consider an elasticity module $E$ as a function of $\mathbb{R}^2$ on the reference configuration. We imagine $E$ living on the springs attaching the Z-disks.
 \begin{equation*}
-	E: \mathbb{R}^2 \rightarrow \mathbb{R}^{2 \times 2}, (x,y) \mapsto E(x,y)
+	E: \mathbb{R}^2 \rightarrow \mathbb{R}^{2 \times 2}, (x,y) \mapsto E(x,y) = 
+	\begin{pmatrix} 
+		\mu_x(x,y) & 0 \\
+		0 & \mu_y(x,y) 
+	\end{pmatrix}
 \end{equation*}
 
-
-Recall that the Laplace is defined as
-
-\begin{equation*}
-	\Delta u = \operatorname{div} (\nabla u)
-\end{equation*}
-Thus we obtain for a general (non-constant) $E$, \textcolor{red}{right?}
-
-\begin{equation*}
-	\Delta E u = \operatorname{div} E (\nabla u)
-\end{equation*}
-
-Discretization of this term yields:
+Thus in the above equation, we have
 \begin{align*}
-	x
+	\operatorname{div} E \nabla u &= \operatorname{div} 
+	\begin{pmatrix}
+		\mu_x(x,y) \partial_x u \\
+		\mu_y(x,y) \partial_y u
+	\end{pmatrix} 
+								  =  \partial_x (\mu_x(x,y) \partial_x u) + \partial_y (\mu_y(x,y) \partial_y u)
 \end{align*}
+Using the product rule, we obtain
+\begin{equation}\label{eq:elasticity_x}
+	\partial_x (\mu_x(x,y) \partial_x u) = (\partial_x \mu_x(x,y)) (\partial_x u) + \mu_x(x,y) \partial_{x}^{2} u 
+\end{equation}
+
+and likewise for $y$-direction
+\begin{equation}\label{eq:elasticity_y}
+	\partial_y (\mu_y(x,y) \partial_y u) = (\partial_y \mu_y(x,y)) (\partial_y u) + \mu_y(x,y) \partial_{y}^{2} u.
+\end{equation}
 
 
 
 
+Discretization of \eqref{eq:elasticity_x} term (mit Halbschritten) \textcolor{red}{yields}:
+\begin{align*}
+	\partial_x (\mu_x(x,y) \partial_x u) &\sim (\frac{\mu_x(i+1,j) - \mu_x(i,j)}{a_x(i,j)}) (\frac{u(i+1,j) - u(i,j)}{a_x(i,j)}) \\
+										 &+ \mu_x(i,j) \underbrace{\frac{u(i+1,j) + u(i-1,j) - 2u(i,j) }{a_x(i+1,j) + a_x(i,j)}}_{\text{discrete second derivative}}
+\end{align*}
+And likewise for \eqref{eq:elasticity_y}
 
-{\Large Approaches}
-\begin{itemize}
-	\item Define a proper elasticity module carrying the information of the springs. Derive the equation by discretizization of $E$. \textcolor{blue}{my favorite}.
-\end{itemize}
 
-Nonlinear, non-constant. How do we implement E?
+Discretization done in 2 dimensions, yields the form we will implement:
+
+\begin{align*}
+	\delta_0 \ddot{u}_{i,j} = \underbrace{\frac{E}{{a_0}^2} (u_{i+1,j} +  u_{i-1,j } + u_{i,j+1} + u_{i,j-1} - 4 u_{i,j} )}_{\sim \frac{\partial u_{i,j}}{\partial^2 x}} - c \dot{u_{i,j}}\\
+	+ \underbrace{\frac{1}{a_0} (P^{i+1,j} - P^{i-1,j} + P^{i,j+1} - P^{i,j-1})}_{ \sim \frac{\partial P^{i,j}}{\partial x}} - \kappa u_{i,j}
+\end{align*}
 
 
 
