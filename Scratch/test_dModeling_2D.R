@@ -1,3 +1,5 @@
+library(dMod)
+library(plotly)
 # ToDo:
 # The 1D-Solution comes for free as a side dish by implementing the 2D Version (correct) and setting i=1 
 
@@ -7,38 +9,46 @@
 # Layout: 1. Implement Nodes -> 2. implement all interactions of nodes (E, P, c, kappa) as distributions. 3. Define the interactions for each term 4. Model.
 
 
-library(dMod)
-library(plotly)
-
-
 
 
                                           # 1. - Defining States/Nodes ---
 
 
 # ============================================================
-# GRID SIZE:
-# u_1,1  ... u_1,Nx
-# ...        ...
-# u_Nx_1 ... u_Nx_Ny
-# ============================================================
+# GRID SIZE: A \in \mathbb{R}^{Nx x Ny}
 
 Nx <- 7
 Ny <- 3
 
 
 # ============================================================
-# Choice of parameters
+# Choice of parameters # CAREFUL - THESE SHOULD be changed according to Nx and Ny
 # ============================================================
 
 parms <- c(
-  E      = 1,
-  delta0 = 1,
-  a0     = 1,
-  eta    = 0.2,
-  c      = 0.8,
-  kappa  = 0.05
-)
+  #for E
+  Ex      = 1,
+  sigma_x = 2,
+  Ey      = 10,
+  sigma_y = 10,
+  
+  # for damping
+  ceta      = 0.8,
+  sigma_ceta_x = 20,
+  sigma_ceta_y = 20,
+  
+  #for kappa
+  kappa  = 0.05,  
+  sigma_k_x = 20,
+  sigma_k_y = 20,
+  
+  #for Q
+  r = 1,
+  sigma_Q = 10,
+  
+  #for 
+  a0     = 1
+  )
 
 
 
@@ -57,50 +67,130 @@ v_name <- function(i, j) {
 
 # ============================================================
 # EQUATION CONTAINER
-# ============================================================
 
 eqns <- c()
 
-
-
-
-
-
-
-
-
-                                          # 2. - a) Wave/Elasticity Term E: 
-                                              # as a function of i,j. Building the operator with the divergence.
-                                          # 2. - b) Damping Term c
-                                              # as a function of i,j 
-                                          # 2. - c) P-Term Q_Active-Contraction
-                                              # as a function of i,j 
-                                          # 2. - d) Retraction Force Term kappa
-
-
-
-
-
-# ============================================================
-# Buildung the coupled ODE System
-#
-# Boundary conditions:
-#
-# Left:
-#     u = 0  --> fixed
-#
-# Right:
-#     free
-#
-# Top:
-#     free
-#
-# Bottom:
-#     free
 # ============================================================
 
-for (i in 2:Nx) {
+
+
+
+# a) Wave/Elasticity Term E: 
+       # as a function of i,j. Building the operator with the divergence.
+
+
+
+E <- function(x, y, Nx, Ny, sigma_x, sigma_y, Ex, Ey) {
   
+  mux <- (Nx + 1) / 2
+  muy <- (Ny + 1) / 2
+  
+  G_x <- dnorm(x, mux, sigma_x) / dnorm(mux, mux, sigma_x)
+  G_y <- dnorm(y, muy, sigma_y) / dnorm(muy, muy, sigma_y)
+  
+  matrix(c(
+    Ex * G_x, 0,
+    0, Ey * G_y
+  ), nrow = 2, byrow = TRUE)
+}
+
+
+# Test at the center
+E(
+  x = 4,
+  y = 7,
+  Nx = Nx,
+  Ny = Ny,
+  sigma_x = parms["sigma_x"],
+  sigma_y = parms["sigma_y"],
+  Ex = parms["Ex"],
+  Ey = parms["Ey"]
+)
+
+
+                                          
+
+#b) Damping Term c - can be modified inhomogenously.
+      # c returns a normal distributed variable, centered, with mean z and standard deviations sigma
+
+c <- function(x, y, z, Nx, Ny, sigma_k_x, sigma_k_y) {
+  
+  mux <- (Nx + 1) / 2
+  muy <- (Ny + 1) / 2
+  
+  Gx <- dnorm(x, mean = mux, sd = sigma_x)
+  Gy <- dnorm(y, mean = muy, sd = sigma_y)
+  
+  z * Gx * Gy /
+    (dnorm(mux, mux, sigma_x) * dnorm(muy, muy, sigma_y))
+}
+
+#Testing c
+
+c(4, 2, parms[["ceta"]], Nx, Ny, 2, 1)
+# 2. - d) Retraction Force  - kappa
+
+
+
+
+
+
+#c) Retraction Force kappa
+      # k returns a random variable, centered, with mean z and standard deviations sigma_k_x and sigma_k_y
+k <- function(x, y, z, Nx, Ny, sigma_k_x, sigma_k_y) {
+  
+  mux <- (Nx + 1) / 2
+  muy <- (Ny + 1) / 2
+  
+  Gx <- dnorm(x, mean = mux, sd = sigma_x)
+  Gy <- dnorm(y, mean = muy, sd = sigma_y)
+  
+  z * Gx * Gy /
+    (dnorm(mux, mux, sigma_x) * dnorm(muy, muy, sigma_y))
+}
+
+#Testing k
+
+k(4, 2, parms[["kappa"]], Nx, Ny, 2, 1)
+
+
+
+
+
+
+
+#d) Active Contraction Force P
+    #P is a set, oscillating function. May be replaced by more fitting data. Its Peaks are also distributed normally (This time 1D), centered,
+    # the Gaussian has peak r as a scaling factor.
+    #     Implementing Q(t).
+
+
+Q_active <- "(0.5*(1 + tanh(8*sin(2*pi*time)))) * sqrt(2*pi) * parms[['sigma_Q']] * dnorm(parms[['r']], mean = (Nx + 1)/2, sd = parms[['sigma_Q']])"
+
+times <- seq(0, 1, length.out = 1000)
+
+Q <- sapply(times, function(time) {
+  eval(parse(text = Q_active))
+})
+
+#Testing Q
+range(Q)
+min(Q)
+max(Q)
+
+
+
+
+
+
+
+
+
+
+
+#Beginning For Loop
+for (i in 1:Nx) {
+
   for (j in 1:Ny) {
     
     # --------------------------------------------------------
@@ -111,103 +201,35 @@ for (i in 2:Nx) {
     vij <- v_name(i, j)
     
     
-    # --------------------------------------------------------
-    # LEFT NEIGHBOUR
-    #
-    # If i = 2, the neighbour i = 1 is the fixed boundary:
-    #
-    #     u_(1,j) = 0
-    # --------------------------------------------------------
+    # Left Boundary is fixed:
     
-    if (i == 2) {
-      uL <- "0"
-    } else {
-      uL <- u_name(i - 1, j)
-    }
+  if (j == 1) {
+      uij <- "0"
+      vij <- "0"
+  }
+   
     
+
     
-    # --------------------------------------------------------
-    # RIGHT NEIGHBOUR
-    #
-    # Free boundary:
-    #
-    #     u_(Nx+1,j) = u_(Nx,j)
-    #
-    # This corresponds to du/dx = 0.
-    # --------------------------------------------------------
-    
-    if (i == Nx) {
-      uR <- uij
-    } else {
-      uR <- u_name(i + 1, j)
-    }
-    
-    
-    # --------------------------------------------------------
-    # LOWER NEIGHBOUR
-    #
-    # Free boundary:
-    #
-    #     u_(i,0) = u_(i,1)
-    # --------------------------------------------------------
-    
-    if (j == 1) {
-      uD <- uij
-    } else {
-      uD <- u_name(i, j - 1)
-    }
-    
-    
-    # --------------------------------------------------------
-    # UPPER NEIGHBOUR
-    #
-    # Free boundary:
-    #
-    #     u_(i,Ny+1) = u_(i,Ny)
-    # --------------------------------------------------------
-    
-    if (j == Ny) {
-      uU <- uij
-    } else {
-      uU <- u_name(i, j + 1)
-    }
+
     
     
     
     
-    
-    # ========================================================
-    # 2D Discrete Laplacian - "Fünfpunktlaplace"
-    #
-    #     d²u/dx² + d²u/dy²
-    #
-    #     ~ uR + uL + uU + uD - 4*uij
-    # ========================================================
-    
-    laplace <- paste0(
-      "(",
-      uR, " + ",
-      uL, " + ",
-      uU, " + ",
-      uD, " - 4*", uij,
-      ")"
-    )
-    
-    
-    
-    
-    
-    # Here, the P-Term is established. 
-    # ========================================================
-    # X-Direction Force
-    # ========================================================
-    
-    
-    # P = eta*lambda + Q(t).
-    #     Implementing Q(t)
-Q_active <- "(0.5*(1 + tanh(8*sin(2*pi*time))))"
-    
-    
+
+
+# Constructing discrete Laplace. Ensure that edge cases with i==1, j==1 are not violated.
+
+
+
+# ========================================================
+# 2D Discrete Laplacian - "Fünfpunktlaplace"
+#
+#     d²u/dx² + d²u/dy²
+#
+#     ~ uR + uL + uU + uD - 4*uij
+# ========================================================
+
     # --------------------------------------------------------
     # Outgoing force on right face
     # --------------------------------------------------------
@@ -351,11 +373,7 @@ Q_active <- "(0.5*(1 + tanh(8*sin(2*pi*time))))"
     
     
     
-    
-    
-    
-    
-    
+
     
     
     

@@ -634,13 +634,13 @@ Die aktive Kontraktion $f$ ist eine Funktion in der Calciumkonzentration. Sie va
 The damped wave equation we implement is the following:
 
 \begin{equation*}
-	\delta_0 \ddot{u_i} = \frac{E}{a_0^{2}} \frac{\partial u}{\partial^2 x} - c \dot{u} + \frac{1}{a_0} \frac{\partial P}{\partial x}  - \kappa u
+	\delta_0 \ddot{u_i} = \frac{E}{a_0^{2}} \frac{\partial u}{\partial^2 x} - c \dot{u}   - \kappa u + \frac{1}{a_0} \frac{\partial P}{\partial x}
 \end{equation*}
 Here,
 \begin{itemize}
 	\item The term $\frac{E}{a_0^{2}} \frac{\partial u}{\partial^2 x}$ is the ordinary wave equation added by a damping term linear in its velocity $- c \dot{u}$.
-	\item The vector field $P$ will model an active force acting on, respectively in the cell, mainly contraction.
 	\item The term $\kappa u$ serves as a retraction force. It is linear in the materials distortion. We think of it originating by interaction with cellular components, minimizing intracellular tension.
+	\item The vector field $P$ will model an active force acting on, respectively in the cell, mainly contraction.
 \end{itemize}
 
 Discretization done in 2 dimensions, yields the form we will implement:
@@ -718,7 +718,6 @@ Since in this model, we restrict on mechanic behavior of the cell, we leave conc
 \newpage
 
 \subsection*{The Elasticity Module E}
-\operatorname{div}
 We consider an elasticity module $E$ as a function of $\mathbb{R}^2$ on the reference configuration. We imagine $E$ living on the springs attaching the Z-disks.
 \begin{equation*}
 	E: \mathbb{R}^2 \rightarrow \mathbb{R}^{2 \times 2}, (x,y) \mapsto E(x,y)
@@ -726,23 +725,28 @@ We consider an elasticity module $E$ as a function of $\mathbb{R}^2$ on the refe
 
 
 Recall that the Laplace is defined as
+
 \begin{equation*}
-	\Delta u = div (\nabla u)
+	\Delta u = \operatorname{div} (\nabla u)
 \end{equation*}
 Thus we obtain for a general (non-constant) $E$, \textcolor{red}{right?}
+
 \begin{equation*}
-	\Delta E u = div E (\nabla u)
+	\Delta E u = \operatorname{div} E (\nabla u)
 \end{equation*}
 
 Discretization of this term yields:
+\begin{align*}
+	x
+\end{align*}
+
 
 
 
 
 {\Large Approaches}
 \begin{itemize}
-	\item Define spring constants $l_{ij}, k_{ij}$ as in the introduction. Derive elasticity module from there.
-	\item Define a proper elasticity module carrying the information of the springs. Derive the equation by discretizization of $E$. \{textcolor{blue}{my favorite}.
+	\item Define a proper elasticity module carrying the information of the springs. Derive the equation by discretizization of $E$. \textcolor{blue}{my favorite}.
 \end{itemize}
 
 Nonlinear, non-constant. How do we implement E?

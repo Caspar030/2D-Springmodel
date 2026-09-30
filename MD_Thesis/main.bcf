@@ -2350,18 +2350,7 @@
     <bcf:citekey order="4">EckGarcke2017</bcf:citekey>
     <bcf:citekey order="5">EckGarcke2017</bcf:citekey>
     <bcf:citekey order="6">EckGarcke2017</bcf:citekey>
-    <bcf:citekey order="7">Holtzhausen2024</bcf:citekey>
-    <bcf:citekey order="8">Kley2021</bcf:citekey>
-    <bcf:citekey order="9">Unterbusch2017</bcf:citekey>
-    <bcf:citekey order="10">vanderVen2000gFilamin</bcf:citekey>
-    <bcf:citekey order="11">Unterbusch2017</bcf:citekey>
-    <bcf:citekey order="12">orfanos2025</bcf:citekey>
-    <bcf:citekey order="13">EckGarcke2017</bcf:citekey>
-    <bcf:citekey order="14">Holtzhausen2024</bcf:citekey>
-    <bcf:citekey order="15">Kley2021</bcf:citekey>
-    <bcf:citekey order="16">Unterbusch2017</bcf:citekey>
-    <bcf:citekey order="17">vanderVen2000gFilamin</bcf:citekey>
-    <bcf:citekey order="18">orfanos2025</bcf:citekey>
+    <bcf:citekey order="7">EckGarcke2017</bcf:citekey>
   </bcf:section>
   <!-- SORTING TEMPLATES -->
   <bcf:sortingtemplate name="anyt">
