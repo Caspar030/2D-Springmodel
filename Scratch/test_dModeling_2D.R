@@ -52,25 +52,10 @@ parms <- c(
 
 
 
-# ============================================================
-# STATE NAMES
-# ============================================================
 
-u_name <- function(i, j) {
-  paste0("u_", i, "_", j)
-}
-
-v_name <- function(i, j) {
-  paste0("v_", i, "_", j)
-}
-
-
-# ============================================================
-# EQUATION CONTAINER
-
-eqns <- c()
-
-# ============================================================
+# I - Grid Spacing function a
+      # The functions a_x and a_y return the spacing between mass points.
+      # a_x(i,j) gives the spacing between mass points a_(i+1,j) and a_(i,j)
 
 
 
@@ -185,6 +170,25 @@ max(Q)
 
 
 
+# ============================================================
+# Functions to construct states
+# ============================================================
+
+u_name <- function(i, j) {
+  paste0("u_", i, "_", j)
+}
+
+v_name <- function(i, j) {
+  paste0("v_", i, "_", j)
+}
+
+
+# ============================================================
+# EQUATION CONTAINER
+
+eqns <- c()
+
+# ============================================================
 
 
 
@@ -194,7 +198,7 @@ for (i in 1:Nx) {
   for (j in 1:Ny) {
     
     # --------------------------------------------------------
-    # Naming Variables:
+    # Naming Variables with above functions.
     # --------------------------------------------------------
     
     uij <- u_name(i, j)
@@ -216,8 +220,6 @@ for (i in 1:Nx) {
     
     
     
-
-
 # Constructing discrete Laplace. Ensure that edge cases with i==1, j==1 are not violated.
 
 
@@ -230,121 +232,6 @@ for (i in 1:Nx) {
 #     ~ uR + uL + uU + uD - 4*uij
 # ========================================================
 
-    # --------------------------------------------------------
-    # Outgoing force on right face
-    # --------------------------------------------------------
-    
-    if (i == Nx) {
-      
-      # Free right boundary:
-      #
-      #     P_right = 0
-      
-      Px_right <- "0"
-      
-    } else {
-      
-      # Spring between (i,j) and (i+1,j):
-      #
-      # lambda = 1 + (uR - uij)/a0
-      #
-      # P = eta * lambda
-      
-      Px_right <- paste0(
-        "eta*(1 + (",
-        uR,
-        " - ",
-        uij,
-        ")/a0)"
-      )
-    }
-    
-    
-    # --------------------------------------------------------
-    # Incoming force from left face
-    # --------------------------------------------------------
-    
-    if (i == 2) {
-      
-      # Spring between fixed boundary and first dynamic point:
-      #
-      # left displacement = 0
-      
-      Px_left <- paste0(
-        "eta*(1 + (",
-        uij,
-        " - 0)/a0)"
-      )
-      
-    } else {
-      
-      # Spring between (i-1,j) and (i,j)
-      
-      Px_left <- paste0(
-        "eta*(1 + (",
-        uij,
-        " - ",
-        uL,
-        ")/a0)"
-      )
-    }
-    
-    
-    # ========================================================
-    # Y-Direction Force
-    # ========================================================
-    
-    # --------------------------------------------------------
-    # Upper face
-    # --------------------------------------------------------
-    
-    if (j == Ny) {
-      
-      # Free upper boundary:
-      #
-      #     P_upper = 0
-      
-      Py_up <- "0"
-      
-    } else {
-      
-      # Spring between (i,j) and (i,j+1)
-      
-      Py_up <- paste0(
-        "eta*(1 + (",
-        uU,
-        " - ",
-        uij,
-        ")/a0)"
-      )
-    }
-    
-    
-    # --------------------------------------------------------
-    # Lower face
-    # --------------------------------------------------------
-    
-    if (j == 1) {
-      
-      # Free lower boundary:
-      #
-      #     P_lower = 0
-      
-      Py_down <- "0"
-      
-    } else {
-      
-      # Spring between (i,j-1) and (i,j)
-      
-      Py_down <- paste0(
-        "eta*(1 + (",
-        uij,
-        " - ",
-        uD,
-        ")/a0)"
-      )
-    }
-    
     
     # ========================================================
     # Force Divergence: P
@@ -372,8 +259,6 @@ for (i in 1:Nx) {
     
     
     
-    
-
     
     
     
@@ -432,6 +317,14 @@ for (i in 1:Nx) {
 # ============================================================
 
 print(eqns)
+
+
+
+
+
+
+
+
 
 
 # ============================================================

@@ -633,14 +633,16 @@ Die aktive Kontraktion $f$ ist eine Funktion in der Calciumkonzentration. Sie va
 \chapter{The spring model: a finite difference approach for linear elastic material}
 The damped wave equation we implement is the following:
 
+\textcolor{red}{überarbeiten. der Term $c \dot{u}$ ist nicht so sinnvoll. Wir brauchen eher eine Dämpfungskraft proportional zur Deformationsgeschwindigkeit $\partial_x \dot{u}$.}
+
 \begin{equation*}
-	\delta_0 \ddot{u_i} = \frac{1}{a_0^{2}} \operatorname{div} E \  \nabla u  - c \dot{u}   - \kappa u + \frac{1}{a_0} \frac{\partial P}{\partial x}
+	\delta_0 \ddot{u_i} = \operatorname{div} E \  \nabla u  - c \dot{u}   - \kappa u + \frac{\partial P}{\partial x}
 \end{equation*}
 Here,
 \begin{itemize}
-	\item The term $\frac{1}{a_0^{2}} \operatorname{div} E \  \nabla u$ is the ordinary wave equation in a, not necessarily linear elasticity module $E$, added by a damping term linear in its velocity $- c \dot{u}$.
+	\item The term $ \operatorname{div} E \  \nabla u$ is the ordinary wave equation in a, not necessarily linear elasticity module $E$, added by a damping term linear in its velocity $- c \dot{u}$.
 	\item The term $\kappa u$ serves as a retraction force. It is linear in the materials distortion. We think of it originating by interaction with cellular components, minimizing intracellular tension.
-	\item The vector field $P$ will model an active force acting on, respectively in the cell, mainly contraction.
+	\item The vector field $P$ will model an active force acting as sarcomere contraction (cross bridge cycle).
 \end{itemize}
 
 \newpage
@@ -660,6 +662,11 @@ Legende \newline
 	$\kappa(x,y)$ & distribution of pull-back constant due to distortion [kg/s$^2$] \\
 \end{tabular}
 
+\theoremstyle{remark}
+\newtheorem{anmerkung}{Anmerkung}
+\begin{Anmerkung}
+	For the discrete Derivative, the length of mass points $a_x, a_y$ should be updated in each step by the current deformation $u$. Thus, it would make $a_x, a_y$ functions of $u$ in the denominator of the derivative. This is not feasable for solving, thus we make the simplification of calculating with given $a_x$ and $a_y$.
+\end{Anmerkung}
 
 
 What \textbf{boundary conditions} are interesting to us?
@@ -672,9 +679,9 @@ What \textbf{boundary conditions} are interesting to us?
 \newline 
 \textcolor{blue}{currently we implement the left hand side fixed, whereas upper, lower and right hand side have loose conditions.}
 
-What can we say about $P^{i,j}$, that is the force between $u_{i,j}$ and its four neighbours?
+What can we say about $P^{i,j}$, that is the force between $u_{i,j}$ and its four neighbours? We construct it by a given, oscillating, time dependant function $Q$ and a scaling by a distribution. In the implementation, we scaled it with a 2D normal distribution.
 \begin{equation*}
-	P^{i,j} = Q_{active}(t)
+	P^{i,j} = Q_{active}(t) \ \mathcal{N}(\mu, \sigma)
 \end{equation*}
 
 
@@ -741,18 +748,37 @@ and likewise for $y$-direction
 
 Discretization of \eqref{eq:elasticity_x} term (mit Halbschritten) \textcolor{red}{yields}:
 \begin{align*}
-	\partial_x (\mu_x(x,y) \partial_x u) &\sim (\frac{\mu_x(i+1,j) - \mu_x(i,j)}{a_x(i,j)}) (\frac{u(i+1,j) - u(i,j)}{a_x(i,j)}) \\
-										 &+ \mu_x(i,j) \underbrace{\frac{u(i+1,j) + u(i-1,j) - 2u(i,j) }{a_x(i+1,j) + a_x(i,j)}}_{\text{discrete second derivative}}
+  \partial_x \bigl(\mu_x(x,y)\, \partial_x u\bigr)
+  &\sim \left( \frac{\mu_x(i+1,j) - \mu_x(i,j)}{a_x(i,j)} \right)
+        \left( \frac{u(i+1,j) - u(i,j)}{a_x(i,j)} \right) \\
+  &\quad + \mu_x(i,j)\, 
+        \underbrace{ \frac{2}{a_x(i,j) + a_x(i-1,j)} \left( \frac{u(i+1,j) - u(i,j)}{a_x(i,j)}
+                         - \frac{u(i,j) - u(i-1,j)}{a_x(i-1,j)} \right)}
+        _{\text{discrete second derivative} \, \Delta_x u(i,j)} \\
+  &=: D_x^+ \mu_x(i,j)\, D_x^+ u(i,j) + \mu_x(i,j)\, \Delta_x u(i,j)
 \end{align*}
-And likewise for \eqref{eq:elasticity_y}
+Substituting $y$ for $x$ yields the symmetric equation for \eqref{eq:elasticity_y}.
 
 
-Discretization done in 2 dimensions, yields the form we will implement:
+\subsection*{The $P$-Term regarding active contraction}
+
+
+
+
+Working with substitutes to model second degree derivatives, we set:
+\begin{equation*}
+	\frac{du}{dt} = v(t)
+\end{equation*}
+
+Concludingly, the equation we implement is:
 
 \begin{align*}
-	\delta_0 \ddot{u}_{i,j} = \underbrace{\frac{E}{{a_0}^2} (u_{i+1,j} +  u_{i-1,j } + u_{i,j+1} + u_{i,j-1} - 4 u_{i,j} )}_{\sim \frac{\partial u_{i,j}}{\partial^2 x}} - c \dot{u_{i,j}}\\
-	+ \underbrace{\frac{1}{a_0} (P^{i+1,j} - P^{i-1,j} + P^{i,j+1} - P^{i,j-1})}_{ \sim \frac{\partial P^{i,j}}{\partial x}} - \kappa u_{i,j}
+	\frac{1}{ \delta (i,j) } \left( \left( & D_x^+ \mu_x(i,j)\, D_x^+ u(i,j) + \mu_x(i,j)\, \Delta_x u(i,j) \right) + \left( D_y^+ \mu_y(i,j)\, D_y^+ u(i,j) + \mu_y(i,j)\, \Delta_y u(i,j) \right) \\
+	&+ c(i,j)v(i,j) + \kappa(i,j) u(i,j)  \right) + 
 \end{align*}
+
+
+\Todo{Rechencluster BaWü Zugang für Berechnungen. Mit Viv reden}.
 
 
 
@@ -767,8 +793,6 @@ Discretization done in 2 dimensions, yields the form we will implement:
 
 
 
-\chapter{Mathematische Modellierung - Eck, Garcke, Knabner}
-\textbf{was möchte ich hiervon wissen?} $\rightarrow$ Wie entstehen Wellen in der Modellierung bei Kontinuumsmechanik? Was für ein Setting bei FilaminC bräuchte man, um das entstehen von Calcium Waves intracellulär mitzunehmen?
 
 
 %%%%%%%%%%%%					Vom Modell zur Differentialgleichung				%%%%%%%%%%%%%
@@ -831,7 +855,6 @@ erhält man den exakten Wert für $p$.
 
 Weiterhin wird gezeigt, dass das diskrete Model $x(t_{n+1}) = r x(t_n)$ in einer art und weise "genau" ist (impliziter und expliziter euler).
 
-\subsection{Stabwerke}
 
 
 
@@ -841,22 +864,4 @@ Weiterhin wird gezeigt, dass das diskrete Model $x(t_{n+1}) = r x(t_n)$ in einer
 \begin{definition}[Elastisch]\cite[p.49]{EckGarcke2017} An object is called \textit{elastic} if, once force is not applied anymore, it goes back in its original state.
 \end{definition}
 Hier gibt es drei Beispiele zu Stabwerken die modelliert werden. Unter den Modellannahmen, insbesondere der geometrischen Linearisierung, führen diese Modell zu linearen Gleichungssystemen, die die Auslenkung beschreiben.
-
-\subsection*{Ordinary Differential equations}
-Hängen die relevanten Größen nur von einer Variable ab, erhält man eine gewöhnliche Differentialgleichung.
-
-\subsubsection*{Eindimensionale Schwingungen}
-Ein an einer Feder befestigter Massepunkt der Masse $m$. 
-\begin{equation*}
-	m \ddot{x} = F
-\end{equation*}
-Im einfachsten Fall ist die Kraft linear zur Auslenkung. Beschrieben über die Federkonstante $k$,
-\begin{equation*}
-	F_F = -k x
-\end{equation*}
-Auf Seite p.141 wird diese etwas erweitert mit rückstellkraft und visköser Dämpfung zu
-\begin{equation*}
-	m \ddot{x} + \beta \dot{x} + kx = f
-\end{equation*}
-mit beliebiger zeitabhängiger rechter Seite $f$.
 
