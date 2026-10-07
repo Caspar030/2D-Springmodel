@@ -9,14 +9,30 @@ library(plotly)
 # Layout: 1. Implement Nodes -> 2. implement all interactions of nodes (E, P, c, kappa) as distributions. 3. Define the interactions for each term 4. Model.
 
 
-                                          # 1. - Defining States/Nodes ---
+
 
 
 # ============================================================
-# GRID SIZE: A \in \mathbb{R}^{Nx x Ny}
 
-Nx <- 7
-Ny <- 3
+
+                                          # 1. - Defining States/Nodes ---
+
+#        i = 1      i = 2      i = 3      ...      i = Nx
+#
+# j = 1  a_1_1      a_2_1      a_3_1      ...      a_Nx_1
+# j = 2  a_1_2      a_2_2      a_3_2      ...      a_Nx_2
+# j = 3  a_1_3      a_2_3      a_3_3      ...      a_Nx_3
+#  ...     ...        ...        ...        ...             ...
+# j = Ny  a_1_Ny     a_2_Ny     a_3_Ny     ...      a_Nx_Ny
+
+
+
+
+Nx <- 7               # for j
+Ny <- 3               # for i
+
+
+
 
 
 # ============================================================
@@ -60,7 +76,10 @@ parms <- c(
   )
 
 
-#                   Implementing all sorts of functions necessary for constructing the equation     ###
+#                   Implementing all sorts of functions necessary for constructing the PDE     ###
+
+
+
 
 #Mass density function      #here also Gaussian implement
       mass_density <- function(x, y) {
@@ -80,12 +99,12 @@ parms <- c(
 a <- function(x, y, orientation) {
   
   if (orientation == 0) {
-    # upper neighbor
-    exp(-((x)^2 + (y - 1)^2) / (2 * parms["sigma_upper"]^2))
+    # right neighbor
+    exp(-((x)^2 + (y - 1)^2) / (2 * parms["sigma_right"]^2))
     
   } else if (orientation == 1) {
-    # right neighbor
-    exp(-((x - 1)^2 + (y)^2) / (2 * parms["sigma_right"]^2))
+    # upper neighbor
+    exp(-((x - 1)^2 + (y)^2) / (2 * parms["sigma_upper"]^2))
   }
 }
 
@@ -161,8 +180,6 @@ D(
   Dx = parms["Dx"],
   Dy = parms["Dy"]
 )
-
-
 
 
 
@@ -246,67 +263,271 @@ max(Q)
 
 
 
+####################    Functions to construct states    ####################
 
-
-
-
-# ============================================================
-# Functions constructing states
-# ============================================================
+# These functions already inherit the boundary condition: Left == 0.
 
 u_name <- function(i, j) {
-  paste0("u_", i, "_", j)
+  if (j == 1) {
+    return("0")
+  } else {
+    return(paste0("u_", i, "_", j))
+  }
 }
 
 v_name <- function(i, j) {
-  paste0("v_", i, "_", j)
+  if (j == 1) {
+    return("0")
+  } else {
+    return(paste0("v_", i, "_", j))
+  }
 }
 
 
-# ============================================================
-# EQUATION CONTAINER
+
+
+
+
+
+
+####################    Gradient functions    #################### (might it be prettier to introduce one gradient function that takes other functions as input?)
+
+grad_u <- function(i, j) {
+  c(
+    paste0(
+      "(", u_name(i + 1, j), " - ", u_name(i, j), ") / ",
+      a(i, j, 0)   # upper neighbour
+    ),
+    
+    paste0(
+      "(", u_name(i, j + 1), " - ", u_name(i, j), ") / ",
+      a(i, j, 1)   # right neighbour
+    )
+  )
+}
+
+grad_v <- function(i, j) {
+  c(
+    paste0(
+      "(", v_name(i + 1, j), " - ", v_name(i, j), ") / ",
+      a(i, j, 0)   # upper neighbour
+    ),
+    
+    paste0(
+      "(", v_name(i, j + 1), " - ", v_name(i, j), ") / ",
+      a(i, j, 1)   # right neighbour
+    )
+  )
+}
+
+
+
+# v and w specify the entry of E
+grad_E <- function(i, j, v, w) {
+  c(
+    paste0(
+      "(", E(i + 1, j, Nx, Ny, sigma_E_x, sigma_E_y, Ex, Ey)[v, w],
+      " - ",
+      E(i, j, Nx, Ny, sigma_E_x, sigma_E_y, Ex, Ey)[v, w],
+      ") / ",
+      a(i, j, 0)
+    ),  #Upper neighbour
+      
+    
+    paste0(
+      "(", E(i, j + 1, Nx, Ny, sigma_E_x, sigma_E_y, Ex, Ey)[v, w],
+      " - ",
+      E(i, j, Nx, Ny, sigma_E_x, sigma_E_y, Ex, Ey)[v, w],
+      ") / ",
+      a(i, j, 1)
+    )  # Right neighbour
+  )
+}
+
+# v and w specify the entry of D
+grad_D <- function(i, j, v, w) {
+  c(
+    paste0(
+      "(", D(i + 1, j, Nx, Ny, sigma_D_x, sigma_D_y, Dx, Dy)[v, w],
+      " - ",
+      D(i, j, Nx, Ny, sigma_D_x, sigma_D_y, Dx, Dy)[v, w],
+      ") / ",
+      a(i, j, 0)
+    ),  #Upper neighbour
+    
+    
+    paste0(
+      "(", D(i, j + 1, Nx, Ny, sigma_D_x, sigma_D_y, Dx, Dy)[v, w],
+      " - ",
+      D(i, j, Nx, Ny, sigma_D_x, sigma_D_y, Dx, Dy)[v, w],
+      ") / ",
+      a(i, j, 1)
+    )  # Right neighbour
+  )
+}
+
+######### Second Derivative Function #### works only in the interior!!!!###
+
+partial_x2_u <- function(i, j) {
+  paste0(
+    "(",
+    u_name(i, j + 1 ), " + ",
+    u_name(i, j - 1), " - 2 * ",
+    u_name(i, j),
+    ") / ",
+    a(i, j, 0), "^2"
+  )
+}
+
+partial_y2_u <- function(i, j) {
+  paste0(
+    "(",
+    u_name(i + 1, j), " + ",
+    u_name(i - 1, j), " - 2 * ",
+    u_name(i, j),
+    ") / ",
+    a(i, j, 1), "^2"
+  )
+}
+
+# Cross-Terms: partial_x partial_y
+
+
+####################    E * grad(u)    ####################
+
+E_grad_u <- function(i, j) {
+  
+  grad <- grad_u(i, j)
+  
+  Eij <- E(
+    i, j,
+    Nx, Ny,
+    parms["sigma_E_x"],
+    parms["sigma_E_y"],
+    parms["Ex"],
+    parms["Ey"]
+  )
+  
+  c(
+    paste0(
+      Eij[1,1], " * (", grad[1], ") + ",
+      Eij[1,2], " * (", grad[2], ")"
+    ),
+    
+    paste0(
+      Eij[2,1], " * (", grad[1], ") + ",
+      Eij[2,2], " * (", grad[2], ")"
+    )
+  )
+}
+
+####################    D * grad(v)    ####################
+
+D_grad_v <- function(i, j) {
+  
+  grad <- grad_v(i, j)
+  
+  Dij <- D(
+    i, j,
+    Nx, Ny,
+    parms["sigma_D_x"],
+    parms["sigma_D_y"],
+    parms["Dx"],
+    parms["Dy"]
+  )
+  
+  c(
+    paste0(
+      Dij[1,1], " * (", grad[1], ") + ",
+      Dij[1,2], " * (", grad[2], ")"
+    ),
+    
+    paste0(
+      Dij[2,1], " * (", grad[1], ") + ",
+      Dij[2,2], " * (", grad[2], ")"
+    )
+  )
+}
+
+########## Divergence Operator          ###############
+
+
+
+
+####################    Equation container    ####################
 
 eqns <- c()
 
-# ============================================================
 
 
-# Building the equation.
 
-#Beginning For Loop
+
+
+
+
+
+
+
+
+
+
+########                    FOR LOOP STARTS     #################
+
+####################    Building equations    ####################
+
 for (i in 1:Nx) {
-
+  
   for (j in 1:Ny) {
     
     # --------------------------------------------------------
-    # Naming Variables with above functions.
+    # Naming variables
     # --------------------------------------------------------
     
     uij <- u_name(i, j)
     vij <- v_name(i, j)
     
     
-    # Left Boundary is fixed:
+    # --------------------------------------------------------
+    # Left boundary is fixed
+    # --------------------------------------------------------
     
-  if (j == 1) {
+    if (j == 1) {
       uij <- "0"
       vij <- "0"
-  }
-   
-    
-    
-# Constructing discrete Laplace. Ensure that edge cases with i==1, j==1 are not violated.
-
-
-#                 In The interior: i is not 1,Nx and j is not 1,Ny
-  
-    if (i != 1 && i != Nx && j != 1 && j != Ny) {
-print("hello")
-      
     }
     
     
+    # --------------------------------------------------------
+    # Differential operators
+    # Only calculate if upper AND right neighbour exist
+    # --------------------------------------------------------
     
+    if (i !=1 && i != Nx && j != 1 && j != Ny) {
+      
+      grad_uij <- grad_u(i, j)
+      grad_vij <- grad_v(i, j)
+      
+      E_grad_uij <- E_grad_u(i, j)
+      D_grad_vij <- D_grad_v(i, j)
+      
+      # Testing
+      print(E_grad_uij)
+      print(D_grad_uij)
+    }
+    
+    
+  } #######       For loop ending brackets.
+}
+    
+    
+    
+
+    
+    
+    
+  # And now we only need the divergence of these two :)
+
+
 
     
     
@@ -314,24 +535,10 @@ print("hello")
     
     
     
-    
-    
-    
-    
-    
-    
-    
 
-# 
-    
-    
-    
-    
-    
-    
-    
-    
-    
+
+
+
     
     
     # ========================================================
@@ -381,6 +588,23 @@ print("hello")
     )
   }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 # ============================================================
