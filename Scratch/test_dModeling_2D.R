@@ -287,9 +287,6 @@ v_name <- function(i, j) {
 
 
 
-
-
-
 ####################    Gradient functions    #################### (might it be prettier to introduce one gradient function that takes other functions as input?)
 
 grad_u <- function(i, j) {
@@ -366,8 +363,9 @@ grad_D <- function(i, j, v, w) {
   )
 }
 
-######### Second Derivative Function #### works only in the interior!!!!###
-
+######### SECOND DERIVATIVES ##############
+# for u
+#symmetric terms
 partial_x2_u <- function(i, j) {
   paste0(
     "(",
@@ -375,7 +373,7 @@ partial_x2_u <- function(i, j) {
     u_name(i, j - 1), " - 2 * ",
     u_name(i, j),
     ") / ",
-    a(i, j, 0), "^2"
+    a(i, j, 0), "*", a(i, j-1, 0)
   )
 }
 
@@ -386,11 +384,24 @@ partial_y2_u <- function(i, j) {
     u_name(i - 1, j), " - 2 * ",
     u_name(i, j),
     ") / ",
-    a(i, j, 1), "^2"
+    a(i, j, 1), "*", a(i-1,j,1)
   )
 }
 
-# Cross-Terms: partial_x partial_y
+# Cross-Terms: partial_x partial_y - by Schwarz theorem, assuming continuous differentiability C^2, the order of derivation is irrellevant.
+# Is this reasonable? -> These are forward gradients.
+
+partial_x_y_u <- function(i,j) {
+  paste0(
+    "(",
+    u_name(i + 1, j + 1), " + ",
+    u_name(i, j), " - ",
+    u_name(i + 1, j), " - ",
+    u_name(i, j + 1),
+    ") / ",
+    a(i, j, 1), "*", a(i, j,0)
+  )
+}
 
 
 ####################    E * grad(u)    ####################
@@ -449,7 +460,21 @@ D_grad_v <- function(i, j) {
   )
 }
 
-########## Divergence Operator          ###############
+# Building the Divergence operator as a function.
+
+
+Divergence_E <- function(i,j) {
+  grad_E(i,j,1,1) * 
+}
+
+
+
+
+
+
+
+
+
 
 
 
@@ -457,7 +482,6 @@ D_grad_v <- function(i, j) {
 ####################    Equation container    ####################
 
 eqns <- c()
-
 
 
 
