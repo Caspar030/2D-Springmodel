@@ -636,7 +636,7 @@ The damped wave equation we implement is the following:
 \textcolor{red}{überarbeiten. der Term $c \dot{u}$ ist nicht so sinnvoll. Wir brauchen eher eine Dämpfungskraft proportional zur Deformationsgeschwindigkeit $\partial_x \dot{u}$.}
 
 \begin{equation*}
-	\delta_0 \ddot{u_i} = \operatorname{div} E \  \nabla u  - c \dot{u}   - \kappa u + \frac{\partial P}{\partial x}
+	\delta_0 \ddot{u_i} = \underbrace{\operatorname{div} (E: \nabla u + D :\nabla \dot{u})}_{\text{Kelvin-Voigt}} \underbrace{( - c \dot{u})}_{\text{ggf. weglassen} - \kappa u} + \frac{\partial P}{\partial x}
 \end{equation*}
 Here,
 \begin{itemize}
@@ -762,9 +762,6 @@ Substituting $y$ for $x$ yields the symmetric equation for \eqref{eq:elasticity_
 
 \subsection*{The $P$-Term regarding active contraction}
 
-
-
-
 Working with substitutes to model second degree derivatives, we set:
 \begin{equation*}
 	\frac{du}{dt} = v(t)
@@ -779,6 +776,9 @@ Concludingly, the equation we implement is:
 
 
 \Todo{Rechencluster BaWü Zugang für Berechnungen. Mit Viv reden}.
+
+\subsection*{Existence of a Solution}
+
 
 
 

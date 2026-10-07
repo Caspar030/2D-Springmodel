@@ -1,4 +1,4 @@
-library(dMod)
+library(dMod2)
 library(plotly)
 # ToDo:
 # The 1D-Solution comes for free as a side dish by implementing the 2D Version (correct) and setting i=1 
@@ -7,8 +7,6 @@ library(plotly)
 
 
 # Layout: 1. Implement Nodes -> 2. implement all interactions of nodes (E, P, c, kappa) as distributions. 3. Define the interactions for each term 4. Model.
-
-
 
 
                                           # 1. - Defining States/Nodes ---
@@ -26,11 +24,22 @@ Ny <- 3
 # ============================================================
 
 parms <- c(
+  #spacing function a
+  sigma_upper = 10,
+  sigma_right = 20,
+  
+  
   #for E
   Ex      = 1,
-  sigma_x = 2,
+  sigma_E_x = 2,
   Ey      = 10,
-  sigma_y = 10,
+  sigma_E_y = 10,
+  
+  #for D
+  Dx      = 1,
+  sigma_D_x = 2,
+  Dy      = 10,
+  sigma_D_y = 10,
   
   # for damping
   ceta      = 0.8,
@@ -51,11 +60,37 @@ parms <- c(
   )
 
 
+#                   Implementing all sorts of functions necessary for constructing the equation     ###
+
+#Mass density function      #here also Gaussian implement
+      mass_density <- function(x, y) {
+        dnorm(x, mean = (Nx+1)/2, sd = 20) *
+          dnorm(y, mean = (Ny + 1)/2, sd = 10)/ (dnorm((Nx+1)/2 , mean = (Nx+1)/2, sd = 20) *
+          dnorm((Ny + 1)/2, mean = (Ny + 1)/2, sd = 10))
+      }
+
+
+
 
 
 # I - Grid Spacing function a
       # The functions a_x and a_y return the spacing between mass points.
-      # a_x(i,j) gives the spacing between mass points a_(i+1,j) and a_(i,j)
+      # a_x(i,j,o) gives the spacing between mass points a_(i+1,j) 
+
+a <- function(x, y, orientation) {
+  
+  if (orientation == 0) {
+    # upper neighbor
+    exp(-((x)^2 + (y - 1)^2) / (2 * parms["sigma_upper"]^2))
+    
+  } else if (orientation == 1) {
+    # right neighbor
+    exp(-((x - 1)^2 + (y)^2) / (2 * parms["sigma_right"]^2))
+  }
+}
+
+
+
 
 
 
@@ -65,13 +100,13 @@ parms <- c(
 
 
 
-E <- function(x, y, Nx, Ny, sigma_x, sigma_y, Ex, Ey) {
+E <- function(x, y, Nx, Ny, sigma_E_x, sigma_E_y, Ex, Ey) {
   
   mux <- (Nx + 1) / 2
   muy <- (Ny + 1) / 2
   
-  G_x <- dnorm(x, mux, sigma_x) / dnorm(mux, mux, sigma_x)
-  G_y <- dnorm(y, muy, sigma_y) / dnorm(muy, muy, sigma_y)
+  G_x <- dnorm(x, mux, sigma_E_x) / dnorm(mux, mux, sigma_E_x)
+  G_y <- dnorm(y, muy, sigma_E_y) / dnorm(muy, muy, sigma_E_y)
   
   matrix(c(
     Ex * G_x, 0,
@@ -86,8 +121,8 @@ E(
   y = 7,
   Nx = Nx,
   Ny = Ny,
-  sigma_x = parms["sigma_x"],
-  sigma_y = parms["sigma_y"],
+  sigma_E_x = parms["sigma_E_x"],
+  sigma_E_y = parms["sigma_E_y"],
   Ex = parms["Ex"],
   Ey = parms["Ey"]
 )
@@ -95,24 +130,62 @@ E(
 
                                           
 
-#b) Damping Term c - can be modified inhomogenously.
-      # c returns a normal distributed variable, centered, with mean z and standard deviations sigma
+# b) Klevin Voigt - Damping Term E: 
+# as a function of i,j. Building the operator with the divergence.
 
-c <- function(x, y, z, Nx, Ny, sigma_k_x, sigma_k_y) {
+
+
+D <- function(x, y, Nx, Ny, sigma_D_x, sigma_D_y, Dx, Dy) {
   
   mux <- (Nx + 1) / 2
   muy <- (Ny + 1) / 2
   
-  Gx <- dnorm(x, mean = mux, sd = sigma_x)
-  Gy <- dnorm(y, mean = muy, sd = sigma_y)
+  G_x <- dnorm(x, mux, sigma_D_x) / dnorm(mux, mux, sigma_D_x)
+  G_y <- dnorm(y, muy, sigma_D_y) / dnorm(muy, muy, sigma_D_y)
+  
+  matrix(c(
+    Dx * G_x, 0,
+    0, Dy * G_y
+  ), nrow = 2, byrow = TRUE)
+}
+
+
+# Test at the center
+D(
+  x = 4,
+  y = 7,
+  Nx = Nx,
+  Ny = Ny,
+  sigma_D_x = parms["sigma_D_x"],
+  sigma_D_y = parms["sigma_D_y"],
+  Dx = parms["Dx"],
+  Dy = parms["Dy"]
+)
+
+
+
+
+
+
+
+#b) Damping Term ceta - can be modified inhomogenously.
+      # c returns a normal distributed variable, centered, with mean z and standard deviations sigma
+
+ceta <- function(x, y, z, Nx, Ny, sigma_k_x, sigma_k_y) {
+  
+  mux <- (Nx + 1) / 2
+  muy <- (Ny + 1) / 2
+  
+  Gx <- dnorm(x, mean = mux, sd = sigma_k_x)
+  Gy <- dnorm(y, mean = muy, sd = sigma_k_y)
   
   z * Gx * Gy /
-    (dnorm(mux, mux, sigma_x) * dnorm(muy, muy, sigma_y))
+    (dnorm(mux, mux, sigma_k_x) * dnorm(muy, muy, sigma_k_y))
 }
 
 #Testing c
 
-c(4, 2, parms[["ceta"]], Nx, Ny, 2, 1)
+ceta(4, 2, parms[["ceta"]], Nx, Ny, 2, 1)
 # 2. - d) Retraction Force  - kappa
 
 
@@ -127,11 +200,11 @@ k <- function(x, y, z, Nx, Ny, sigma_k_x, sigma_k_y) {
   mux <- (Nx + 1) / 2
   muy <- (Ny + 1) / 2
   
-  Gx <- dnorm(x, mean = mux, sd = sigma_x)
-  Gy <- dnorm(y, mean = muy, sd = sigma_y)
+  Gx <- dnorm(x, mean = mux, sd = sigma_k_x)
+  Gy <- dnorm(y, mean = muy, sd = sigma_k_y)
   
   z * Gx * Gy /
-    (dnorm(mux, mux, sigma_x) * dnorm(muy, muy, sigma_y))
+    (dnorm(mux, mux, sigma_k_x) * dnorm(muy, muy, sigma_k_y))
 }
 
 #Testing k
@@ -170,8 +243,15 @@ max(Q)
 
 
 
+
+
+
+
+
+
+
 # ============================================================
-# Functions to construct states
+# Functions constructing states
 # ============================================================
 
 u_name <- function(i, j) {
@@ -191,6 +271,7 @@ eqns <- c()
 # ============================================================
 
 
+# Building the equation.
 
 #Beginning For Loop
 for (i in 1:Nx) {
@@ -213,45 +294,35 @@ for (i in 1:Nx) {
   }
    
     
-
-    
-
-    
-    
-    
     
 # Constructing discrete Laplace. Ensure that edge cases with i==1, j==1 are not violated.
 
 
+#                 In The interior: i is not 1,Nx and j is not 1,Ny
+  
+    if (i != 1 && i != Nx && j != 1 && j != Ny) {
+print("hello")
+      
+    }
+    
+    
+    
 
-# ========================================================
-# 2D Discrete Laplacian - "Fünfpunktlaplace"
-#
-#     d²u/dx² + d²u/dy²
-#
-#     ~ uR + uL + uU + uD - 4*uij
-# ========================================================
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
 
-    
-    # ========================================================
-    # Force Divergence: P
-    # ========================================================
-    
-    force_div <- paste0(
-      "((",
-      Px_right,
-      ") - (",
-      Px_left,
-      "))",
-      " + ",
-      "((",
-      Py_up,
-      ") - (",
-      Py_down,
-      "))"
-    )
-    
-    
+# 
     
     
     
@@ -339,8 +410,21 @@ model <- odemodel(
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
 # ============================================================
-# INITIAL CONDITIONS
+# Startbedingungen
 # ============================================================
 
 x0 <- c()
@@ -370,6 +454,11 @@ for (i in 2:Nx) {
     x0[vij] <- 0
   }
 }
+
+
+
+
+
 
 
 
