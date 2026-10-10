@@ -1,59 +1,66 @@
-# ============================================================
-# Expression tree: nodes and tensor shapes
-# ============================================================
+# R/expression_tree.R
+#
+# shape:
+#   integer(0)   scalar
+#   c(2)         vector
+#   c(2, 2)      matrix
+#   c(2,2,2,2)   fourth-order tensor
 
 new_expr <- function(op, args = list(),
                      shape = integer(0), name = NULL) {
   
+  if (!is.character(op) || length(op) != 1L ||
+      is.na(op) || !nzchar(op)) {
+    stop("op must be a nonempty string.")
+  }
+  
+  if (!is.list(args) ||
+      !all(vapply(args, inherits, logical(1), "math_expr"))) {
+    stop("args must be a list of math_expr objects.")
+  }
+  
+  if (!is.numeric(shape) ||
+      any(!is.finite(shape)) ||
+      any(shape <= 0) ||
+      any(shape != floor(shape)) ||
+      any(shape > .Machine$integer.max)) {
+    stop("shape must contain positive integer dimensions.")
+  }
+  
+  if (!is.null(name) &&
+      (!is.character(name) || length(name) != 1L ||
+       is.na(name) || !nzchar(name))) {
+    stop("name must be NULL or a nonempty string.")
+  }
+  
   structure(
     list(
-      op    = op,
-      args  = args,
-      shape = shape,
-      name  = name
+      op = op,
+      args = args,
+      shape = as.integer(shape),
+      name = name
     ),
     class = "math_expr"
   )
 }
 
-
-# Create a field
-#
-# shape = integer(0): scalar
-# shape = c(2):       vector in 2D
-# shape = c(2, 2):    matrix in 2D
-
 field <- function(name, shape = integer(0)) {
+  if (missing(name) || is.null(name)) {
+    stop("A field needs a name.")
+  }
   
-  stopifnot(
-    is.character(name),
-    length(name) == 1,
-    length(shape) >= 0,
-    all(shape > 0)
-  )
-  
-  new_expr(
-    op    = "field",
-    name  = name,
-    shape = shape
-  )
+  new_expr("field", shape = shape, name = name)
 }
 
-
-# Display expression type
-
 shape_name <- function(shape) {
-  
-  if (length(shape) == 0) {
+  if (length(shape) == 0L) {
     return("scalar")
   }
   
   paste(shape, collapse = " x ")
 }
 
-
 show_type <- function(x) {
-  
   stopifnot(inherits(x, "math_expr"))
   
   cat(
@@ -62,16 +69,12 @@ show_type <- function(x) {
     "\nShape:", shape_name(x$shape),
     "\n"
   )
+  
+  invisible(x)
 }
 
-
-
-# Recursively print the expression tree
-print_expr <- function(x, indent = 0) {
-  
+print_expr <- function(x, indent = 0L) {
   stopifnot(inherits(x, "math_expr"))
-  
-  prefix <- paste0(strrep("  ", indent))
   
   label <- if (x$op == "field") {
     paste0("Field: ", x$name)
@@ -80,14 +83,13 @@ print_expr <- function(x, indent = 0) {
   }
   
   cat(
-    prefix, label,
-    " [", shape_name(x$shape), "]\n",
+    strrep("  ", indent),
+    label, " [", shape_name(x$shape), "]\n",
     sep = ""
   )
   
-  # Recursively print all child expressions
   for (arg in x$args) {
-    print_expr(arg, indent = indent + 1)
+    print_expr(arg, indent + 1L)
   }
   
   invisible(x)
