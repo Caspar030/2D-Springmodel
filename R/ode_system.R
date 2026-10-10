@@ -322,145 +322,145 @@ build_ode_system <- function(
 
 
 
-#Testing
-
-
-
-source("R/expression_tree.R")
-source("R/operators.R")
-source("R/discretization.R")
-source("R/boundary_conditions.R")
-source("R/ode_system.R")
-
-# Reduced Kelvin–Voigt system:
-# rho = 1, no active force or local retraction.
-u <- field("u", c(2))
-v <- field("v", c(2))
-E <- field("E", c(2, 2, 2, 2))
-D <- field("D", c(2, 2, 2, 2))
-
-expressions <- list(
-  u = v,
-  v = div(add(
-    contract(E, grad(u)),
-    contract(D, grad(v))
-  ))
-)
-
-bounds <- list(min = c(1, 1), max = c(7, 5))
-
-make_system <- function(side) {
-  build_ode_system(
-    expressions = expressions,
-    grid_bounds = bounds,
-    spacing = c(0.5, 0.8),
-    state_variables = c("u", "v"),
-    fixed_side = side
-  )
-}
-
-check <- function(label, condition) {
-  if (!isTRUE(condition)) stop("FAILED: ", label)
-  cat("OK:", label, "\n")
-}
-
-system <- make_system("left")
-
-# 1. 35 nodes - 5 fixed nodes; 4 states per remaining node.
-check(
-  "Number of dynamic equations",
-  nrow(system) == 120L &&
-    sum(system$variable == "u") == 60L &&
-    sum(system$variable == "v") == 60L
-)
-
-check(
-  "Unique component names",
-  anyDuplicated(system$state) == 0L &&
-    all(system$component %in% 1:2) &&
-    "u_1_2_3" %in% system$state &&
-    "v_2_2_3" %in% system$state
-)
-
-check(
-  "Boundary classification",
-  sum(system$boundary == "free") == 60L &&
-    sum(system$boundary == "interior") == 60L &&
-    !any(system$boundary == "fixed")
-)
-
-# 2. du/dt must equal the corresponding velocity component.
-u_rows <- system$variable == "u"
-
-check(
-  "Displacement-velocity coupling",
-  all(
-    system$rhs[u_rows] ==
-      sub("^u_", "v_", system$state[u_rows])
-  )
-)
-
-# 3. Fixed states must be absent from states AND right-hand sides.
-fixed <- attr(system, "fixed_states")
-
-expected_fixed <- unlist(lapply(1:5, function(j) {
-  c(
-    paste("u", 1, 1, j, sep = "_"),
-    paste("u", 2, 1, j, sep = "_"),
-    paste("v", 1, 1, j, sep = "_"),
-    paste("v", 2, 1, j, sep = "_")
-  )
-}), use.names = FALSE)
-
-check(
-  "Correct fixed-state metadata",
-  setequal(names(fixed), expected_fixed) &&
-    all(fixed == 0)
-)
-
-# Parsing also checks that every RHS has valid R syntax.
-parsed <- lapply(system$rhs, function(s) parse(text = s))
-symbols_used <- unique(unlist(lapply(parsed, all.vars)))
-
-check(
-  "Fixed states eliminated everywhere",
-  !any(expected_fixed %in% system$state) &&
-    !any(expected_fixed %in% symbols_used)
-)
-
-# Every referenced u/v component needs a dynamic equation.
-state_references <- grep(
-  "^(u|v)_", symbols_used, value = TRUE
-)
-
-check(
-  "No unresolved state references",
-  all(state_references %in% system$state)
-)
-
-# Material coefficients must remain symbolic for later fitting.
-check(
-  "Material coefficients remain symbolic",
-  any(grepl("^E_", symbols_used)) &&
-    any(grepl("^D_", symbols_used))
-)
-
-# 4. Check that changing the fixed side reaches the generator.
-top_system <- make_system("top")
-top_fixed <- attr(top_system, "fixed_states")
-
-check(
-  "Fixed side can be changed",
-  nrow(top_system) == 112L &&  # (35 - 7) * 4
-    length(top_fixed) == 28L &&
-    !("u_1_4_5" %in% top_system$state) &&
-    "u_1_1_3" %in% top_system$state
-)
-
-cat("\nAll ODE-generator tests passed.\n")
-
-# Compact inspection without printing the long force expressions.
-print(head(system[, c(
-  "index", "variable", "component", "boundary", "state"
-)]))
+# #Testing
+# 
+# 
+# 
+# source("R/expression_tree.R")
+# source("R/operators.R")
+# source("R/discretization.R")
+# source("R/boundary_conditions.R")
+# source("R/ode_system.R")
+# 
+# # Reduced Kelvin–Voigt system:
+# # rho = 1, no active force or local retraction.
+# u <- field("u", c(2))
+# v <- field("v", c(2))
+# E <- field("E", c(2, 2, 2, 2))
+# D <- field("D", c(2, 2, 2, 2))
+# 
+# expressions <- list(
+#   u = v,
+#   v = div(add(
+#     contract(E, grad(u)),
+#     contract(D, grad(v))
+#   ))
+# )
+# 
+# bounds <- list(min = c(1, 1), max = c(7, 5))
+# 
+# make_system <- function(side) {
+#   build_ode_system(
+#     expressions = expressions,
+#     grid_bounds = bounds,
+#     spacing = c(0.5, 0.8),
+#     state_variables = c("u", "v"),
+#     fixed_side = side
+#   )
+# }
+# 
+# check <- function(label, condition) {
+#   if (!isTRUE(condition)) stop("FAILED: ", label)
+#   cat("OK:", label, "\n")
+# }
+# 
+# system <- make_system("left")
+# 
+# # 1. 35 nodes - 5 fixed nodes; 4 states per remaining node.
+# check(
+#   "Number of dynamic equations",
+#   nrow(system) == 120L &&
+#     sum(system$variable == "u") == 60L &&
+#     sum(system$variable == "v") == 60L
+# )
+# 
+# check(
+#   "Unique component names",
+#   anyDuplicated(system$state) == 0L &&
+#     all(system$component %in% 1:2) &&
+#     "u_1_2_3" %in% system$state &&
+#     "v_2_2_3" %in% system$state
+# )
+# 
+# check(
+#   "Boundary classification",
+#   sum(system$boundary == "free") == 60L &&
+#     sum(system$boundary == "interior") == 60L &&
+#     !any(system$boundary == "fixed")
+# )
+# 
+# # 2. du/dt must equal the corresponding velocity component.
+# u_rows <- system$variable == "u"
+# 
+# check(
+#   "Displacement-velocity coupling",
+#   all(
+#     system$rhs[u_rows] ==
+#       sub("^u_", "v_", system$state[u_rows])
+#   )
+# )
+# 
+# # 3. Fixed states must be absent from states AND right-hand sides.
+# fixed <- attr(system, "fixed_states")
+# 
+# expected_fixed <- unlist(lapply(1:5, function(j) {
+#   c(
+#     paste("u", 1, 1, j, sep = "_"),
+#     paste("u", 2, 1, j, sep = "_"),
+#     paste("v", 1, 1, j, sep = "_"),
+#     paste("v", 2, 1, j, sep = "_")
+#   )
+# }), use.names = FALSE)
+# 
+# check(
+#   "Correct fixed-state metadata",
+#   setequal(names(fixed), expected_fixed) &&
+#     all(fixed == 0)
+# )
+# 
+# # Parsing also checks that every RHS has valid R syntax.
+# parsed <- lapply(system$rhs, function(s) parse(text = s))
+# symbols_used <- unique(unlist(lapply(parsed, all.vars)))
+# 
+# check(
+#   "Fixed states eliminated everywhere",
+#   !any(expected_fixed %in% system$state) &&
+#     !any(expected_fixed %in% symbols_used)
+# )
+# 
+# # Every referenced u/v component needs a dynamic equation.
+# state_references <- grep(
+#   "^(u|v)_", symbols_used, value = TRUE
+# )
+# 
+# check(
+#   "No unresolved state references",
+#   all(state_references %in% system$state)
+# )
+# 
+# # Material coefficients must remain symbolic for later fitting.
+# check(
+#   "Material coefficients remain symbolic",
+#   any(grepl("^E_", symbols_used)) &&
+#     any(grepl("^D_", symbols_used))
+# )
+# 
+# # 4. Check that changing the fixed side reaches the generator.
+# top_system <- make_system("top")
+# top_fixed <- attr(top_system, "fixed_states")
+# 
+# check(
+#   "Fixed side can be changed",
+#   nrow(top_system) == 112L &&  # (35 - 7) * 4
+#     length(top_fixed) == 28L &&
+#     !("u_1_4_5" %in% top_system$state) &&
+#     "u_1_1_3" %in% top_system$state
+# )
+# 
+# cat("\nAll ODE-generator tests passed.\n")
+# 
+# # Compact inspection without printing the long force expressions.
+# print(head(system[, c(
+#   "index", "variable", "component", "boundary", "state"
+# )]))
 
